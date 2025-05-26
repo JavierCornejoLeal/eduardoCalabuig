@@ -1,0 +1,61 @@
+.fondoFooter {
+  background-color: #f1f0ec !important;
+}
+
+.text-dark {
+    z-index: 1000;
+}
+
+.text-dark:hover {
+  text-decoration: underline !important;
+  text-underline-offset: 4px;
+}
+
+.social-icon {
+  display: inline-block;               /* para que el transform afecte bien */
+  transition: transform 0.3s ease;      /* define la animación suave */
+}
+
+.social-icon:hover {
+  transform: scale(1.1);                /* escala al 120% */
+}
+
+.imagenSobresale {
+  position: absolute;
+  top: 1em;
+  left: 13%;
+  transform: translateX(-50%) rotate(-15deg);
+  width: 20.7em;
+  opacity: 35%;
+  margin: 0;
+  padding: 0;
+  z-index: 1;
+}
+
+@media (max-width: 992px) {
+  .imagenSobresale {
+    position: absolute;
+    top: 6em;
+    left: 3%;
+    transform: translateX(-50%) rotate(-25deg);
+    width: 37em;
+    opacity: 35%;
+    margin: 0;
+    padding: 0;
+    z-index: 1;
+  }
+}
+
+@media (max-width: 576px) {
+  .imagenSobresale {
+    position: absolute;
+    top: 7em;
+    left: 15%;
+    transform: translateX(-50%) rotate(-25deg);
+    width: 34em;
+    opacity: 35%;
+    margin: 0;
+    padding: 0;
+    z-index: 1;
+  }
+}

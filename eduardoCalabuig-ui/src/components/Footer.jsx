@@ -1,0 +1,152 @@
+import React from "react";
+
+import "../assets/styles/footer.css";
+import {
+  PiLinkedinLogoThin,
+  PiInstagramLogoThin,
+  PiFacebookLogoThin,
+} from "react-icons/pi";
+import { BiLogoFacebookSquare } from "react-icons/bi";
+
+import logoFooter from "../assets/images/logo/logoFooter.png";
+import logoCrema from "../assets/images/logo/logoCrema.png";
+
+const Footer = () => {
+  return (
+    <footer className="fondoFooter py-5 position-relative">
+      <div className="container">
+        <div className="row">
+          <div className="col-lg-4 mb-4">
+            <div className="d-flex flex-column align-items-center mb-3">
+              <img
+                src={logoFooter}
+                alt="Eduardo Calabuig Studio Interiorismo"
+                style={{ width: "15em" }}
+              />
+
+<div className="d-flex gap-3 pt-3">
+  <a href="https://es.linkedin.com/" className="social-icon">
+    <PiLinkedinLogoThin size={30} color="#51443D" title="LinkedIn"/>
+  </a>
+  <a href="https://instagram.com" className="social-icon">
+    <PiInstagramLogoThin size={30} color="#51443D" title="Instagram"/>
+  </a>
+  <a href="https://facebook.com" className="social-icon">
+    <BiLogoFacebookSquare size={30} color="#51443D" title="Facebook"/>
+  </a>
+</div>
+
+            </div>
+          </div>
+
+          <div className="col-3 col-lg-1 mb-4"></div>
+
+          {/* Sección Eduardo */}
+          <div className="col-4 col-lg-2 pb-4">
+            <h5 className="fw-light pb-4">Eduardo</h5>
+            <nav className="d-flex flex-column gap-2">
+              <a
+                href="/sobre-mi"
+                className="text-dark pb-3 text-decoration-none"
+              >
+                Sobre mí
+              </a>
+              <a
+                href="/proyectos"
+                className="text-dark pb-3 text-decoration-none"
+              >
+                Proyectos
+              </a>
+              <a
+                href="/noticias"
+                className="text-dark pb-3 text-decoration-none"
+              >
+                Noticias
+              </a>
+            </nav>
+          </div>
+
+          {/* Sección Productos */}
+          <div className="col-5 col-lg-2 pb-4">
+            <h5 className="fw-100 pb-4">Productos</h5>
+            <nav className="d-flex flex-column gap-2">
+              <a
+                href="/muebles"
+                className="text-dark pb-3 text-decoration-none"
+              >
+                Muebles
+              </a>
+              <a
+                href="/esculturas"
+                className="text-dark pb-3 text-decoration-none"
+              >
+                Esculturas
+              </a>
+            </nav>
+          </div>
+
+          {/* Contacto */}
+          <div className="col-sm-12 col-lg-3 pb-4 text-center text-lg-start">
+            <h5 className="fw-100 pb-4">Contacto</h5>
+            <address className="d-flex flex-column gap-2">
+              <a href="" className="text-dark pb-3 text-decoration-none">
+                C/ Explanada Cervantes 23 P1, Dénia
+              </a>
+              <a
+                href="mailto:educalabuig@gmail.com"
+                className="text-dark pb-3 text-decoration-none"
+              >
+                educalabuig@gmail.com
+              </a>
+              <a href="" className="text-dark text-decoration-none">
+                692 45 58 43
+              </a>
+            </address>
+          </div>
+        </div>
+
+        {/* Links legales */}
+        <div className="border-bottom py-3 mt-4" style={{ fontSize: "12px" }}>
+          <nav
+            className="d-grid d-md-flex justify-content-center gap-4 text-center text-md-start"
+            style={{ gridTemplateColumns: "repeat(2, 1fr)" }}
+          >
+            <a href="/aviso-legal" className="text-dark text-decoration-none">
+              Aviso Legal
+            </a>
+            <a
+              href="/politica-privacidad"
+              className="text-dark text-decoration-none"
+            >
+              Política de Privacidad
+            </a>
+            <a
+              href="/politica-cookies"
+              className="text-dark text-decoration-none"
+            >
+              Política de Cookies
+            </a>
+            <a
+              href="/terminos-condiciones"
+              className="text-dark text-decoration-none"
+            >
+              Términos y Condiciones
+            </a>
+          </nav>
+        </div>
+
+        {/* Derechos */}
+        <div
+          className="text-center mt-3"
+          style={{ fontSize: "12px", color: "#333" }}
+        >
+          © 2025 Eduardo Calabuig. Todos los derechos reservados
+        </div>
+      </div>
+
+      <img src={logoCrema} alt="Logo Eduardo Decoración" className="imagenSobresale"/>
+    </footer>
+  );
+};
+
+export default Footer;
