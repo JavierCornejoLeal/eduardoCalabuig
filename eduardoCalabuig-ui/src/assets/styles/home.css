@@ -1,0 +1,16 @@
+.botonMarron {
+    background-color: #51443D !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0.6em 0em !important;
+    font-weight: 100 !important;
+}
+
+.botonMarron:hover {
+    background-color: #463a34 !important;
+}
+
+.shadow-inner-section {
+  box-shadow: inset 0 -10px 35px rgba(0, 0, 0, 0.5);
+}
+
