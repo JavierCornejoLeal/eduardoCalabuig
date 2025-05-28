@@ -1,41 +1,47 @@
 import React from "react";
 
 import "../assets/styles/footer.css";
-import {
-  PiLinkedinLogoThin,
-  PiInstagramLogoThin,
-  PiFacebookLogoThin,
-} from "react-icons/pi";
+import { PiLinkedinLogoThin, PiInstagramLogoThin } from "react-icons/pi";
 import { BiLogoFacebookSquare } from "react-icons/bi";
 
-import logoFooter from "../assets/images/logo/logoFooter.png";
-import logoCrema from "../assets/images/logo/logoCrema.png";
+import logoFooter from "../assets/images/logo/logoFooter.webp";
+import logoCrema from "../assets/images/logo/logoCrema.webp";
 
 const Footer = () => {
   return (
     <footer className="fondoFooter py-5 position-relative">
-      <div className="container">
+      <div className="container-fluid">
         <div className="row">
           <div className="col-lg-4 mb-4">
             <div className="d-flex flex-column align-items-center mb-3">
               <img
                 src={logoFooter}
                 alt="Eduardo Calabuig Studio Interiorismo"
-                style={{ width: "15em" }}
               />
 
-<div className="d-flex gap-3 pt-3">
-  <a href="https://es.linkedin.com/" className="social-icon">
-    <PiLinkedinLogoThin size={30} color="#51443D" title="LinkedIn"/>
-  </a>
-  <a href="https://instagram.com" className="social-icon">
-    <PiInstagramLogoThin size={30} color="#51443D" title="Instagram"/>
-  </a>
-  <a href="https://facebook.com" className="social-icon">
-    <BiLogoFacebookSquare size={30} color="#51443D" title="Facebook"/>
-  </a>
-</div>
-
+              <div className="d-flex gap-3 pt-3">
+                <a href="https://es.linkedin.com/" className="social-icon">
+                  <PiLinkedinLogoThin
+                    size={30}
+                    color="#51443D"
+                    title="LinkedIn"
+                  />
+                </a>
+                <a href="https://instagram.com" className="social-icon">
+                  <PiInstagramLogoThin
+                    size={30}
+                    color="#51443D"
+                    title="Instagram"
+                  />
+                </a>
+                <a href="https://facebook.com" className="social-icon">
+                  <BiLogoFacebookSquare
+                    size={30}
+                    color="#51443D"
+                    title="Facebook"
+                  />
+                </a>
+              </div>
             </div>
           </div>
 
@@ -144,7 +150,11 @@ const Footer = () => {
         </div>
       </div>
 
-      <img src={logoCrema} alt="Logo Eduardo Decoración" className="imagenSobresale"/>
+      <img
+        src={logoCrema}
+        alt="Logo Eduardo Decoración"
+        className="imagenSobresale"
+      />
     </footer>
   );
 };

@@ -5,8 +5,8 @@ import { HiBars3BottomRight } from "react-icons/hi2";
 
 import "../assets/styles/Navbar.css";
 
-import logoMarron from "../assets/images/logo/logoCrema.png";
-import logoNegro from "../assets/images/logo/logoNegro.png";
+import logoMarron from "../assets/images/logo/logo.webp";
+import logoNegro from "../assets/images/logo/logoNegro.webp";
 
 const NavBar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -48,7 +48,6 @@ const NavBar = () => {
           <img
             src={scrolled || expanded ? logoNegro : logoMarron}
             alt="Eduardo Calabuig"
-            style={{ height: "4em" }}
           />
         </Navbar.Brand>
 

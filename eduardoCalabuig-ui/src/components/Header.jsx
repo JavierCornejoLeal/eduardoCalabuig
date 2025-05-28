@@ -1,5 +1,5 @@
 import React from "react";
-import backgroundImage from "../assets/images/header/exxterior-reducida.png"; 
+import backgroundImage from "../assets/images/header/exxterior-reducida.webp"; 
 
 const Header = ({ children }) => {
   return (

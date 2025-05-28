@@ -1,53 +1,17 @@
-import  Footer  from './components/Footer'
-import NavBar from './components/Navbar'
-import Header from './components/Header'
+import Home from './pages/Home';
+
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 function App() {
 
   return (
-    <>
-      <div>
-        <NavBar />
-        <Header>
-         <p>Transformamos Espacios,</p>
-          <p>Creamos Emociones</p>
-        </Header>
-        <div className='hei'>
-          <h1>Hola Mundo</h1>
-          <p>Bienvenido a mi página web</p>
-                    <h1>Hola Mundo</h1>
-          <p>Bienvenido a mi página web</p>
-                    <h1>Hola Mundo</h1>
-          <p>Bienvenido a mi página web</p>
-                    <h1>Hola Mundo</h1>
-          <p>Bienvenido a mi página web</p>
-                    <h1>Hola Mundo</h1>
-          <p>Bienvenido a mi página web</p>
-                    <h1>Hola Mundo</h1>
-          <p>Bienvenido a mi página web</p>
-                              <h1>Hola Mundo</h1>
-          <p>Bienvenido a mi página web</p>
-                              <h1>Hola Mundo</h1>
-          <p>Bienvenido a mi página web</p>
-                              <h1>Hola Mundo</h1>
-          <p>Bienvenido a mi página web</p>
-                              <h1>Hola Mundo</h1>
-          <p>Bienvenido a mi página web</p>
-                              <h1>Hola Mundo</h1>
-          <p>Bienvenido a mi página web</p>
-                              <h1>Hola Mundo</h1>
-          <p>Bienvenido a mi página web</p>
-                              <h1>Hola Mundo</h1>
-          <p>Bienvenido a mi página web</p>
-                              <h1>Hola Mundo</h1>
-          <p>Bienvenido a mi página web</p>
-                              <h1>Hola Mundo</h1>
-          <p>Bienvenido a mi página web</p>
-        </div>
-        <Footer />
-      </div>
-    </>
-  )
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        {/* otras rutas si las hay */}
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App
