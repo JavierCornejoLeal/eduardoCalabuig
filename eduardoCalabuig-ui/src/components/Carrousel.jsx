@@ -27,7 +27,8 @@ const ProyectosCarousel = ({ images }) => {
       itemClass="carousel-item-padding-40-px"
     >
       {images.map((imgSrc, index) => (
-        <div key={index} className="carousel-item-wrapper px-2">
+
+        <div key={index} className="carousel-item-wrapper px-1">
           <a href="">
             <img
               key={index}

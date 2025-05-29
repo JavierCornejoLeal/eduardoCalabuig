@@ -1,4 +1,5 @@
 import Home from './pages/Home';
+import Contacto from './pages/Contacto';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
@@ -8,7 +9,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-        {/* otras rutas si las hay */}
+        <Route path='/contacto' element={<Contacto / >}></Route>
       </Routes>
     </BrowserRouter>
   );

@@ -65,7 +65,7 @@ const NavBar = () => {
               (text, idx) => (
                 <Nav.Link
                   key={idx}
-                  href={"#" + text.toLowerCase().replace(" ", "-")}
+                  href={"/" + text.toLowerCase().replace(" ", "-")}
                   className={scrolled || expanded
                     ? "navbar-hover-black"
                     : "navbar-hover-white"

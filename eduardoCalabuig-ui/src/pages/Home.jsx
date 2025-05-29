@@ -7,17 +7,18 @@ import Footer from "../components/Footer";
 import Header from "../components/Header";
 import NavBar from "../components/NavBar";
 import ProyectosCarousel from "../components/Carrousel";
+import Mapa from "../components/Map";
 
-import Eduardo from "../assets/images/home/edu.jpg";
-import Cocina from "../assets/images/projects/cocina.png";
-import OfiEdu from "../assets/images/projects/oficinaEdu.png";
-import Ofi2 from "../assets/images/projects/oficina2.png";
-import Exterior from "../assets/images/projects/exterior.jpg";
-import Garage from "../assets/images/projects/garage.jpg";
-import Escalera from "../assets/images/projects/escalera.png";
-import Noticia from "../assets/images/noticias/noticia1.png";
-import Noticia2 from "../assets/images/noticias/noticia2.png";
-import Noticia3 from "../assets/images/noticias/noticia3.png";
+import Eduardo from "../assets/images/home/edu.webp";
+import Cocina from "../assets/images/projects/cocina.webp";
+import OfiEdu from "../assets/images/projects/oficinaEdu.webp";
+import Ofi2 from "../assets/images/projects/oficina2.webp";
+import Exterior from "../assets/images/projects/exterior.webp";
+import Garage from "../assets/images/projects/garage.webp";
+import Escalera from "../assets/images/projects/escalera.webp";
+import Noticia from "../assets/images/noticias/noticia1.webp";
+import Noticia2 from "../assets/images/noticias/noticia2.webp";
+import Noticia3 from "../assets/images/noticias/noticia3.webp";
 
 const Home = () => {
   return (
@@ -132,16 +133,7 @@ const Home = () => {
         <section className="py-5 shadow-inner-section">
           <div className="container">
             <div className="row py-5">
-              <iframe
-                title="Mapa de Explanada Cervantes 23, Dénia"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5259.284522684315!2d0.10333211155984302!3d38.84193872256347!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd6236472d0b2271%3A0xe8c32b3c7399cc56!2sExplanada%20Cervantes%2C%2023%2C%2037740%20D%C3%A9nia%2C%20Alicante%2C%20Espa%C3%B1a!5e0!3m2!1ses!2ses!4v1685280123456!5m2!1ses!2ses"
-                width="100%"
-                height="450em"
-                style={{ border: 0 }}
-                allowFullScreen=""
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
+              <Mapa></Mapa>
             </div>
           </div>
         </section>

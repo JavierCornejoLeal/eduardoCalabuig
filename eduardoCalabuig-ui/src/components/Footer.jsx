@@ -53,19 +53,22 @@ const Footer = () => {
             <nav className="d-flex flex-column gap-2">
               <a
                 href="/sobre-mi"
-                className="text-dark pb-3 text-decoration-none"
+                className="linkFooter text-dark pb-3 text-decoration-none"
+                style={{ width: "fit-content" }}
               >
                 Sobre mí
               </a>
               <a
                 href="/proyectos"
-                className="text-dark pb-3 text-decoration-none"
+                className="linkFooter text-dark pb-3 text-decoration-none"
+                style={{ width: "fit-content" }}
               >
                 Proyectos
               </a>
               <a
                 href="/noticias"
-                className="text-dark pb-3 text-decoration-none"
+                className="linkFooter text-dark pb-3 text-decoration-none"
+                style={{ width: "fit-content" }}
               >
                 Noticias
               </a>
@@ -78,13 +81,15 @@ const Footer = () => {
             <nav className="d-flex flex-column gap-2">
               <a
                 href="/muebles"
-                className="text-dark pb-3 text-decoration-none"
+                className="linkFooter text-dark pb-3 text-decoration-none"
+                style={{ width: "fit-content" }}
               >
                 Muebles
               </a>
               <a
                 href="/esculturas"
-                className="text-dark pb-3 text-decoration-none"
+                className="linkFooter text-dark pb-3 text-decoration-none"
+                style={{ width: "fit-content" }}
               >
                 Esculturas
               </a>
@@ -94,17 +99,26 @@ const Footer = () => {
           {/* Contacto */}
           <div className="col-sm-12 col-lg-3 pb-4 text-center text-lg-start">
             <h5 className="fw-100 pb-4">Contacto</h5>
-            <address className="d-flex flex-column gap-2">
-              <a href="" className="text-dark pb-3 text-decoration-none">
+            <address className="d-flex flex-column align-items-center align-items-lg-start gap-2">
+              <a
+                href="#"
+                className="linkFooter text-dark text-decoration-none"
+                style={{ display: "inline-block", width: "fit-content" }}
+              >
                 C/ Explanada Cervantes 23 P1, Dénia
               </a>
               <a
                 href="mailto:educalabuig@gmail.com"
-                className="text-dark pb-3 text-decoration-none"
+                className="linkFooter text-dark text-decoration-none"
+                style={{ display: "inline-block", width: "fit-content" }}
               >
                 educalabuig@gmail.com
               </a>
-              <a href="" className="text-dark text-decoration-none">
+              <a
+                href="#"
+                className="linkFooter text-dark text-decoration-none"
+                style={{ display: "inline-block", width: "fit-content" }}
+              >
                 692 45 58 43
               </a>
             </address>
@@ -112,29 +126,37 @@ const Footer = () => {
         </div>
 
         {/* Links legales */}
-        <div className="border-bottom py-3 mt-4" style={{ fontSize: "12px" }}>
+        <div
+          className="custom-border-bottom py-3 mt-4"
+          style={{
+            fontSize: "12px",
+          }}
+        >
           <nav
             className="d-grid d-md-flex justify-content-center gap-4 text-center text-md-start"
             style={{ gridTemplateColumns: "repeat(2, 1fr)" }}
           >
-            <a href="/aviso-legal" className="text-dark text-decoration-none">
+            <a
+              href="/aviso-legal"
+              className="linkFooter text-dark text-decoration-none"
+            >
               Aviso Legal
             </a>
             <a
               href="/politica-privacidad"
-              className="text-dark text-decoration-none"
+              className="linkFooter text-dark text-decoration-none"
             >
               Política de Privacidad
             </a>
             <a
               href="/politica-cookies"
-              className="text-dark text-decoration-none"
+              className="linkFooter text-dark text-decoration-none"
             >
               Política de Cookies
             </a>
             <a
               href="/terminos-condiciones"
-              className="text-dark text-decoration-none"
+              className="linkFooter text-dark text-decoration-none"
             >
               Términos y Condiciones
             </a>
