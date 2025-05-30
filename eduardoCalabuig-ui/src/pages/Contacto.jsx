@@ -6,7 +6,7 @@ import NavBar from "../components/NavBar";
 
 import "../assets/styles/contacto.css";
 
-import OfiEdu from "../assets/images/contacto/oficinaEdu.png";
+import OfiEdu from "../assets/images/contacto/oficinaEdu.webp";
 
 const Contacto = () => {
   const form = useRef();
@@ -70,7 +70,7 @@ const Contacto = () => {
       <NavBar />
 
       <Header>
-        <p>CONTACTO</p>
+        <p>Contacto</p>
       </Header>
 
       <main>

@@ -29,7 +29,7 @@ const ProyectosCarousel = ({ images }) => {
       {images.map((imgSrc, index) => (
 
         <div key={index} className="carousel-item-wrapper px-1">
-          <a href="">
+          <a href="/proyectos">
             <img
               key={index}
               src={imgSrc}

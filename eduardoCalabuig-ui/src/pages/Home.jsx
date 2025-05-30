@@ -10,17 +10,30 @@ import ProyectosCarousel from "../components/Carrousel";
 import Mapa from "../components/Map";
 
 import Eduardo from "../assets/images/home/edu.webp";
+import CV from "../assets/docs/CV.pdf";
+
 import Cocina from "../assets/images/projects/cocina.webp";
 import OfiEdu from "../assets/images/projects/oficinaEdu.webp";
-import Ofi2 from "../assets/images/projects/oficina2.webp";
+import Ofi2 from "../assets/images/projects/oficinaCemento.webp";
 import Exterior from "../assets/images/projects/exterior.webp";
 import Garage from "../assets/images/projects/garage.webp";
 import Escalera from "../assets/images/projects/escalera.webp";
+
 import Noticia from "../assets/images/noticias/noticia1.webp";
 import Noticia2 from "../assets/images/noticias/noticia2.webp";
 import Noticia3 from "../assets/images/noticias/noticia3.webp";
 
 const Home = () => {
+
+// Función que fuerza la descarga
+    const handleDownloadCV = () => {
+    const link = document.createElement("a");
+    link.href = CV; // Asegúrate de tener CV.pdf en public/
+    link.setAttribute("download", "CV.pdf");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
   return (
     <>
       <NavBar />
@@ -32,7 +45,7 @@ const Home = () => {
 
       {/* MAIN HOME PAGE CONTENT */}
       <main>
-        <section className="py-5 shadow-inner-section">
+        <section className="py-5 shadow-inner-section" id="aboutMe">
           <div className="container">
             <div className="row py-5">
               <div className="col-sm-12 col-lg-6">
@@ -59,7 +72,7 @@ const Home = () => {
                   solo transforma espacios, sino también la forma en que los
                   vivimos. Déjame ayudarte a dar vida a tu espacio.
                 </p>
-                <Button className="botonMarron">Descubre más</Button>
+                <Button className="botonMarron" onClick={handleDownloadCV}>Descubre más</Button>
               </div>
             </div>
           </div>
@@ -94,7 +107,7 @@ const Home = () => {
             </div>
             <div className="row pb-5">
               <div className="col-4">
-                <a href="">
+                <a href="/noticias">
                   {" "}
                   <img src={Noticia2} alt="" style={{ width: "100%" }} />
                 </a>
@@ -105,7 +118,7 @@ const Home = () => {
                 </a>
               </div>
               <div className="col-4">
-                <a href="">
+                <a href="/noticias">
                   {" "}
                   <img src={Noticia} alt="" style={{ width: "100%" }} />
                 </a>
@@ -116,7 +129,7 @@ const Home = () => {
                 </a>
               </div>
               <div className="col-4">
-                <a href="">
+                <a href="/noticias">
                   {" "}
                   <img src={Noticia3} alt="" style={{ width: "100%" }} />
                 </a>
