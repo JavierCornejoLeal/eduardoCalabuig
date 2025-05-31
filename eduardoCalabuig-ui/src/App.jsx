@@ -1,11 +1,6 @@
 // src/App.jsx
 import React from "react";
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  useLocation
-} from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence, LayoutGroup } from "framer-motion";
 import { motion } from "framer-motion";
 
@@ -16,10 +11,14 @@ import ExteriorIbizenco from "./pages/Projects/ExteriorIbizenco";
 import Cocina from "./pages/Projects/Cocina";
 import LogIn from "./pages/Login";
 import Register from "./pages/Register";
+import Noticias from "./pages/Noticias";
+import EstiloIbizenco from "./pages/Notices/EstiloIbizenco";
+import Error404 from "./pages/Error404";
+import Productos from "./pages/Productos";
 
 const pageTransition = {
   duration: 3,
-  ease: "easeInOut"
+  ease: "easeInOut",
 };
 
 function AnimatedRoutes() {
@@ -95,6 +94,45 @@ function AnimatedRoutes() {
             }
           />
           <Route
+            path="/noticias"
+            element={
+              <motion.div
+                initial={{ opacity: 0, x: -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 50 }}
+                transition={pageTransition}
+              >
+                <Noticias />
+              </motion.div>
+            }
+          />
+          <Route
+            path="/noticias/estiloIbizenco"
+            element={
+              <motion.div
+                initial={{ opacity: 0, x: -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 50 }}
+                transition={pageTransition}
+              >
+                <EstiloIbizenco />
+              </motion.div>
+            }
+          />
+          <Route
+            path="/productos"
+            element={
+              <motion.div
+                initial={{ opacity: 0, x: -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 50 }}
+                transition={pageTransition}
+              >
+                <Productos />
+              </motion.div>
+            }
+          />
+          <Route
             path="/login"
             element={
               <motion.div
@@ -117,6 +155,20 @@ function AnimatedRoutes() {
                 transition={pageTransition}
               >
                 <Register />
+              </motion.div>
+            }
+          />
+          {/* ======= Ruta catch-all 404 ======= */}
+          <Route
+            path="*"
+            element={
+              <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -50 }}
+                transition={{ duration: 0.4, ease: "easeInOut" }}
+              >
+                <Error404 />
               </motion.div>
             }
           />

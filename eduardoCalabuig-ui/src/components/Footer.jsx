@@ -50,7 +50,7 @@ const Footer = () => {
 
           {/* Sección Eduardo */}
           <div className="col-4 col-lg-2 pb-4">
-            <h5 className="fw-light pb-4">Eduardo</h5>
+            <h5 className="fw-100 pb-4">Eduardo</h5>
             <nav className="d-flex flex-column gap-2">
               <HashLink
                 smooth
