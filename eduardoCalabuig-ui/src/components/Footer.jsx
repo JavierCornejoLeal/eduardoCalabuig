@@ -82,14 +82,14 @@ const Footer = () => {
             <h5 className="fw-100 pb-4">Productos</h5>
             <nav className="d-flex flex-column gap-2">
               <a
-                href="/muebles"
+                href="/productos"
                 className="linkFooter text-dark pb-3 text-decoration-none"
                 style={{ width: "fit-content" }}
               >
                 Muebles
               </a>
               <a
-                href="/esculturas"
+                href="/productos"
                 className="linkFooter text-dark pb-3 text-decoration-none"
                 style={{ width: "fit-content" }}
               >
@@ -139,25 +139,25 @@ const Footer = () => {
             style={{ gridTemplateColumns: "repeat(2, 1fr)" }}
           >
             <a
-              href="/aviso-legal"
+              href="/avisoLegal"
               className="linkFooter text-dark text-decoration-none"
             >
               Aviso Legal
             </a>
             <a
-              href="/politica-privacidad"
+              href="/politicaPrivacidad"
               className="linkFooter text-dark text-decoration-none"
             >
               Política de Privacidad
             </a>
             <a
-              href="/politica-cookies"
+              href="/politicaCookies"
               className="linkFooter text-dark text-decoration-none"
             >
               Política de Cookies
             </a>
             <a
-              href="/terminos-condiciones"
+              href="/terminosCondiciones"
               className="linkFooter text-dark text-decoration-none"
             >
               Términos y Condiciones

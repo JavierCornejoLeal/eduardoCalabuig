@@ -3,6 +3,7 @@ import React from "react";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import NavBar from "../../components/NavBar";
+import SEO from "../../components/SEO";
 
 import Noticia1 from "../../assets/images/noticias/noticia6.webp";
 import Noticia2 from "../../assets/images/noticias/estiloIbizenco/noticia11.webp";
@@ -10,6 +11,12 @@ import Noticia2 from "../../assets/images/noticias/estiloIbizenco/noticia11.webp
 const EstiloIbizenco = () => {
   return (
     <>
+      <SEO
+        title="Estilo Ibizenco | Noticias"
+        description="Soy Eduardo Calabuig, un diseñador de interiorismo especializado en crear espacios únicos y funcionales. Con una pasión por el diseño y la atención al detalle, transformo ideas en realidades."
+        endpoint="noticias/estiloIbizenco"
+      />
+
       <NavBar />
       <Header>
         <p>Estilo ibizenco</p>
@@ -28,7 +35,7 @@ const EstiloIbizenco = () => {
             </div>
             <div className="row pt-4">
               <div className="col-6">
-                <img src={Noticia1} className="w-100 imagenProyecto" alt="" />
+                <img src={Noticia1} className="w-100 imagenProyecto" alt="Estilo ibizenco" />
               </div>
               <div className="col-6  d-flex justify-content-center align-items-center">
                 <p className="lh-lg ps-4">
@@ -114,9 +121,13 @@ const EstiloIbizenco = () => {
               </div>
             </div>
             <div className="row py-5">
-                <div className="col-12">
-                    <img src={Noticia2} className="img-fluid imagenProyecto" alt="" />
-                </div>
+              <div className="col-12">
+                <img
+                  src={Noticia2}
+                  className="img-fluid imagenProyecto"
+                  alt="Uso del estilo ibizenco en el diseño de interiores"
+                />
+              </div>
             </div>
           </div>
         </section>

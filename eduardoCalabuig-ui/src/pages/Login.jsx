@@ -4,13 +4,15 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import { motion } from "framer-motion";
 
 import NavBar from "../components/NavBar";
+import SEO from "../components/SEO";
+
 import Hero from "../assets/images/projects/exterior2.webp";
 import "../assets/styles/login.css";
 
 const textVariants = {
   initial: { opacity: 0, y: -10 },
   animate: { opacity: 1, y: 0 },
-  exit:    { opacity: 0, y: 10 }
+  exit: { opacity: 0, y: 10 },
 };
 
 const LogIn = () => {
@@ -19,6 +21,11 @@ const LogIn = () => {
 
   return (
     <>
+      <SEO
+        title="Diseño de Interiorismo | Inicio de sesión"
+        description="Soy Eduardo Calabuig, un diseñador de interiorismo especializado en crear espacios únicos y funcionales. Con una pasión por el diseño y la atención al detalle, transformo ideas en realidades."
+        endpoint="login"
+      />
       <NavBar alwaysLight />
       <main>
         <div className="container containerLogin">
@@ -34,7 +41,7 @@ const LogIn = () => {
                 >
                   <motion.img
                     src={Hero}
-                    alt="Login"
+                    alt="Eduardo Calabuig Interiorismo Login"
                     className="w-100 imagenLogin"
                     layoutId="hero-image"
                   />
@@ -49,7 +56,9 @@ const LogIn = () => {
                     }
                     transition={{ delay: 1, duration: 1.2, ease: "easeInOut" }}
                   >
-                    ¡Bienvenido, a tu<br/>espacio de inspiración!
+                    ¡Bienvenido, a tu
+                    <br />
+                    espacio de inspiración!
                   </motion.p>
                 </motion.div>
 
@@ -84,9 +93,13 @@ const LogIn = () => {
                       />
                       <span
                         className="password-toggle-icon"
-                        onClick={() => setShowPassword(p => !p)}
+                        onClick={() => setShowPassword((p) => !p)}
                       >
-                        {showPassword ? <FiEyeOff size={20} /> : <FiEye size={20} />}
+                        {showPassword ? (
+                          <FiEyeOff size={20} />
+                        ) : (
+                          <FiEye size={20} />
+                        )}
                       </span>
                     </div>
 
@@ -105,7 +118,7 @@ const LogIn = () => {
                     </button>
 
                     <p className="login-footer mt-3 text-center">
-                      No tienes cuenta?{' '}
+                      No tienes cuenta?{" "}
                       <Link to="/register" className="fw-semibold">
                         Crear cuenta
                       </Link>
@@ -139,7 +152,7 @@ const LogIn = () => {
                   </button>
                 </form>
                 <p className="login-footer text-center">
-                  ¿Recuerdas tu contraseña?{' '}
+                  ¿Recuerdas tu contraseña?{" "}
                   <button
                     type="button"
                     className="btn btn-link login-forgot-password"

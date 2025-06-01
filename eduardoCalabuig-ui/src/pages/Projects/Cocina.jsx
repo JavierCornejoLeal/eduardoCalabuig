@@ -3,6 +3,7 @@ import React from "react";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import NavBar from "../../components/NavBar";
+import SEO from "../../components/SEO";
 
 import Cocina1 from "../../assets/images/projects/cocina.webp";
 import Cocina2 from "../../assets/images/projects/cocina/cocina2.webp";
@@ -18,6 +19,11 @@ import "../../assets/styles/proyectos/exterior-ibizenco.css";
 const Cocina = () => {
   return (
     <>
+      <SEO
+        title="Diseño de Interiorismo | Cocina Contemporanea | Cocina Moderna"
+        description="Soy Eduardo Calabuig, un diseñador de interiorismo especializado en crear espacios únicos y funcionales. Con una pasión por el diseño y la atención al detalle, transformo ideas en realidades."
+        endpoint="proyectos/cocina"
+      />
       <NavBar />
       <Header>
         <p>Cocina Contemplativa</p>
@@ -90,18 +96,18 @@ const Cocina = () => {
 
             <div className="row py-4">
               <div className="col-6">
-                <img className="w-100 imagenProyecto" src={Cocina1} alt="" />
+                <img className="w-100 imagenProyecto" src={Cocina1} alt="Cocina moderna contemporanea vista alta" />
               </div>
               <div className="col-6">
-                <img className="w-100 imagenProyecto" src={Cocina2} alt="" />
+                <img className="w-100 imagenProyecto" src={Cocina2} alt="Cocina moderna contemporanea vista baja" />
               </div>
             </div>
             <div className="row pb-5">
               <div className="col-6">
-                <img className="w-100 imagenProyecto" src={Cocina3} alt="" />
+                <img className="w-100 imagenProyecto" src={Cocina3} alt="Cocina moderna con taburetes" />
               </div>
               <div className="col-6">
-                <img className="w-100 imagenProyecto" src={Cocina4} alt="" />
+                <img className="w-100 imagenProyecto" src={Cocina4} alt="Cocina moderna con taburetes y diferentes decoraciones" />
               </div>
             </div>
           </div>

@@ -8,6 +8,7 @@ import Header from "../components/Header";
 import NavBar from "../components/NavBar";
 import ProyectosCarousel from "../components/Carrousel";
 import Mapa from "../components/Map";
+import SEO from "../components/SEO";
 
 import Eduardo from "../assets/images/home/edu.webp";
 import CV from "../assets/docs/CV.pdf";
@@ -24,9 +25,8 @@ import Noticia2 from "../assets/images/noticias/noticia2.webp";
 import Noticia3 from "../assets/images/noticias/noticia3.webp";
 
 const Home = () => {
-
-// Función que fuerza la descarga
-    const handleDownloadCV = () => {
+  // Función que fuerza la descarga
+  const handleDownloadCV = () => {
     const link = document.createElement("a");
     link.href = CV; // Asegúrate de tener CV.pdf en public/
     link.setAttribute("download", "CV.pdf");
@@ -36,6 +36,11 @@ const Home = () => {
   };
   return (
     <>
+      <SEO
+        title="Diseño de Interiorismo"
+        description="Soy Eduardo Calabuig, un diseñador de interiorismo especializado en crear espacios únicos y funcionales. Con una pasión por el diseño y la atención al detalle, transformo ideas en realidades."
+        endpoint=""
+      />
       <NavBar />
 
       <Header>
@@ -51,7 +56,7 @@ const Home = () => {
               <div className="col-sm-12 col-lg-6">
                 <img
                   src={Eduardo}
-                  alt="About Us"
+                  alt="Eduardo Calabuig como diseñador de interiorismo"
                   className="img-fluid w-100 eduardoImage"
                   style={{ objectFit: "cover", height: "44em" }}
                 />
@@ -72,7 +77,9 @@ const Home = () => {
                   solo transforma espacios, sino también la forma en que los
                   vivimos. Déjame ayudarte a dar vida a tu espacio.
                 </p>
-                <Button className="botonMarron" onClick={handleDownloadCV}>Descubre más</Button>
+                <Button className="botonMarron" onClick={handleDownloadCV}>
+                  Descubre más
+                </Button>
               </div>
             </div>
           </div>
@@ -109,7 +116,7 @@ const Home = () => {
               <div className="col-4">
                 <a href="/noticias">
                   {" "}
-                  <img src={Noticia2} alt="" style={{ width: "100%" }} />
+                  <img src={Noticia2} alt="Color de la temporada en interiorismo" style={{ width: "100%" }} />
                 </a>
                 <a className="text-dark text-decoration-none" href="">
                   <p className="text-center pt-3 pb-0 m-0">
@@ -120,7 +127,7 @@ const Home = () => {
               <div className="col-4">
                 <a href="/noticias">
                   {" "}
-                  <img src={Noticia} alt="" style={{ width: "100%" }} />
+                  <img src={Noticia} alt="Uso de las puertas correderas en el diseño de interiores" style={{ width: "100%" }} />
                 </a>
                 <a className="text-dark text-decoration-none" href="">
                   <p className="text-center pt-3 pb-0 m-0">
@@ -131,7 +138,7 @@ const Home = () => {
               <div className="col-4">
                 <a href="/noticias">
                   {" "}
-                  <img src={Noticia3} alt="" style={{ width: "100%" }} />
+                  <img src={Noticia3} alt="El uso de la toba natural en el diseño de interiores" style={{ width: "100%" }} />
                 </a>
                 <a className="text-dark text-decoration-none" href="">
                   <p className="text-center pt-3 pb-0 m-0">

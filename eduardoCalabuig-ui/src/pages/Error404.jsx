@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
+import SEO from "../components/SEO";
 
 import "../assets/styles/error404.css";
 
@@ -11,6 +12,10 @@ import imagenError from "../assets/images/404/404.webp";
 const Error404 = () => {
   return (
     <>
+      <SEO
+        title="Diseño de Interiorismo | Error"
+        description="Soy Eduardo Calabuig, un diseñador de interiorismo especializado en crear espacios únicos y funcionales. Con una pasión por el diseño y la atención al detalle, transformo ideas en realidades."
+      />
       <NavBar alwaysLight />
 
       <main className="shadow-inner-section">
@@ -77,11 +82,7 @@ const Error404 = () => {
             </div>
           </div>
 
-          <img
-            src={imagenError}
-            alt="Error 404"
-            className="imagenError"
-          />
+          <img src={imagenError} alt="Error 404" className="Error 404 interiorismo" />
         </section>
         <div className="containerSeccion"></div>
       </main>

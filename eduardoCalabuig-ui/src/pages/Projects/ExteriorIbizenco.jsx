@@ -3,6 +3,7 @@ import React from "react";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import NavBar from "../../components/NavBar";
+import SEO from "../../components/SEO";
 
 import Exterior from "../../assets/images/projects/exterior.webp";
 import Exterior2 from "../../assets/images/projects/exterior-ibizenco/exterior2.webp";
@@ -18,6 +19,11 @@ import "../../assets/styles/proyectos/exterior-ibizenco.css";
 const ExteriorIbizenco = () => {
   return (
     <>
+      <SEO
+        title="Diseño de Interiorismo | Exterior Ibizenco"
+        description="Soy Eduardo Calabuig, un diseñador de interiorismo especializado en crear espacios únicos y funcionales. Con una pasión por el diseño y la atención al detalle, transformo ideas en realidades."
+        endpoint="proyectos/exteriorIbizenco"
+      />
       <NavBar />
       <Header>
         <p>Exterior Ibizenco</p>
@@ -87,18 +93,18 @@ const ExteriorIbizenco = () => {
 
             <div className="row py-4">
               <div className="col-6">
-                <img className="w-100 imagenProyecto" src={Exterior} alt="" />
+                <img className="w-100 imagenProyecto" src={Exterior} alt="Exterior estilo ibizenco con decoraciones y naturaleza" />
               </div>
               <div className="col-6">
-                <img className="w-100 imagenProyecto" src={Exterior2} alt="" />
+                <img className="w-100 imagenProyecto" src={Exterior2} alt="Exterior estilo ibizenco con suelo de barro" />
               </div>
             </div>
             <div className="row pb-5">
               <div className="col-6">
-                <img className="w-100 imagenProyecto" src={Exterior3} alt="" />
+                <img className="w-100 imagenProyecto" src={Exterior3} alt="Exterior estilo ibizenco con amaca estilo ibicenca" />
               </div>
               <div className="col-6">
-                <img className="w-100 imagenProyecto" src={Exterior4} alt="" />
+                <img className="w-100 imagenProyecto" src={Exterior4} alt="Exterior minimalista funcional" />
               </div>
             </div>
           </div>

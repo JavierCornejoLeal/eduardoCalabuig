@@ -1,8 +1,10 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import emailjs from "@emailjs/browser";
+
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import NavBar from "../components/NavBar";
+import SEO from "../components/SEO";
 
 import "../assets/styles/contacto.css";
 
@@ -10,6 +12,7 @@ import OfiEdu from "../assets/images/contacto/oficinaEdu.webp";
 
 const Contacto = () => {
   const form = useRef();
+  const [showModal, setShowModal] = useState(false);
 
   // Calcula la fecha actual en formato "29 de mayo de 2025"
   const fechaActual = new Date().toLocaleDateString("es-ES", {
@@ -49,24 +52,29 @@ const Contacto = () => {
     };
 
     try {
-      // 1) Envío al diseñador usando send (igual que autorespuesta)
+      // 1) Envío al diseñador
       await emailjs.send(serviceId, templateContactId, templateParams, userId);
 
       // 2) Autorespuesta al cliente
       await emailjs.send(serviceId, templateReplyId, templateParams, userId);
 
-      alert(
-        "¡Mensaje enviado correctamente al diseñador y autorespuesta enviada al cliente!"
-      );
+      // Mostrar modal en lugar de alert
+      setShowModal(true);
       form.current.reset();
     } catch (error) {
       console.error("EmailJS Error:", error);
-      alert("Error al enviar. Por favor, inténtalo de nuevo.");
+      // Mostrar modal de error
+      setShowModal(true);
     }
   };
 
   return (
     <>
+      <SEO
+        title="Diseño de Interiorismo | Contacto"
+        description="Soy Eduardo Calabuig, un diseñador de interiorismo especializado en crear espacios únicos y funcionales. Con una pasión por el diseño y la atención al detalle, transformo ideas en realidades."
+        endpoint="contacto"
+      />
       <NavBar />
 
       <Header>
@@ -84,14 +92,14 @@ const Contacto = () => {
                   href="https://www.google.es/maps/place/Esplanada+Cervantes,+23,+03700+Denia,+Alicante/@38.8418145,0.1098823,17z/data=!3m1!4b1!4m6!3m5!1s0x129e1ae00438bef9:0xd6092d794b368e1e!8m2!3d38.8418104!4d0.1124572!16s%2Fg%2F11ldd0pl5j?hl=es&entry=ttu&g_ep=EgoyMDI1MDUyNy4wIKXMDSoASAFQAw%3D%3D"
                   className="link text-dark pb-3"
                 >
-                  C/ Explanada cervantes, 23 P1
+                  C/ Explanada Cervantes, 23 P1
                 </a>
                 <p>Dénia, Alicante Spain</p>
               </div>
               <div className="col-md-6 col-lg-4 d-flex flex-column align-items-center pt-sm-5 pt-md-0">
                 <h4 className="fw-semibold pb-2">Contacto</h4>
                 <a
-                  href="https://mail.google.com/mail/?view=cm&to=calabuiginteriorismo@gmail.com"
+                  href="mailto:calabuiginteriorismo@gmail.com"
                   className="link text-dark pb-3"
                   rel="noopener noreferrer"
                 >
@@ -213,14 +221,14 @@ const Contacto = () => {
                   He leído y acepto las{" "}
                   <a
                     className="text-dark fw-bold text-decoration-none link"
-                    href=""
+                    href="/politicaPrivacidad"
                   >
                     políticas de privacidad
                   </a>{" "}
                   y el{" "}
                   <a
                     className="text-dark fw-bold text-decoration-none link"
-                    href=""
+                    href="/avisoLegal"
                   >
                     aviso legal
                   </a>
@@ -238,6 +246,41 @@ const Contacto = () => {
       </main>
 
       <Footer />
+
+      {/* Modal Bootstrap personalizado */}
+      {showModal && (
+        <>
+          <div className="modal fade show d-block" tabIndex="-1" role="dialog" aria-modal="true">
+            <div className="modal-dialog modal-dialog-centered" role="document">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title">Mensaje enviado</h5>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    aria-label="Cerrar"
+                    onClick={() => setShowModal(false)}
+                  ></button>
+                </div>
+                <div className="modal-body">
+                  <p>¡Tu mensaje ha sido enviado correctamente!</p>
+                </div>
+                <div className="modal-footer">
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    onClick={() => setShowModal(false)}
+                  >
+                    Cerrar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* Backdrop */}
+          <div className="modal-backdrop fade show"></div>
+        </>
+      )}
     </>
   );
 };

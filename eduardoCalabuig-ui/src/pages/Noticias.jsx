@@ -17,6 +17,7 @@ import Noticia9 from "../assets/images/noticias/noticia9.webp";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
+import SEO from "../components/SEO";
 
 const Noticias = () => {
   const containerRef = useRef(null);
@@ -24,7 +25,8 @@ const Noticias = () => {
   useEffect(() => {
     const igualarAlturasDeTitulos = () => {
       if (!containerRef.current) return;
-      const titulos = containerRef.current.querySelectorAll(".text-container h5");
+      const titulos =
+        containerRef.current.querySelectorAll(".text-container h5");
       if (titulos.length === 0) return;
 
       titulos.forEach((h5) => {
@@ -53,6 +55,11 @@ const Noticias = () => {
 
   return (
     <>
+      <SEO
+        title="Diseño de Interiorismo | Últimas Noticias y novedades"
+        description="Soy Eduardo Calabuig, un diseñador de interiorismo especializado en crear espacios únicos y funcionales. Con una pasión por el diseño y la atención al detalle, transformo ideas en realidades."
+        endpoint="noticias"
+      />
       <NavBar />
 
       <Header>
@@ -82,10 +89,10 @@ const Noticias = () => {
                     El color de la temporada en interiorismo
                   </h5>
                   <p className="pb-5 mb-5">
-                    El color de la temporada en interiorismo es el "Viva Magenta",
-                    un tono vibrante que aporta energía y dinamismo a los espacios.
-                    Ideal para añadir un toque audaz y creativo, se adapta tanto a
-                    interiores modernos como tradicionales.
+                    El color de la temporada en interiorismo es el "Viva
+                    Magenta", un tono vibrante que aporta energía y dinamismo a
+                    los espacios. Ideal para añadir un toque audaz y creativo,
+                    se adapta tanto a interiores modernos como tradicionales.
                   </p>
                 </div>
               </div>
@@ -97,7 +104,7 @@ const Noticias = () => {
                     <img
                       src={Noticia1}
                       className="imagenProyecto"
-                      alt="Puertas correderas"
+                      alt="Puertas correderas en el diseño de interiores"
                     />
                     <div className="overlay-text text-center">
                       Puertas correderas
@@ -111,9 +118,9 @@ const Noticias = () => {
                   <p className="pb-5 mb-5">
                     Las puertas correderas combinan funcionalidad y estilo,
                     optimizando el espacio mientras aportan un toque moderno y
-                    elegante a cualquier hogar. Perfectas para estancias pequeñas
-                    o para crear divisiones abiertas, ofrecen comodidad y diseño
-                    en un solo elemento.
+                    elegante a cualquier hogar. Perfectas para estancias
+                    pequeñas o para crear divisiones abiertas, ofrecen comodidad
+                    y diseño en un solo elemento.
                   </p>
                 </div>
               </div>
@@ -125,7 +132,7 @@ const Noticias = () => {
                     <img
                       src={Noticia3}
                       className="imagenProyecto"
-                      alt="Toba natural"
+                      alt="Toba natural en el diseño de interiores"
                     />
                     <div className="overlay-text text-center">Toba natural</div>
                   </Link>
@@ -149,7 +156,7 @@ const Noticias = () => {
                     <img
                       src={Noticia4}
                       className="imagenProyecto"
-                      alt="Isla en la cocina"
+                      alt="Isla en la cocina estilo y funcionalidad"
                     />
                     <div className="overlay-text text-center">Isla</div>
                   </Link>
@@ -160,10 +167,10 @@ const Noticias = () => {
                     Todos
                   </h5>
                   <p className="pb-5 mb-5">
-                    La isla en la cocina es clave en el diseño moderno, ofreciendo
-                    más espacio de trabajo, almacenamiento y un punto de encuentro.
-                    Su integración con materiales como el ladrillo y la madera aporta
-                    tanto estética como practicidad.
+                    La isla en la cocina es clave en el diseño moderno,
+                    ofreciendo más espacio de trabajo, almacenamiento y un punto
+                    de encuentro. Su integración con materiales como el ladrillo
+                    y la madera aporta tanto estética como practicidad.
                   </p>
                 </div>
               </div>
@@ -175,7 +182,7 @@ const Noticias = () => {
                     <img
                       src={Noticia5}
                       className="imagenProyecto"
-                      alt="Luz natural"
+                      alt="Luz natural en el diseño interior minimalista"
                     />
                     <div className="overlay-text text-center">Luz natural</div>
                   </Link>
@@ -186,8 +193,8 @@ const Noticias = () => {
                   </h5>
                   <p className="pb-5 mb-5">
                     La luz natural es esencial en el diseño minimalista, creando
-                    ambientes luminosos y amplios, mejorando el bienestar y aportando
-                    serenidad al espacio.
+                    ambientes luminosos y amplios, mejorando el bienestar y
+                    aportando serenidad al espacio.
                   </p>
                 </div>
               </div>
@@ -199,7 +206,7 @@ const Noticias = () => {
                     <img
                       src={Noticia6}
                       className="imagenProyecto"
-                      alt="Estilo ibicenco"
+                      alt="Estilo ibicenco en el diseño de interiores"
                     />
                     <div className="overlay-text text-center">
                       Estilo ibicenco
@@ -212,9 +219,10 @@ const Noticias = () => {
                     Interiores
                   </h5>
                   <p className="pb-5 mb-5">
-                    El estilo ibicenco destaca por su uso de materiales naturales y
-                    colores neutros, creando espacios frescos y tranquilos que fusionan
-                    el hogar con la naturaleza, ideal para terrazas y patios.
+                    El estilo ibicenco destaca por su uso de materiales
+                    naturales y colores neutros, creando espacios frescos y
+                    tranquilos que fusionan el hogar con la naturaleza, ideal
+                    para terrazas y patios.
                   </p>
                 </div>
               </div>
@@ -226,9 +234,11 @@ const Noticias = () => {
                     <img
                       src={Noticia7}
                       className="imagenProyecto"
-                      alt="Techo aislado"
+                      alt="Techo aislado en el diseño de interiores"
                     />
-                    <div className="overlay-text text-center">Techo aislado</div>
+                    <div className="overlay-text text-center">
+                      Techo aislado
+                    </div>
                   </Link>
                 </div>
                 <div className="text-container">
@@ -237,8 +247,9 @@ const Noticias = () => {
                     Interiores
                   </h5>
                   <p className="pb-5">
-                    El techo de vigas expuestas aporta elegancia y amplitud al espacio,
-                    creando un ambiente luminoso y acogedor que resalta la altura del salón.
+                    El techo de vigas expuestas aporta elegancia y amplitud al
+                    espacio, creando un ambiente luminoso y acogedor que resalta
+                    la altura del salón.
                   </p>
                 </div>
               </div>
@@ -250,7 +261,7 @@ const Noticias = () => {
                     <img
                       src={Noticia8}
                       className="imagenProyecto"
-                      alt="Microcemento"
+                      alt="Microcemento oficina en el diseño de interiores"
                     />
                     <div className="overlay-text text-center">Microcemento</div>
                   </Link>
@@ -261,9 +272,9 @@ const Noticias = () => {
                     Oficinas
                   </h5>
                   <p className="pb-5">
-                    El microcemento aporta un acabado moderno y duradero, ideal para
-                    oficinas minimalistas que buscan estilo y funcionalidad en superficies
-                    como mesas y paredes.
+                    El microcemento aporta un acabado moderno y duradero, ideal
+                    para oficinas minimalistas que buscan estilo y funcionalidad
+                    en superficies como mesas y paredes.
                   </p>
                 </div>
               </div>
@@ -275,7 +286,7 @@ const Noticias = () => {
                     <img
                       src={Noticia9}
                       className="imagenProyecto"
-                      alt="Armario minimalista"
+                      alt="Armario minimalista en el diseño de interiores"
                     />
                     <div className="overlay-text text-center">
                       Uso de armarios
@@ -287,10 +298,11 @@ const Noticias = () => {
                     El Armario Minimalista para Espacios Modernos
                   </h5>
                   <p className="pb-5">
-                    El diseño de este armario minimalista resalta la innovación en soluciones
-                    de almacenamiento. Con un enfoque funcional y estético, sus compartimentos
-                    abiertos y cajones permiten un acceso fácil y ordenado, manteniendo la
-                    simplicidad visual en todo momento.
+                    El diseño de este armario minimalista resalta la innovación
+                    en soluciones de almacenamiento. Con un enfoque funcional y
+                    estético, sus compartimentos abiertos y cajones permiten un
+                    acceso fácil y ordenado, manteniendo la simplicidad visual
+                    en todo momento.
                   </p>
                 </div>
               </div>

@@ -4,13 +4,15 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import { motion } from "framer-motion";
 
 import NavBar from "../components/NavBar";
+import SEO from "../components/SEO";
+
 import Hero from "../assets/images/projects/exterior2.webp";
 import "../assets/styles/login.css";
 
 const textVariants = {
   initial: { opacity: 0, y: -10 },
   animate: { opacity: 1, y: 0 },
-  exit:    { opacity: 0, y: 10 },
+  exit: { opacity: 0, y: 10 },
 };
 
 const Register = () => {
@@ -18,6 +20,11 @@ const Register = () => {
 
   return (
     <>
+      <SEO
+        title="Diseño de Interiorismo | Registrate"
+        description="Soy Eduardo Calabuig, un diseñador de interiorismo especializado en crear espacios únicos y funcionales. Con una pasión por el diseño y la atención al detalle, transformo ideas en realidades."
+        endpoint="register"
+      />
       <NavBar alwaysLight />
 
       <main>
@@ -70,9 +77,13 @@ const Register = () => {
                   />
                   <span
                     className="password-toggle-icon"
-                    onClick={() => setShowPassword(p => !p)}
+                    onClick={() => setShowPassword((p) => !p)}
                   >
-                    {showPassword ? <FiEyeOff size={20} /> : <FiEye size={20} />}
+                    {showPassword ? (
+                      <FiEyeOff size={20} />
+                    ) : (
+                      <FiEye size={20} />
+                    )}
                   </span>
                 </div>
 
@@ -87,13 +98,17 @@ const Register = () => {
                   />
                   <span
                     className="password-toggle-icon"
-                    onClick={() => setShowPassword(p => !p)}
+                    onClick={() => setShowPassword((p) => !p)}
                   >
-                    {showPassword ? <FiEyeOff size={20} /> : <FiEye size={20} />}
+                    {showPassword ? (
+                      <FiEyeOff size={20} />
+                    ) : (
+                      <FiEye size={20} />
+                    )}
                   </span>
                 </div>
 
-                                {/* Checkboxes finales */}
+                {/* Checkboxes finales */}
                 <div className="form-check mb-2">
                   <input
                     type="checkbox"
@@ -114,10 +129,13 @@ const Register = () => {
                     required
                   />
                   <label htmlFor="terms" className="form-check-label">
-                    He leído y entendido los{' '}
-                    <Link to="/terms" className="text-decoration-none linkTerms text-dark fw-semibold">
+                    He leído y entendido los{" "}
+                    <Link
+                      to="/terms"
+                      className="text-decoration-none linkTerms text-dark fw-semibold"
+                    >
                       Términos &amp; Condiciones
-                    </Link>{' '}
+                    </Link>{" "}
                     *
                   </label>
                 </div>
@@ -127,7 +145,7 @@ const Register = () => {
                 </button>
 
                 <p className="login-footer mt-3 mb-2 text-center">
-                  ¿Ya tienes cuenta?{' '}
+                  ¿Ya tienes cuenta?{" "}
                   <Link to="/login" className="fw-semibold">
                     Inicia Sesión
                   </Link>
@@ -142,7 +160,7 @@ const Register = () => {
             >
               <motion.img
                 src={Hero}
-                alt="Registro"
+                alt="Eduardo Calabuig Interiorismo Registro"
                 className="w-100 imagenLogin"
                 layoutId="hero-image"
               />
