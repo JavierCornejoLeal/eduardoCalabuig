@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence, LayoutGroup } from "framer-motion";
 import { motion } from "framer-motion";
 
+import CookieConsent from "./components/CookieConsent";
+
 import Home from "./pages/Home";
 import Contacto from "./pages/Contacto";
 import Proyectos from "./pages/Proyectos";
@@ -259,10 +261,13 @@ function AnimatedRoutes() {
 
 export default function App() {
   return (
-    <BrowserRouter>
-      {/* ScrollToTop asegura que cada cambio de ruta haga scroll al top */}
-      <ScrollToTop />
-      <AnimatedRoutes />
-    </BrowserRouter>
+    <>
+      <CookieConsent />
+      <BrowserRouter>
+        {/* ScrollToTop asegura que cada cambio de ruta haga scroll al top */}
+        <ScrollToTop />
+        <AnimatedRoutes />
+      </BrowserRouter>
+    </>
   );
 }
