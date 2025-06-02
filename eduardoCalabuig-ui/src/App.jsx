@@ -16,7 +16,7 @@ import Noticias from "./pages/Noticias";
 import EstiloIbizenco from "./pages/Notices/EstiloIbizenco";
 import Error404 from "./pages/Error404";
 import Productos from "./pages/Productos";
-import ModuloUrbano from "./pages/Products/ModuloUrbano";
+import ProductoDetallado from "./pages/Products/ModuloUrbano";
 import AvisoLegal from "./pages/AvisoLegal";
 import PoliticaCookies from "./pages/PoliticaCookies";
 import Privacidad from "./pages/Privacidad";
@@ -148,19 +148,8 @@ function AnimatedRoutes() {
               </motion.div>
             }
           />
-          <Route
-            path="/productos/moduloUrbano"
-            element={
-              <motion.div
-                initial={{ opacity: 0, x: -50 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 50 }}
-                transition={pageTransition}
-              >
-                <ModuloUrbano />
-              </motion.div>
-            }
-          />
+          <Route path="/productos/:id" element={<ProductoDetallado />} />
+
           <Route
             path="/login"
             element={

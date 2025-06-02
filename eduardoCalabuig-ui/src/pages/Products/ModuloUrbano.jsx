@@ -1,36 +1,77 @@
 // src/pages/products/ModuloUrbano.jsx
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
 
 import NavBar from "../../components/NavBar";
 import Footer from "../../components/Footer";
 import CategoriesMenu from "../../components/CategoriesMenu";
 import SEO from "../../components/SEO";
 
+import api from "../../utils/api";
+
 import "../../assets/styles/products/producto.css";
 
-/* Importa las cuatro imágenes que quieres mostrar */
-import ModuloUrbano3 from "../../assets/images/productos/moduloUrbano/moduloUrbano3.webp";
-import ModuloUrbano4 from "../../assets/images/productos/moduloUrbano/moduloUrbano4.webp";
-
-import LlamaEterna from "../../assets/images/productos/LlamaEterna.webp";
-import EquilibrioDual from "../../assets/images/productos/equilibrioDual.webp";
-import FlujoSinterizado from "../../assets/images/productos/flujoSinterizado.webp";
-
 const ModuloUrbano = () => {
-  const [cantidad, setCantidad] = useState(1);
+  const { id } = useParams();
+  const [producto, setProducto] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Estados para controlar el despliegue de cada sección
+  const [cantidad, setCantidad] = useState(1);
+  const [similares, setSimilares] = useState([]);
+
   const [openMedidas, setOpenMedidas] = useState(false);
   const [openEnvio, setOpenEnvio] = useState(false);
 
-  // Listas de ejemplo: ajusta el contenido según necesites
-  const medidasList = [
-    "Alto: 25 cm",
-    "Ancho: 10 cm",
-    "Fondo: 10 cm",
-    "Peso: 1.2 kg",
-    "Material: Terrazo color crema con incrustaciones de cuarzo",
+  useEffect(() => {
+    const fetchProducto = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const res = await api.getData(`productos/${id}`);
+        setProducto(res.data);
+      } catch (err) {
+        setError("Error cargando el producto");
+      }
+      setLoading(false);
+    };
+
+    const fetchSimilares = async () => {
+      try {
+        const res = await api.getData("productos");
+        // Filtramos el producto actual para que no aparezca en similares
+        const otrosProductos = res.data.filter((p) => p.id !== Number(id));
+        // Seleccionamos 3 productos aleatorios de los restantes
+        const productosAleatorios = otrosProductos
+          .sort(() => 0.5 - Math.random())
+          .slice(0, 3);
+        setSimilares(productosAleatorios);
+      } catch (err) {
+        setError("Error cargando productos similares");
+      }
+    };
+
+    fetchProducto();
+    fetchSimilares();
+  }, [id]);
+
+  const handleAddToCart = () => {
+    console.log("Añadiendo al carrito:", {
+      producto: producto?.nombre || "Producto desconocido",
+      cantidad,
+    });
+    // Lógica para añadir al carrito
+  };
+
+  if (loading) return <p>Cargando producto...</p>;
+  if (error) return <p>{error}</p>;
+  if (!producto) return <p>Producto no encontrado.</p>;
+
+  const medidasList = producto.medidas || [
+    `Alto: ${producto.alto || "N/D"} cm`,
+    `Ancho: ${producto.ancho || "N/D"} cm`,
+    `Fondo: ${producto.profundidad || "N/D"} cm`,
+    `Material: ${producto.material || "N/D"}`,
   ];
 
   const envioList = [
@@ -38,24 +79,18 @@ const ModuloUrbano = () => {
     "Gastos de envío: gratuitos",
     "Devolución gratuita en 30 días",
     "Atención personalizada",
-    "Pago seguro y rápdio",
+    "Pago seguro y rápido",
     "Seguimiento del pedido",
   ];
-
-  const handleAddToCart = () => {
-    console.log("Añadiendo al carrito:", {
-      producto: "Módulo Urbano",
-      cantidad,
-    });
-    // Aquí iría la lógica real para añadir al carrito...
-  };
 
   return (
     <>
       <SEO
-        title="Diseño de Interiorismo | Escultura Terrazo | Modulo Urbano"
-        description="Soy Eduardo Calabuig, un diseñador de interiorismo especializado en crear espacios únicos y funcionales. Con una pasión por el diseño y la atención al detalle, transformo ideas en realidades."
-        endpoint="productos/moduloUrbano"
+        title={`Diseño de Interiorismo | Escultura Terrazo | ${producto.nombre}`}
+        description={`Detalles del producto ${producto.nombre}. ${
+          producto.descripcion || ""
+        }`}
+        endpoint={`productos/${producto.id}`}
       />
       <NavBar alwaysLight />
 
@@ -65,49 +100,52 @@ const ModuloUrbano = () => {
         <section className="shadow-inner-section seccionProducto pt-5 pb-5">
           <div className="container">
             <div className="row gy-4">
-              {/* ───────── Imágenes arriba (dos primeras) ───────── */}
               <div className="col-6 col-lg-4">
                 <img
-                  src={ModuloUrbano4}
-                  alt="Módulo Urbano en un espacio reducido"
+                  src={`${import.meta.env.VITE_LOCAL_API_URL.replace(
+                    "/api",
+                    ""
+                  )}/storage/${producto.imagen}`}
+                  alt={producto.nombre}
                   className="w-100 imagenProducto"
                 />
               </div>
               <div className="col-6 col-lg-4">
                 <img
-                  src={ModuloUrbano3}
-                  alt="Módulo Urbano en un ambiente moderno y minimalista"
+                  src={`${import.meta.env.VITE_LOCAL_API_URL.replace(
+                    "/api",
+                    ""
+                  )}/storage/${producto.imagen}`}
+                  alt={producto.nombre}
                   className="w-100 imagenProducto"
                 />
               </div>
 
-              {/* ───────── Columna de texto, descripción, carrito y acordeón ───────── */}
               <div className="col-12 col-lg-4 ps-4">
                 <div className="textoProducto pt-4 pb-5">
-                  <h4>Módulo Urbano</h4>
+                  <h4>{producto.nombre}</h4>
                   <p className="py-2">
-                    Terrazo color crema con incrustaciones de cuarzo
+                    {producto.material || "Material no disponible"}
                   </p>
-                  <h5>210 €</h5>
+                  <h5>
+                    {producto.precio
+                      ? `${producto.precio} €`
+                      : "Precio no disponible"}
+                  </h5>
                 </div>
 
                 <div className="descripcionProducto pb-2">
                   <p className="fw-light">
-                    Esta escultura geométrica en tonos beige aporta modernidad y
-                    sofisticación a cualquier espacio. Su diseño único invita a
-                    la reflexión y transforma el ambiente, convirtiéndose en el
-                    punto focal perfecto para tu hogar.
+                    {producto.descripcion || "Sin descripción disponible."}
                   </p>
                 </div>
 
                 <div className="agregarCarrito py-5 border-bottom">
-                  {/* Botón Añadir al carrito */}
                   <button className="btnAgregar" onClick={handleAddToCart}>
                     Añadir al carrito
                   </button>
                 </div>
 
-                {/* ───────── ACORDEÓN: Medidas y características ───────── */}
                 <div className="acordeon-section border-bottom">
                   <div
                     className="medidasCaracteristicas d-flex justify-content-between align-items-center py-4"
@@ -134,7 +172,6 @@ const ModuloUrbano = () => {
                   )}
                 </div>
 
-                {/* ───────── ACORDEÓN: Envío y devoluciones ───────── */}
                 <div className="acordeon-section border-bottom">
                   <div
                     className="envioDevoluciones d-flex justify-content-between align-items-center py-4"
@@ -162,81 +199,48 @@ const ModuloUrbano = () => {
                 </div>
               </div>
             </div>
+
             <div className="row py-5">
               <div className="col-12">
                 <div className="tituloSimilares">
                   <h4>Productos Similares</h4>
                 </div>
               </div>
-              <div className="col-6 col-md-4">
-                <div className="imagenContainer">
-                  <Link to={"/productos/moduloUrbano"}>
-                    <img
-                      src={LlamaEterna}
-                      alt="Llama Eterna escultura metal"
-                      className="w-100"
-                    />
-                  </Link>
+
+              {similares.map((productoSimilar) => (
+                <div key={productoSimilar.id} className="col-6 col-md-4">
+                  <div className="imagenContainer">
+                    <Link to={`/productos/${productoSimilar.id}`}>
+                      <img
+                        src={`${import.meta.env.VITE_LOCAL_API_URL.replace(
+                          "/api",
+                          ""
+                        )}/storage/${productoSimilar.imagen}`}
+                        alt={productoSimilar.nombre}
+                        className="w-100"
+                      />
+                    </Link>
+                  </div>
+                  <div className="textContainer py-4">
+                    <h5 className="pb-1 pb-lg-3">{productoSimilar.nombre}</h5>
+                    <p className="m-0">Material:</p>
+                    <p className="fw-light m-0 pb-3">
+                      {productoSimilar.material || "N/D"}
+                    </p>
+                    <p className="m-0">Dimensiones:</p>
+                    <p className="fw-light m-0 pb-3 pb-lg-4">
+                      Altura: {productoSimilar.alto || "N/D"} cm, Anchura:{" "}
+                      {productoSimilar.ancho || "N/D"} cm, Profundidad:{" "}
+                      {productoSimilar.profundidad || "N/D"} cm
+                    </p>
+                    <h5>
+                      {productoSimilar.precio
+                        ? `${productoSimilar.precio} €`
+                        : "Precio no disponible"}
+                    </h5>
+                  </div>
                 </div>
-                <div className="textContainer py-4">
-                  <h5 className="pb-1 pb-lg-3">Llama Eterna</h5>
-                  <p className="m-0">Material:</p>
-                  <p className="fw-light m-0 pb-3">
-                    Fundición de bronce con pátina oscura
-                  </p>
-                  <p className="m-0">Dimensiones:</p>
-                  <p className="fw-light m-0 pb-3 pb-lg-4">
-                    Altura: 35 cm, Anchura: 12 cm, Profundidad: 8 cm
-                  </p>
-                  <h5>250 €</h5>
-                </div>
-              </div>
-              <div className="col-6 col-md-4">
-                <div className="imagenContainer">
-                  <Link to={"/productos/moduloUrbano"}>
-                    <img
-                      src={EquilibrioDual}
-                      alt="Equilibrio entre diferentes materiales y formas"
-                      className="w-100"
-                    />
-                  </Link>
-                </div>
-                <div className="textContainer py-4">
-                  <h5 className="pb-1 pb-lg-3">Equilibrio Dual</h5>
-                  <p className="m-0">Material:</p>
-                  <p className="fw-light m-0 pb-3">
-                    Resina de poliéster de alta densidad
-                  </p>
-                  <p className="m-0">Dimensiones:</p>
-                  <p className="fw-light m-0 pb-3 pb-lg-4">
-                    Altura: 28 cm, Anchura: 22 cm, Profundidad: 8 cm
-                  </p>
-                  <h5>190 €</h5>
-                </div>
-              </div>
-              <div className="col-6 col-md-4 d-none d-md-block">
-                <div className="imagenContainer">
-                  <Link to={"/productos/moduloUrbano"}>
-                    <img
-                      src={FlujoSinterizado}
-                      alt="Escultura metalizada moderna"
-                      className="w-100"
-                    />
-                  </Link>
-                </div>
-                <div className="textContainer py-4">
-                  <h5 className="pb-1 pb-lg-3">Flujo Sinterizado</h5>
-                  <p className="m-0">Material:</p>
-                  <p className="fw-light m-0 pb-3">
-                    Aluminio inyectado con acabado pátina mate
-                  </p>
-                  <p className="m-0">Dimensiones:</p>
-                  <p className="fw-light m-0 pb-3 pb-lg-4">
-                    Altura: 34 cm, Anchura: 24 cm, Profundidad: 8 cm
-                  </p>
-                  <h5>230 €</h5>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </section>
