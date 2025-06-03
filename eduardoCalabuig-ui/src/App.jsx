@@ -21,6 +21,7 @@ import AvisoLegal from "./pages/AvisoLegal";
 import PoliticaCookies from "./pages/PoliticaCookies";
 import Privacidad from "./pages/Privacidad";
 import TerminosCondiciones from "./pages/TerminosCondiciones";
+import PasarelaPago from "./pages/PasarelaPago";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -154,6 +155,20 @@ function AnimatedRoutes() {
               <>
                 <ProductoDetallado />
               </>
+            }
+          />
+
+          <Route
+            path="/pago"
+            element={
+              <motion.div
+                initial={{ opacity: 0, x: -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 50 }}
+                transition={pageTransition}
+              >
+                <PasarelaPago />
+              </motion.div>
             }
           />
 

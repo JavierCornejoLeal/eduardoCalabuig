@@ -1,6 +1,6 @@
 import Footer from "../components/Footer";
 import Header from "../components/Header";
-import NavBar from "../components/NavBar";
+import NavBar from "../components/Navbar";
 import SEO from "../components/SEO";
 
 const AvisoLegal = () => {
@@ -11,7 +11,9 @@ const AvisoLegal = () => {
         description="Aviso Legal de Eduardo Calabuig, diseñador de interiorismo. Información sobre propiedad intelectual, protección de datos y condiciones de uso."
         endpoint="avisoLegal"
       />
+      
       <NavBar />
+
       <Header>
         <p>Aviso Legal</p>
       </Header>
