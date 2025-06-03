@@ -139,8 +139,60 @@ const Productos = () => {
           </div>
         </section>
 
-        {/* Resto de secciones intactas */}
-        {/* Normas de envío y devoluciones, Footer, etc... */}
+        <section className="py-5 shadow-inner-section seccionNormasEnvio bg-light">
+          <div className="container">
+            <div className="row pt-5">
+              <div className="col-md-6 pb-5">
+                <div className="tituloNorma border-start border-dark">
+                  <h5 className="ps-3">Envío gratuito</h5>
+                </div>
+                <div className="textoNorma pt-3">
+                  <p className="fw-light">
+                    Todos los pedidos en la España peninsular incluyen envío
+                    gratuito y transporte especializado, para garantizar que tu
+                    escultura llegue siempre en perfecto estado.
+                  </p>
+                </div>
+              </div>
+              <div className="col-md-6 pb-5">
+                <div className="tituloNorma border-start border-dark">
+                  <h5 className="ps-3">Atención Personalizada</h5>
+                </div>
+                <div className="textoNorma pt-3">
+                  <p className="fw-light">
+                    Acompañamos al cliente en todo el proceso desde la elección
+                    de la obra hasta su montaje ofreciendo asesoría de estilo y
+                    soporte postventa.
+                  </p>
+                </div>
+              </div>
+              <div className="col-md-6 pb-5">
+                <div className="tituloNorma border-start border-dark">
+                  <h5 className="ps-3">Devolución sin coste</h5>
+                </div>
+                <div className="textoNorma pt-3">
+                  <p className="fw-light">
+                    Si tu escultura no encaja en tu espacio o no cumple tus
+                    expectativas, dispones de 30 días para devolverla o
+                    cambiarla sin gastos ni papeleos.
+                  </p>
+                </div>
+              </div>
+              <div className="col-md-6 pb-5">
+                <div className="tituloNorma border-start border-dark">
+                  <h5 className="ps-3">Pago 100% seguro y flexible</h5>
+                </div>
+                <div className="textoNorma pt-3">
+                  <p className="fw-light">
+                    Trabajamos con pasarelas de pago certificadas (tarjeta,
+                    PayPal, transferencia) y ofrecemos financiación en cómodos
+                    plazos, para que compres con total tranquilidad.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
 
       <Footer />

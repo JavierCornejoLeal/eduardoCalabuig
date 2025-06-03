@@ -16,7 +16,7 @@ import Noticias from "./pages/Noticias";
 import EstiloIbizenco from "./pages/Notices/EstiloIbizenco";
 import Error404 from "./pages/Error404";
 import Productos from "./pages/Productos";
-import ProductoDetallado from "./pages/Products/ModuloUrbano";
+import ProductoDetallado from "./pages/Products/ProductoDetallado";
 import AvisoLegal from "./pages/AvisoLegal";
 import PoliticaCookies from "./pages/PoliticaCookies";
 import Privacidad from "./pages/Privacidad";

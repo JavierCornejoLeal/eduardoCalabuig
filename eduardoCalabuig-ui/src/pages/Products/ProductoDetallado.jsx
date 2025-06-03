@@ -11,9 +11,10 @@ import api from "../../utils/api";
 
 import "../../assets/styles/products/producto.css";
 
-const ModuloUrbano = () => {
+const ProductoDetallado = () => {
   const { id } = useParams();
   const [producto, setProducto] = useState(null);
+  const [imagenes, setImagenes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -36,6 +37,16 @@ const ModuloUrbano = () => {
       setLoading(false);
     };
 
+const fetchImagenes = async () => {
+  try {
+    const res = await api.getData(`productos/${id}/imagenes`);
+    setImagenes(res.data);
+  } catch (err) {
+    setError("Error cargando las imágenes");
+  }
+};
+
+
     const fetchSimilares = async () => {
       try {
         const res = await api.getData("productos");
@@ -52,6 +63,7 @@ const ModuloUrbano = () => {
     };
 
     fetchProducto();
+    fetchImagenes();
     fetchSimilares();
   }, [id]);
 
@@ -100,26 +112,34 @@ const ModuloUrbano = () => {
         <section className="shadow-inner-section seccionProducto pt-5 pb-5">
           <div className="container">
             <div className="row gy-4">
-              <div className="col-6 col-lg-4">
-                <img
-                  src={`${import.meta.env.VITE_LOCAL_API_URL.replace(
-                    "/api",
-                    ""
-                  )}/storage/${producto.imagen}`}
-                  alt={producto.nombre}
-                  className="w-100 imagenProducto"
-                />
-              </div>
-              <div className="col-6 col-lg-4">
-                <img
-                  src={`${import.meta.env.VITE_LOCAL_API_URL.replace(
-                    "/api",
-                    ""
-                  )}/storage/${producto.imagen}`}
-                  alt={producto.nombre}
-                  className="w-100 imagenProducto"
-                />
-              </div>
+<div className="col-6 col-lg-4">
+  {imagenes[0] ? (
+    <img
+      src={`${import.meta.env.VITE_LOCAL_API_URL.replace(
+        "/api",
+        ""
+      )}/storage/${imagenes[0].url}`}
+      alt={producto.nombre}
+      className="w-100 imagenProducto"
+    />
+  ) : (
+    <p>No hay imagen</p>
+  )}
+</div>
+<div className="col-6 col-lg-4">
+  {imagenes[1] ? (
+    <img
+      src={`${import.meta.env.VITE_LOCAL_API_URL.replace(
+        "/api",
+        ""
+      )}/storage/${imagenes[1].url}`}
+      alt={producto.nombre}
+      className="w-100 imagenProducto"
+    />
+  ) : (
+    <p>No hay segunda imagen</p>
+  )}
+</div>
 
               <div className="col-12 col-lg-4 ps-4">
                 <div className="textoProducto pt-4 pb-5">
@@ -251,4 +271,4 @@ const ModuloUrbano = () => {
   );
 };
 
-export default ModuloUrbano;
+export default ProductoDetallado;
