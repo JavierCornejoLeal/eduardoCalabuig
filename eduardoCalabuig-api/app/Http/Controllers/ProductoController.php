@@ -30,10 +30,19 @@ class ProductoController extends Controller
             'descripcion' => 'nullable|string',
             'categoria' => 'required|string',
             'cantidad' => 'required|numeric',
-            'imagen' => 'nullable|image|max:2048',  // ahora imagen es archivo opcional
+            'imagen' => 'nullable|image|max:2048',  // imagen opcional
+            'slug' => 'nullable|string|max:255|unique:productos,slug',
         ]);
 
-        // Si viene imagen, guardamos el archivo y almacenamos ruta
+        // Generar slug único a partir del nombre
+        $baseSlug = Str::slug($validated['nombre']);
+        $slug = $baseSlug;
+        $contador = 1;
+        while (Producto::where('slug', $slug)->exists()) {
+            $slug = $baseSlug . '-' . $contador++;
+        }
+        $validated['slug'] = $slug;
+
         if ($request->hasFile('imagen')) {
             $path = $request->file('imagen')->store('productos', 'public');
             $validated['imagen'] = $path;
@@ -48,6 +57,18 @@ class ProductoController extends Controller
     public function show($id)
     {
         $producto = Producto::with('imagenes')->find($id);
+
+        if (!$producto) {
+            return response()->json(['message' => 'Producto no encontrado'], 404);
+        }
+
+        return response()->json($producto);
+    }
+
+    // Mostrar un producto por slug con imágenes
+    public function getBySlug($slug)
+    {
+        $producto = Producto::with('imagenes')->where('slug', $slug)->first();
 
         if (!$producto) {
             return response()->json(['message' => 'Producto no encontrado'], 404);
@@ -76,11 +97,21 @@ class ProductoController extends Controller
             'categoria' => 'required|string',
             'cantidad' => 'required|numeric',
             'imagen' => 'nullable|image|max:2048',
+            'slug' => 'nullable|string|max:255|unique:productos,slug,' . $id,
         ]);
 
-        // Si hay nueva imagen, guardamos y actualizamos ruta
+        // Actualizar slug si cambia el nombre o si no se envía slug
+        if (isset($validated['nombre']) && $validated['nombre'] !== $producto->nombre) {
+            $baseSlug = Str::slug($validated['nombre']);
+            $slug = $baseSlug;
+            $contador = 1;
+            while (Producto::where('slug', $slug)->where('id', '!=', $id)->exists()) {
+                $slug = $baseSlug . '-' . $contador++;
+            }
+            $validated['slug'] = $slug;
+        }
+
         if ($request->hasFile('imagen')) {
-            // Opcional: borrar imagen anterior del servidor si existe
             if ($producto->imagen) {
                 Storage::disk('public')->delete($producto->imagen);
             }
@@ -102,7 +133,6 @@ class ProductoController extends Controller
             return response()->json(['message' => 'Producto no encontrado'], 404);
         }
 
-        // Opcional: borrar imagen del servidor
         if ($producto->imagen) {
             Storage::disk('public')->delete($producto->imagen);
         }

@@ -43,6 +43,20 @@
   border-color: #999999;
 }
 
+.carrito-btn {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  padding: 6px 8px;
+  border-radius: 50%;
+}
+
+.carrito-btn:hover {
+  background-color: lightgray;
+}
+
+
 @media (max-width: 992px) {
   .textContainer p {
     font-size: 0.9rem;

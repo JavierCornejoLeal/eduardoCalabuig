@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence, LayoutGroup } from "framer-motion";
 import { motion } from "framer-motion";
@@ -148,7 +148,14 @@ function AnimatedRoutes() {
               </motion.div>
             }
           />
-          <Route path="/productos/:id" element={<ProductoDetallado />} />
+          <Route
+            path="/productos/:slug"
+            element={
+              <>
+                <ProductoDetallado />
+              </>
+            }
+          />
 
           <Route
             path="/login"
@@ -253,7 +260,6 @@ export default function App() {
     <>
       <CookieConsent />
       <BrowserRouter>
-        {/* ScrollToTop asegura que cada cambio de ruta haga scroll al top */}
         <ScrollToTop />
         <AnimatedRoutes />
       </BrowserRouter>

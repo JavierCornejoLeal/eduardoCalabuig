@@ -222,22 +222,34 @@ const handleAddImageSubmit = async (e) => {
   };
 
   // Editar producto
-  const handleEditSubmit = async (e) => {
-    e.preventDefault();
+const handleEditSubmit = async (e) => {
+  e.preventDefault();
 
-    try {
-      const formData = new FormData();
-      Object.entries(form).forEach(([key, val]) => formData.append(key, val));
-      if (imagenFile) formData.append("imagen", imagenFile);
+  try {
+    const formData = new FormData();
+    Object.entries(form).forEach(([key, val]) => formData.append(key, val));
+    if (imagenFile) formData.append("imagen", imagenFile);
 
-      await api.updateData("productos", currentProducto.id, formData);
+    // Simular método PUT en Laravel
+    formData.append("_method", "PUT");
 
-      closeEditModal();
-      loadProductos();
-    } catch (error) {
-      console.error("Error actualizando producto:", error);
+    await api.updateData("productos", currentProducto.id, formData);
+
+    closeEditModal();
+    loadProductos();
+  } catch (error) {
+    console.error("Error actualizando producto:", error);
+
+    if (error.response && error.response.data) {
+      console.error("Detalles error:", error.response.data);
+      alert(`Error: ${JSON.stringify(error.response.data.errors)}`);
+    } else {
+      alert("Error al actualizar producto");
     }
-  };
+  }
+};
+
+
 
   // Eliminar producto
   const handleConfirmDelete = async () => {

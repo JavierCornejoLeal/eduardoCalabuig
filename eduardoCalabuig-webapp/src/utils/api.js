@@ -24,13 +24,23 @@ export const createData = (endpoint, data) => {
   });
 };
 
-// PUT genérico (actualizar recurso por id)
+// PUT genérico (actualizar recurso por id) — cambia a POST con _method=PUT para multipart
 export const updateData = (endpoint, id, data) => {
   const isFormData = data instanceof FormData;
+
+  if (isFormData) {
+    // Añadir _method=PUT para Laravel
+    if (!data.has("_method")) {
+      data.append("_method", "PUT");
+    }
+    return api.post(`${endpoint}/${id}`, data, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+  }
+
+  // Para JSON normal sí usar PUT
   return api.put(`${endpoint}/${id}`, data, {
-    headers: isFormData
-      ? { "Content-Type": "multipart/form-data" }
-      : { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json" },
   });
 };
 

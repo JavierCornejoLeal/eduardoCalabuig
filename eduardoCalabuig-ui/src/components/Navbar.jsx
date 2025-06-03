@@ -8,9 +8,14 @@ import "../assets/styles/Navbar.css";
 import logoMarron from "../assets/images/logo/logo.webp";
 import logoNegro from "../assets/images/logo/logoNegro.webp";
 
-const NavBar = ({ alwaysLight = false }) => {
+const NavBar = ({ carrito = [] , alwaysLight = false }) => {
   const [scrolled, setScrolled] = useState(false);
   const [expanded, setExpanded] = useState(false);
+
+
+
+  // Calcula el total de items en el carrito sumando cantidades
+  const cartCount = carrito.reduce((acc, item) => acc + item.cantidad, 0);
 
   useEffect(() => {
     const onScroll = () => {
@@ -62,7 +67,7 @@ const NavBar = ({ alwaysLight = false }) => {
             className="ms-auto align-items-center gap-3"
             style={{ color: isLight ? "black" : "white" }}
           >
-            {links.map(({ text, to, isHash }, idx) => (
+            {links.map(({ text, to, isHash }, idx) =>
               isHash ? (
                 <Nav.Link
                   key={idx}
@@ -86,15 +91,30 @@ const NavBar = ({ alwaysLight = false }) => {
                   {text}
                 </Nav.Link>
               )
-            ))}
+            )}
 
             <Nav.Link
               href="#carrito"
-              className={expanded ? "text-link" : ""}
+              className={expanded ? "text-link" : "position-relative"}
               style={{ color: isLight ? "black" : "white" }}
             >
-              {expanded ? "CARRITO" : <PiShoppingCartThin size={30} />}
+              {expanded ? (
+                <>
+                  CARRITO
+                  {cartCount >= 0 && (
+                    <span className="cart-badge-horizontal ms-2">{cartCount}</span>
+                  )}
+                </>
+              ) : (
+                <>
+                  <PiShoppingCartThin size={30} />
+                  {cartCount >= 0 && (
+                    <span className="cart-badge">{cartCount}</span>
+                  )}
+                </>
+              )}
             </Nav.Link>
+
             <Nav.Link
               href="/login"
               className={expanded ? "text-link" : ""}

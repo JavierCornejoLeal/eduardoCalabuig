@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { PiShoppingCartThin } from "react-icons/pi";
 
 import Footer from "../components/Footer";
 import NavBar from "../components/NavBar";
@@ -71,6 +72,7 @@ const Productos = () => {
         description="Soy Eduardo Calabuig, un diseñador de interiorismo especializado en crear espacios únicos y funcionales. Con una pasión por el diseño y la atención al detalle, transformo ideas en realidades."
         endpoint="productos"
       />
+
       <NavBar alwaysLight />
 
       <main>
@@ -101,19 +103,38 @@ const Productos = () => {
                 </select>
               </div>
             </div>
-
             {/* PRODUCTOS */}
             <div className="row py-5">
               {productos.map((producto) => (
-                <div key={producto.id} className="col-6 col-md-4 pb-4">
-                  <div className="imagenContainer">
-                    <Link to={`/productos/${producto.id}`}>
+                <div
+                  key={producto.id}
+                  className="col-6 col-md-4 pb-4 position-relative"
+                >
+                  <div className="imagenContainer position-relative">
+                    <Link to={`/productos/${producto.slug || producto.id}`}>
                       <img
                         src={`${API_BASE_URL}/storage/${producto.imagen}`}
                         alt={producto.nombre}
                         className="w-100"
                       />
                     </Link>
+                    {/* Botón carrito arriba derecha */}
+                    <button
+                      type="button"
+                      className="carrito-btn"
+                      onClick={() => onAddToCart(producto)}
+                      title="Añadir al carrito"
+                      style={{
+                        position: "absolute",
+                        top: "10px",
+                        right: "10px",
+                        borderRadius: "50%",
+                        padding: "6px 8px",
+                        zIndex: 10,
+                      }}
+                    >
+                      <PiShoppingCartThin size={30} className="text-dark" />
+                    </button>
                   </div>
                   <div className="textContainer py-4">
                     <h5 className="pb-1 pb-lg-3">{producto.nombre}</h5>
