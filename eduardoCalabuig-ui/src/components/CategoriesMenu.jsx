@@ -2,7 +2,8 @@ import React from "react";
 
 import "../assets/styles/categoriesMenu.css";
 
-const CategoriesMenu = () => {
+const CategoriesMenu = ({ categories = [], selectedCategory, onSelectCategory }) => {
+
   return (
     <section className="py-5 shadow-inner-section seccionCategorias pt-5 sticky-top">
       <div className="container">
@@ -10,20 +11,24 @@ const CategoriesMenu = () => {
           <div className="col-12">
             <nav className="menuCategorias pt-5">
               <ul className="pt-5">
-                <li>
-                  <a href="#muebles">Muebles</a>
-                </li>
-                <li>
-                  <a href="#esculturas" className="active">
-                    Esculturas
-                  </a>
-                </li>
-                <li>
-                  <a href="#decoracion">Decoración</a>
-                </li>
-                <li>
-                  <a href="#ofertas">Ofertas Especiales</a>
-                </li>
+                {categories.map((cat) => (
+                  <li key={cat}>
+                    <button
+                      className={selectedCategory === cat ? "active" : ""}
+                      onClick={() => onSelectCategory(cat)}
+                      style={{
+                        background: "none",
+                        border: "none",
+                        padding: 0,
+                        cursor: "pointer",
+                        color: selectedCategory === cat ? "black" : "inherit",
+                        textDecoration: selectedCategory === cat ? "underline" : "none",
+                      }}
+                    >
+                      {cat}
+                    </button>
+                  </li>
+                ))}
               </ul>
             </nav>
           </div>

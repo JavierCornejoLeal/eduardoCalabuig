@@ -3,16 +3,18 @@ import { HashLink } from "react-router-hash-link";
 import { Navbar, Nav, Container } from "react-bootstrap";
 import { PiShoppingCartThin, PiUserLight, PiX } from "react-icons/pi";
 import { HiBars3BottomRight } from "react-icons/hi2";
+import { useLocation } from "react-router-dom";
 
 import "../assets/styles/Navbar.css";
 import logoMarron from "../assets/images/logo/logo.webp";
 import logoNegro from "../assets/images/logo/logoNegro.webp";
 
-const NavBar = ({ carrito = [] , alwaysLight = false }) => {
+const NavBar = ({ carrito = [], alwaysLight = false }) => {
   const [scrolled, setScrolled] = useState(false);
   const [expanded, setExpanded] = useState(false);
 
-
+  const location = useLocation();
+  const currentPath = location.pathname + location.hash; // para comparar ruta y hash
 
   // Calcula el total de items en el carrito sumando cantidades
   const cartCount = carrito.reduce((acc, item) => acc + item.cantidad, 0);
@@ -67,14 +69,27 @@ const NavBar = ({ carrito = [] , alwaysLight = false }) => {
             className="ms-auto align-items-center gap-3"
             style={{ color: isLight ? "black" : "white" }}
           >
-            {links.map(({ text, to, isHash }, idx) =>
-              isHash ? (
+            {links.map(({ text, to, isHash }, idx) => {
+              // Comparación flexible para isHash para que active también con rutas base
+              const isActive = isHash
+                ? currentPath.startsWith(to)
+                : currentPath === to;
+
+              const linkClass = isActive
+                ? isLight
+                  ? "navbar-hover-black active"
+                  : "navbar-hover-white active"
+                : isLight
+                ? "navbar-hover-black"
+                : "navbar-hover-white";
+
+              return isHash ? (
                 <Nav.Link
                   key={idx}
                   as={HashLink}
                   to={to}
                   smooth
-                  className={isLight ? "navbar-hover-black" : "navbar-hover-white"}
+                  className={linkClass}
                   style={{ color: isLight ? "black" : "white" }}
                   onClick={() => setExpanded(false)}
                 >
@@ -84,14 +99,14 @@ const NavBar = ({ carrito = [] , alwaysLight = false }) => {
                 <Nav.Link
                   key={idx}
                   href={to}
-                  className={isLight ? "navbar-hover-black" : "navbar-hover-white"}
+                  className={linkClass}
                   style={{ color: isLight ? "black" : "white" }}
                   onClick={() => setExpanded(false)}
                 >
                   {text}
                 </Nav.Link>
-              )
-            )}
+              );
+            })}
 
             <Nav.Link
               href="#carrito"

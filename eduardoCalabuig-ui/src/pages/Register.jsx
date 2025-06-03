@@ -3,6 +3,10 @@ import { Link } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { motion } from "framer-motion";
 
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
 import NavBar from "../components/NavBar";
 import SEO from "../components/SEO";
 
@@ -15,8 +19,74 @@ const textVariants = {
   exit: { opacity: 0, y: 10 },
 };
 
+const schema = yup.object().shape({
+  name: yup
+    .string()
+    .required("El nombre es obligatorio")
+    .matches(/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/, "Solo se permiten letras y espacios")
+    .min(2, "El nombre debe tener al menos 2 caracteres")
+    .max(30, "El nombre no puede superar los 30 caracteres"),
+  surname: yup
+    .string()
+    .required("Los apellidos son obligatorios")
+    .matches(/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/, "Solo se permiten letras y espacios")
+    .min(2, "Los apellidos deben tener al menos 2 caracteres")
+    .max(30, "Los apellidos no pueden superar los 30 caracteres"),
+  email: yup
+    .string()
+    .required("El correo electrónico es obligatorio")
+    .email("Formato de correo inválido")
+    .test(
+      "email-domain",
+      "Solo se permiten correos de Gmail, Hotmail, Outlook, Yahoo y ProtonMail",
+      (value) => {
+        if (!value) return false;
+        // Dominios permitidos
+        const allowedDomains = [
+          "gmail.com",
+          "hotmail.com",
+          "outlook.com",
+          "yahoo.com",
+          "protonmail.com",
+          "icloud.com",
+          "live.com",
+          "msn.com",
+        ];
+        const domain = value.split("@")[1]?.toLowerCase();
+        return allowedDomains.includes(domain);
+      }
+    ),
+  password: yup
+    .string()
+    .required("La contraseña es obligatoria")
+    .min(8, "La contraseña debe tener al menos 8 caracteres")
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&\-_.])[A-Za-z\d@$!%*?&\-_.]+$/,
+      "La contraseña debe contener mayúsculas, minúsculas, números y símbolos"
+    ),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref("password"), null], "Las contraseñas no coinciden")
+    .required("Confirma la contraseña"),
+  terms: yup.bool().oneOf([true], "Debes aceptar los términos y condiciones"),
+  acceptEmail: yup.bool(), // opcional
+});
+
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  const onSubmit = (data) => {
+    // Aquí iría la lógica para enviar datos al backend
+    console.log("Datos registrados:", data);
+  };
 
   return (
     <>
@@ -43,37 +113,52 @@ const Register = () => {
                 Regístrate
               </motion.p>
 
-              <form className="login-form px-4" autoComplete="off">
+              <form
+                className="login-form px-4"
+                autoComplete="off"
+                onSubmit={handleSubmit(onSubmit)}
+              >
                 <input
                   type="text"
-                  name="name"
                   placeholder="Nombre"
-                  className="login-input"
-                  required
+                  className={`login-input ${errors.name ? "input-error" : ""}`}
+                  {...register("name")}
                 />
+                {errors.name && (
+                  <p className="error-message">{errors.name.message}</p>
+                )}
+
                 <input
                   type="text"
-                  name="surname"
                   placeholder="Apellidos"
-                  className="login-input"
-                  required
+                  className={`login-input ${
+                    errors.surname ? "input-error" : ""
+                  }`}
+                  {...register("surname")}
                 />
+                {errors.surname && (
+                  <p className="error-message">{errors.surname.message}</p>
+                )}
+
                 <input
                   type="email"
-                  name="email"
                   placeholder="Correo electrónico"
-                  className="login-input"
-                  required
+                  className={`login-input ${errors.email ? "input-error" : ""}`}
+                  {...register("email")}
                 />
+                {errors.email && (
+                  <p className="error-message">{errors.email.message}</p>
+                )}
 
                 {/* Contraseña */}
                 <div className="password-wrapper position-relative mb-3">
                   <input
                     type={showPassword ? "text" : "password"}
-                    name="password"
                     placeholder="Contraseña"
-                    className="login-input password-input"
-                    required
+                    className={`login-input password-input ${
+                      errors.password ? "input-error" : ""
+                    }`}
+                    {...register("password")}
                   />
                   <span
                     className="password-toggle-icon"
@@ -86,15 +171,19 @@ const Register = () => {
                     )}
                   </span>
                 </div>
+                {errors.password && (
+                  <p className="error-message">{errors.password.message}</p>
+                )}
 
                 {/* Repite contraseña */}
                 <div className="password-wrapper position-relative mb-4">
                   <input
                     type={showPassword ? "text" : "password"}
-                    name="confirmPassword"
                     placeholder="Repite contraseña"
-                    className="login-input password-input"
-                    required
+                    className={`login-input password-input ${
+                      errors.confirmPassword ? "input-error" : ""
+                    }`}
+                    {...register("confirmPassword")}
                   />
                   <span
                     className="password-toggle-icon"
@@ -107,13 +196,18 @@ const Register = () => {
                     )}
                   </span>
                 </div>
+                {errors.confirmPassword && (
+                  <p className="error-message">
+                    {errors.confirmPassword.message}
+                  </p>
+                )}
 
                 {/* Checkboxes finales */}
                 <div className="form-check mb-2">
                   <input
                     type="checkbox"
                     id="acceptEmail"
-                    name="acceptEmail"
+                    {...register("acceptEmail")}
                     className="form-check-input"
                   />
                   <label htmlFor="acceptEmail" className="form-check-label">
@@ -124,9 +218,8 @@ const Register = () => {
                   <input
                     type="checkbox"
                     id="terms"
-                    name="terms"
+                    {...register("terms")}
                     className="form-check-input"
-                    required
                   />
                   <label htmlFor="terms" className="form-check-label">
                     He leído y entendido los{" "}
@@ -139,6 +232,9 @@ const Register = () => {
                     *
                   </label>
                 </div>
+                {errors.terms && (
+                  <p className="error-message">{errors.terms.message}</p>
+                )}
 
                 <button type="submit" className="login-button w-100 mb-0">
                   Registrarse

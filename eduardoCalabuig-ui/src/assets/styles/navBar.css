@@ -47,6 +47,18 @@
   user-select: none;
 }
 
+.navbar-hover-white.active {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  font-weight: 600;
+}
+
+.navbar-hover-black.active {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  font-weight: 600;
+}
+
 @media (max-width: 991px) {
   .navbar-nav .text-link {
     flex: 1;

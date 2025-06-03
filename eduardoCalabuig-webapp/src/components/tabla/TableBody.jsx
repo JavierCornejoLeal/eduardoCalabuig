@@ -13,7 +13,7 @@ const TableBody = ({ columns, data, onEdit, onView, onDelete, onAddImage }) => {
         <tr
           key={row.id || idx}
           style={{
-            backgroundColor: idx % 2 === 0 ? "white" : "#EEEEEE",
+            backgroundColor: idx % 2 === 0 ? "white" : "#EEEEEE" + " !important",
             userSelect: "none",
           }}
           className="no-hover-row"
@@ -26,6 +26,7 @@ const TableBody = ({ columns, data, onEdit, onView, onDelete, onAddImage }) => {
                 verticalAlign: "middle",
                 paddingTop: "1.2rem",
                 paddingBottom: "1.2rem",
+                backgroundColor: idx % 2 === 0 ? "white" : "#EEEEEE",
               }}
             >
               {col.type === "image" ? (
@@ -46,6 +47,7 @@ const TableBody = ({ columns, data, onEdit, onView, onDelete, onAddImage }) => {
               style={{
                 paddingTop: "1.2rem",
                 paddingBottom: "1.2rem",
+                backgroundColor: idx % 2 === 0 ? "white" : "#EEEEEE",
               }}
             >
               {onView && (

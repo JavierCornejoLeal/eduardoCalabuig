@@ -104,6 +104,18 @@
   text-underline-offset: 3px !important;
 }
 
+.input-error {
+  border-color: #dc3545 !important; /* rojo bootstrap */
+}
+
+.error-message {
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+
 /* Contenedor relativo para el icono */
 .password-wrapper {
   position: relative;

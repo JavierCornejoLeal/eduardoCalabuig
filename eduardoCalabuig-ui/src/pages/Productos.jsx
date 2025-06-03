@@ -22,6 +22,7 @@ const Productos = () => {
   const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(opciones[0]);
+  const [selectedCategory, setSelectedCategory] = useState("Todos");
 
   const API_BASE_URL = import.meta.env.VITE_LOCAL_API_URL.replace("/api", "");
 
@@ -45,12 +46,10 @@ const Productos = () => {
           prods.sort((a, b) => b.precio - a.precio);
           break;
         case "Más vendidos":
-          // Si tienes campo 'ventas', por ejemplo:
           prods.sort((a, b) => (b.ventas || 0) - (a.ventas || 0));
           break;
         case "Últimas novedades":
         default:
-          // Si tienes campo 'created_at' o similar:
           prods.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
       }
 
@@ -60,6 +59,18 @@ const Productos = () => {
     }
     setLoading(false);
   };
+
+  // Extraer categorías únicas para el menú
+  const categories = [
+    "Todos",
+    ...Array.from(new Set(productos.map((p) => p.categoria).filter(Boolean))),
+  ];
+
+  // Filtrar productos según categoría seleccionada
+  const productosFiltrados =
+    selectedCategory === "Todos"
+      ? productos
+      : productos.filter((p) => p.categoria === selectedCategory);
 
   const anchoDinamico = `${selected.length + 4}ch`;
 
@@ -77,17 +88,21 @@ const Productos = () => {
 
       <main>
         {/* Sección de categorías */}
-        <CategoriesMenu />
+        <CategoriesMenu
+          categories={categories}
+          selectedCategory={selectedCategory}
+          onSelectCategory={setSelectedCategory}
+        />
 
         {/* Sección de productos */}
         <section className="py-5 shadow-inner-section seccionProductos">
           <div className="container">
             <div className="row">
               <div className="col-12 d-flex justify-content-end align-items-center encabezadoProductos">
-                {/* Texto “Productos en total: 32” */}
+                {/* Texto “Productos en total” filtrados */}
                 <p className="pe-4 totalProductos pt-3">
                   Productos en total:{" "}
-                  <span className="fw-semibold">{productos.length}</span>
+                  <span className="fw-semibold">{productosFiltrados.length}</span>
                 </p>
                 <select
                   className="filtroOrden"
@@ -105,7 +120,7 @@ const Productos = () => {
             </div>
             {/* PRODUCTOS */}
             <div className="row py-5">
-              {productos.map((producto) => (
+              {productosFiltrados.map((producto) => (
                 <div
                   key={producto.id}
                   className="col-6 col-md-4 pb-4 position-relative"
