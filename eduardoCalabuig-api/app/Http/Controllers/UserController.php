@@ -45,18 +45,20 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = User::find($id);  // Buscar al usuario por su UUID
+        $user = User::find($id);
         if (!$user) {
-            return response()->json(['message' => 'Usuario no encontrado'], 404);  // Si no se encuentra, devolvemos un error
+            return response()->json(['message' => 'Usuario no encontrado'], 404);
         }
 
-        // Validar los datos de entrada
+        // Validar los datos de entrada, excluyendo el carrito_id
         $request->validate([
             'name' => 'string|max:255',
             'apellidos' => 'string|max:255',
             'email' => 'email|unique:users,email,' . $user->id,
             'password' => 'nullable|string|min:6|confirmed',
-            'role_id' => 'nullable|exists:roles,id',  // Permitir asignar un nuevo rol
+            'role_id' => 'nullable|exists:roles,id',
+            // No permitas la actualización de carrito_id
+            // 'carrito_id' => 'nullable|exists:carritos,id',  // Esta línea no debe existir.
         ]);
 
         // Actualizar los campos del usuario
@@ -64,12 +66,15 @@ class UserController extends Controller
             'name' => $request->name ?? $user->name,
             'apellidos' => $request->apellidos ?? $user->apellidos,
             'email' => $request->email ?? $user->email,
-            'password' => $request->password ? bcrypt($request->password) : $user->password,  // Solo actualizar si se proporciona una nueva contraseña
-            'role_id' => $request->role_id ?? $user->role_id,  // Asignar un nuevo rol si es necesario
+            'password' => $request->password ? bcrypt($request->password) : $user->password,
+            'role_id' => $request->role_id ?? $user->role_id,
+            // No actualices el carrito_id
         ]);
 
         return response()->json($user);  // Devolver el usuario actualizado
     }
+
+
 
     public function store(Request $request)
     {
@@ -91,11 +96,23 @@ class UserController extends Controller
             'role_id' => '0ceadae7-3a51-43a4-8892-3fbd6e65789d',
         ]);
 
-        // Puedes devolver el token de sesión para el cliente
+        // Crear un carrito vacío para el usuario
+        $carrito = \App\Models\Carrito::create([
+            'usuario_id' => $user->id,
+            'fechaCreacion' => now(),
+        ]);
+
+        // Asignar el carrito al usuario
+        $user->carrito_id = $carrito->id;
+        $user->save();
+
+        // Devolver el usuario y el carrito creado
         return response()->json([
-            'user' => $user
+            'user' => $user,
+            'carrito' => $carrito
         ], 201);
     }
+
 
     /**
      * Eliminar un usuario.

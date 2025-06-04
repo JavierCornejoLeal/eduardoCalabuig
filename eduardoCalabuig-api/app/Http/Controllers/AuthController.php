@@ -6,41 +6,54 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Models\User;
+use App\Models\Carrito;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 
 class AuthController extends Controller
 {
-    public function register(Request $request)
-    {
-        // Validar los datos recibidos
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'apellidos' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6|confirmed',
-        ]);
+public function register(Request $request)
+{
+    // Validar los datos recibidos
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'apellidos' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email',
+        'password' => 'required|string|min:6|confirmed',
+    ]);
 
-        // Crear un nuevo usuario
-        $user = User::create([
-            'id' => Str::uuid(),
-            'name' => $request->name,
-            'apellidos' => $request->apellidos,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'role_id' => '0ceadae7-3a51-43a4-8892-3fbd6e65789d',
-        ]);
+    // Crear un nuevo usuario
+    $user = User::create([
+        'id' => Str::uuid(),  // Generar el UUID del usuario
+        'name' => $request->name,
+        'apellidos' => $request->apellidos,
+        'email' => $request->email,
+        'password' => bcrypt($request->password),
+        'role_id' => '0ceadae7-3a51-43a4-8892-3fbd6e65789d',  // Asignar un role predeterminado
+    ]);
 
-        // Generar un token para el nuevo usuario
-        $token = JWTAuth::fromUser($user);
+    // Crear el carrito vacío (sin usuario asignado)
+    $carrito = Carrito::create([
+        'usuario_id' => null,  // Carrito sin usuario asignado
+        'fechaCreacion' => now(),
+    ]);
 
-        // Puedes devolver el token de sesión para el cliente
-        return response()->json([
-            'user' => $user,
-            'token' => $token,  // Devolver el token
-        ], 201);
-    }
+    // Asignar el carrito al usuario creado
+    $user->carrito_id = $carrito->id;
+    $user->save();  // Guardar los cambios en el usuario
+
+    // Generar un token para el nuevo usuario
+    $token = JWTAuth::fromUser($user);
+
+    // Devolver el usuario, el token y el carrito creado
+    return response()->json([
+        'user' => $user,
+        'token' => $token,  // Devolver el token
+    ], 201);
+}
+
+
 
 
 

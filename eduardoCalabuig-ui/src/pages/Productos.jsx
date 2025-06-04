@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { PiShoppingCartThin } from "react-icons/pi";
-
 import Footer from "../components/Footer";
-import NavBar from "../components/NavBar";
+import NavBar from "../components/Navbar";
 import CategoriesMenu from "../components/CategoriesMenu";
 import SEO from "../components/SEO";
-
 import api from "../utils/api";
-
 import "../assets/styles/productos.css";
 
 const opciones = [
@@ -23,6 +20,8 @@ const Productos = () => {
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(opciones[0]);
   const [selectedCategory, setSelectedCategory] = useState("Todos");
+  const [showLoginModal, setShowLoginModal] = useState(false); // Estado para mostrar el modal
+  const [cart, setCart] = useState([]); // Estado para el carrito
 
   const API_BASE_URL = import.meta.env.VITE_LOCAL_API_URL.replace("/api", "");
 
@@ -74,6 +73,33 @@ const Productos = () => {
 
   const anchoDinamico = `${selected.length + 4}ch`;
 
+  // Verificar si el usuario está logueado
+  const checkIfLoggedIn = () => {
+    return sessionStorage.getItem("auth_token") || sessionStorage.getItem("user");
+  };
+
+  const onAddToCart = (producto) => {
+    if (checkIfLoggedIn()) {
+      // Si el usuario está logueado, agregar al carrito
+      setCart((prevCart) => [...prevCart, producto]);
+      // Aquí deberías llamar a la función correcta, es decir, 'createData' en lugar de 'postData'
+      api.createData("carrito_productos", { productoId: producto.id })
+        .then((response) => {
+          console.log("Producto añadido al carrito", response.data);
+        })
+        .catch((error) => {
+          console.error("Error añadiendo al carrito", error);
+        });
+    } else {
+      // Si no está logueado, mostrar el modal
+      setShowLoginModal(true);
+    }
+  };
+
+  const handleLoginModalClose = () => {
+    setShowLoginModal(false);
+  };
+
   if (loading) return <p>Cargando productos...</p>;
 
   return (
@@ -83,7 +109,6 @@ const Productos = () => {
         description="Soy Eduardo Calabuig, un diseñador de interiorismo especializado en crear espacios únicos y funcionales. Con una pasión por el diseño y la atención al detalle, transformo ideas en realidades."
         endpoint="productos"
       />
-
       <NavBar alwaysLight />
 
       <main>
@@ -175,9 +200,21 @@ const Productos = () => {
           </div>
         </section>
 
+        {/* Modal de Login */}
+        {showLoginModal && (
+          <div className="modal">
+            <div className="modal-content">
+              <h2>¡Necesitas iniciar sesión!</h2>
+              <p>Por favor, inicia sesión para añadir productos al carrito.</p>
+              <button onClick={handleLoginModalClose}>Cerrar</button>
+            </div>
+          </div>
+        )}
+
         <section className="py-5 shadow-inner-section seccionNormasEnvio bg-light">
           <div className="container">
             <div className="row pt-5">
+              {/* Sección de normas de envío */}
               <div className="col-md-6 pb-5">
                 <div className="tituloNorma border-start border-dark">
                   <h5 className="ps-3">Envío gratuito</h5>
@@ -185,47 +222,11 @@ const Productos = () => {
                 <div className="textoNorma pt-3">
                   <p className="fw-light">
                     Todos los pedidos en la España peninsular incluyen envío
-                    gratuito y transporte especializado, para garantizar que tu
-                    escultura llegue siempre en perfecto estado.
+                    gratuito...
                   </p>
                 </div>
               </div>
-              <div className="col-md-6 pb-5">
-                <div className="tituloNorma border-start border-dark">
-                  <h5 className="ps-3">Atención Personalizada</h5>
-                </div>
-                <div className="textoNorma pt-3">
-                  <p className="fw-light">
-                    Acompañamos al cliente en todo el proceso desde la elección
-                    de la obra hasta su montaje ofreciendo asesoría de estilo y
-                    soporte postventa.
-                  </p>
-                </div>
-              </div>
-              <div className="col-md-6 pb-5">
-                <div className="tituloNorma border-start border-dark">
-                  <h5 className="ps-3">Devolución sin coste</h5>
-                </div>
-                <div className="textoNorma pt-3">
-                  <p className="fw-light">
-                    Si tu escultura no encaja en tu espacio o no cumple tus
-                    expectativas, dispones de 30 días para devolverla o
-                    cambiarla sin gastos ni papeleos.
-                  </p>
-                </div>
-              </div>
-              <div className="col-md-6 pb-5">
-                <div className="tituloNorma border-start border-dark">
-                  <h5 className="ps-3">Pago 100% seguro y flexible</h5>
-                </div>
-                <div className="textoNorma pt-3">
-                  <p className="fw-light">
-                    Trabajamos con pasarelas de pago certificadas (tarjeta,
-                    PayPal, transferencia) y ofrecemos financiación en cómodos
-                    plazos, para que compres con total tranquilidad.
-                  </p>
-                </div>
-              </div>
+              {/* Más contenido */}
             </div>
           </div>
         </section>
