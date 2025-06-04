@@ -3,7 +3,10 @@ import { HashLink } from "react-router-hash-link";
 import { Navbar, Nav, Container } from "react-bootstrap";
 import { PiShoppingCartThin, PiUserLight, PiX } from "react-icons/pi";
 import { HiBars3BottomRight } from "react-icons/hi2";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios"; // Asegúrate de que axios esté importado
+
+import { IoIosLogOut } from "react-icons/io";
 
 import "../assets/styles/Navbar.css";
 import logoMarron from "../assets/images/logo/logo.webp";
@@ -16,12 +19,18 @@ const NavBar = ({ carrito = [], alwaysLight = false }) => {
   const [expanded, setExpanded] = useState(false);
   const [showCartPanel, setShowCartPanel] = useState(false);
   const [navbarHeight, setNavbarHeight] = useState(window.innerHeight * 0.08);
+  const [userName, setUserName] = useState(null); // Estado para almacenar el nombre del usuario
+  const [cartCount, setCartCount] = useState(0); // Para el total de productos en el carrito
 
   const location = useLocation();
   const currentPath = location.pathname + location.hash;
+  const navigate = useNavigate();
 
   // Calcula el total de items en el carrito sumando cantidades
-  const cartCount = carrito.reduce((acc, item) => acc + item.cantidad, 0);
+  useEffect(() => {
+    const cartCount = carrito.reduce((acc, item) => acc + item.cantidad, 0);
+    setCartCount(cartCount); // Actualiza el número de elementos en el carrito
+  }, [carrito]);
 
   useEffect(() => {
     const onScroll = () => {
@@ -42,6 +51,15 @@ const NavBar = ({ carrito = [], alwaysLight = false }) => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Verifica si el usuario está logueado y obtener el nombre desde sessionStorage
+  useEffect(() => {
+    const user = sessionStorage.getItem("user");
+    if (user) {
+      const parsedUser = JSON.parse(user); // Parseamos el JSON para acceder a los datos del usuario
+      setUserName(parsedUser.name); // Asignamos el nombre del usuario al estado
+    }
+  }, []);
+
   const isLight = alwaysLight || scrolled || expanded || showCartPanel;
 
   const links = [
@@ -51,6 +69,16 @@ const NavBar = ({ carrito = [], alwaysLight = false }) => {
     { text: "CONTACTO", to: "/contacto" },
     { text: "PRODUCTOS", to: "/productos" },
   ];
+
+  const logout = async () => {
+    // Si la respuesta es exitosa, guarda el toke
+    sessionStorage.removeItem("auth_token"); // Elimina el token de la sesión
+    sessionStorage.removeItem("user"); // Elimina los datos del usuario
+    console.log("Logout exitoso:", response.data);
+
+    // Redirige al usuario a la página de inicio
+    navigate("/");
+  };
 
   return (
     <>
@@ -72,7 +100,10 @@ const NavBar = ({ carrito = [], alwaysLight = false }) => {
       >
         <Container fluid className="px-md-5 mx-md-5">
           <Navbar.Brand href="/">
-            <img src={isLight ? logoNegro : logoMarron} alt="Eduardo Calabuig" />
+            <img
+              src={isLight ? logoNegro : logoMarron}
+              alt="Eduardo Calabuig"
+            />
           </Navbar.Brand>
 
           <Navbar.Toggle aria-controls="basic-navbar-nav">
@@ -85,7 +116,6 @@ const NavBar = ({ carrito = [], alwaysLight = false }) => {
               style={{ color: isLight ? "black" : "white" }}
             >
               {links.map(({ text, to, isHash }, idx) => {
-                // Comparación flexible para isHash para que active también con rutas base
                 const isActive = isHash
                   ? currentPath.startsWith(to)
                   : currentPath === to;
@@ -126,7 +156,10 @@ const NavBar = ({ carrito = [], alwaysLight = false }) => {
               <Nav.Link
                 onClick={() => setShowCartPanel(!showCartPanel)}
                 className={expanded ? "text-link" : "position-relative"}
-                style={{ color: isLight ? "black" : "white", cursor: "pointer" }}
+                style={{
+                  color: isLight ? "black" : "white",
+                  cursor: "pointer",
+                }}
                 aria-label="Mostrar carrito"
                 aria-expanded={showCartPanel}
               >
@@ -134,7 +167,9 @@ const NavBar = ({ carrito = [], alwaysLight = false }) => {
                   <>
                     CARRITO
                     {cartCount >= 0 && (
-                      <span className="cart-badge-horizontal ms-2">{cartCount}</span>
+                      <span className="cart-badge-horizontal ms-2">
+                        {cartCount}
+                      </span>
                     )}
                   </>
                 ) : (
@@ -147,13 +182,34 @@ const NavBar = ({ carrito = [], alwaysLight = false }) => {
                 )}
               </Nav.Link>
 
-              <Nav.Link
-                href="/login"
-                className={expanded ? "text-link" : ""}
-                style={{ color: isLight ? "black" : "white" }}
-              >
-                {expanded ? "INICIO SESIÓN" : <PiUserLight size={30} />}
-              </Nav.Link>
+              {/* Mostrar nombre de usuario si está logueado */}
+              {userName ? (
+                <>
+                  <Nav.Link
+                    href="/login"
+                    className={expanded ? "text-link" : ""}
+                    style={{ color: isLight ? "black" : "white" }}
+                  >
+                    {expanded ? userName.toUpperCase() : userName.toUpperCase()}
+                  </Nav.Link>
+                  <Nav.Link
+                  href="/"
+                    className={expanded ? "text-link" : ""}
+                    style={{ color: isLight ? "black" : "white" }}
+                    onClick={() => logout()}
+                  >
+                    {expanded ? "CERRAR SESIÓN" : <IoIosLogOut size={25} />}
+                  </Nav.Link>
+                </>
+              ) : (
+                <Nav.Link
+                  href="/login"
+                  className={expanded ? "text-link" : ""}
+                  style={{ color: isLight ? "black" : "white" }}
+                >
+                  {expanded ? "INICIO SESIÓN" : <PiUserLight size={30} />}
+                </Nav.Link>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>

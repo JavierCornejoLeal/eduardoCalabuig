@@ -5,7 +5,7 @@ const CookieConsent = () => {
 
   useEffect(() => {
     // Comprueba si ya aceptó las cookies
-    const consent = localStorage.getItem("cookieConsent");
+    const consent = sessionStorage.getItem("cookieConsent");
     if (!consent) {
       setShowModal(true);
       // Bloquea el scroll mientras el modal está abierto
@@ -15,7 +15,7 @@ const CookieConsent = () => {
 
   const handleAccept = () => {
     // Guarda la aceptación en localStorage
-    localStorage.setItem("cookieConsent", "true");
+    sessionStorage.setItem("cookieConsent", "true");
     setShowModal(false);
     document.body.style.overflow = "auto";
   };

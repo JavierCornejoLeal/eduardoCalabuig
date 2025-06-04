@@ -6,6 +6,9 @@ import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { useNavigate } from "react-router-dom";
+
+import api from "../utils/api";
 
 import NavBar from "../components/NavBar";
 import SEO from "../components/SEO";
@@ -83,9 +86,51 @@ const Register = () => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data) => {
-    // Aquí iría la lógica para enviar datos al backend
-    console.log("Datos registrados:", data);
+  const navigate = useNavigate();
+
+  const onSubmit = async (data) => {
+    const userData = {
+      name: data.name,
+      apellidos: data.surname,
+      email: data.email,
+      password: data.password,
+      password_confirmation: data.confirmPassword, // Cambiado a password_confirmation
+    };
+
+    try {
+      // Realizar la petición a la API
+      const response = await api.createData("register", userData);
+      console.log("Usuario creado exitosamente:", response.data);
+
+      // Suponiendo que la respuesta tiene un token de autenticación
+      const token = response.data.token;
+
+      if (token) {
+        // Guardar el token en localStorage o sessionStorage
+        sessionStorage.setItem("auth_token", token); // O usa sessionStorage.setItem
+        console.log("Token guardado en localStorage");
+
+        // Redirigir al login después de un registro exitoso
+        navigate("/login");
+
+        // Mostrar alerta de éxito
+        alert("¡Usuario registrado exitosamente!");
+      } else {
+        alert("No se pudo obtener el token. Intenta nuevamente.");
+      }
+    } catch (error) {
+      if (error.response) {
+        // Error de respuesta del servidor (e.g., el correo ya está registrado)
+        console.error("Error al crear el usuario:", error.response.data);
+        alert(
+          `Hubo un error al registrar el usuario: ${error.response.data.message}`
+        );
+      } else {
+        // Error de red o de conexión
+        console.error("Error de red:", error);
+        alert("Hubo un error de red. Por favor, intenta nuevamente.");
+      }
+    }
   };
 
   return (

@@ -5,7 +5,7 @@ const API_BASE_URL = import.meta.env.VITE_LOCAL_API_URL;
 axios.defaults.withCredentials = true;
 
 const api = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: API_BASE_URL
 });
 
 // GET genérico (listar o buscar por id si pones id)

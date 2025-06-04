@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { motion } from "framer-motion";
+import axios from "axios";
 
 import NavBar from "../components/NavBar";
 import SEO from "../components/SEO";
@@ -17,7 +18,42 @@ const textVariants = {
 
 const LogIn = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [recovering, setRecovering] = useState(false);
+
+  const navigate = useNavigate(); // Redirección a la home después de login exitoso
+
+  const handleLogin = async (e) => {
+    e.preventDefault(); // Evitar recarga de página
+
+    const userData = { email, password };
+
+    try {
+      // Realiza la solicitud POST para iniciar sesión
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/login",
+        userData
+      );
+
+      // Si la respuesta es exitosa, guarda el token
+      if (response.data.token) {
+        sessionStorage.setItem("auth_token", response.data.token); // Almacena el token en localStorage
+        sessionStorage.setItem("user", JSON.stringify(response.data.user)); // Almacena los datos del usuario
+        console.log("Login exitoso:", response.data);
+
+        // Redirige al usuario a la página de inicio
+        navigate("/");
+      }    } catch (error) {
+      // Manejo de errores
+      if (error.response && error.response.data.error) {
+        setErrorMessage(error.response.data.error);
+      } else {
+        setErrorMessage("Hubo un error al iniciar sesión.");
+      }
+    }
+  };
 
   return (
     <>
@@ -30,11 +66,8 @@ const LogIn = () => {
       <main>
         <div className="container containerLogin">
           <div className="row pt-5 gx-0">
-            {/* If recovering, show only recovery form */}
             {!recovering ? (
-              // Login view
               <>
-                {/* OCULTA EN MÓVIL, MUESTRA EN MD+ */}
                 <motion.div
                   className="col-md-6 d-none d-md-block pt-5 columnClip"
                   layoutId="hero-image-wrapper"
@@ -62,7 +95,6 @@ const LogIn = () => {
                   </motion.p>
                 </motion.div>
 
-                {/* EN MÓVIL OCUPA 12 COLUMNAS, EN MD+ 6 */}
                 <div className="col-12 col-md-6 mt-5 columnClip containerFormLogin">
                   <motion.p
                     className="text-center fs-1 fw-semibold pb-5"
@@ -75,20 +107,35 @@ const LogIn = () => {
                     Login
                   </motion.p>
 
-                  <form className="login-form px-4" autoComplete="off">
+                  <form
+                    className="login-form px-4"
+                    autoComplete="off"
+                    onSubmit={handleLogin}
+                  >
+                    {errorMessage && (
+                      <p className="error-message text-center">
+                        {errorMessage}
+                      </p>
+                    )}
+
                     <input
                       type="email"
                       name="email"
                       placeholder="Correo electrónico"
                       className="login-input"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       required
                     />
+
                     <div className="password-wrapper position-relative mb-4">
                       <input
                         type={showPassword ? "text" : "password"}
                         name="password"
                         placeholder="Contraseña"
                         className="login-input password-input"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                         required
                       />
                       <span
@@ -127,7 +174,6 @@ const LogIn = () => {
                 </div>
               </>
             ) : (
-              // Recovery view
               <div className="col-12 col-md-6 offset-md-3 mt-5 containerFormLogin">
                 <motion.p
                   className="text-center fs-1 fw-semibold pb-4"
