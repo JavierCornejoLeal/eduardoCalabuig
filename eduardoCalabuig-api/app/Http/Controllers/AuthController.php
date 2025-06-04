@@ -43,6 +43,10 @@ public function register(Request $request)
     $user->carrito_id = $carrito->id;
     $user->save();  // Guardar los cambios en el usuario
 
+    // Actualizar el carrito con el usuario_id
+    $carrito->usuario_id = $user->id;
+    $carrito->save();  // Guardar el carrito actualizado
+
     // Generar un token para el nuevo usuario
     $token = JWTAuth::fromUser($user);
 
@@ -52,6 +56,7 @@ public function register(Request $request)
         'token' => $token,  // Devolver el token
     ], 201);
 }
+
 
 
 
