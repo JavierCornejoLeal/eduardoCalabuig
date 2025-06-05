@@ -13,8 +13,11 @@
 }
 
 #formulario-contacto textarea.form-control {
-  resize: vertical;
+  height: auto;
+  min-height: 40px;
+  overflow: hidden;
 }
+
 
 #formulario-contacto .form-check-input {
   accent-color: #51443d;

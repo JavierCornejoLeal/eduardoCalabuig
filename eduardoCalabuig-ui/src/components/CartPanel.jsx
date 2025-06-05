@@ -317,7 +317,7 @@ const eliminarProducto = async (productoId) => {
           <span className="fw-semibold">Coste Total</span>
           <span className="fw-semibold">
             {cartProducts
-              .reduce((acc, p) => acc + p.cantidad * p.precio, 0)
+              .reduce((acc, p) => acc + p.pivot.cantidad * p.precio, 0)
               .toFixed(2)}{" "}
             €
           </span>

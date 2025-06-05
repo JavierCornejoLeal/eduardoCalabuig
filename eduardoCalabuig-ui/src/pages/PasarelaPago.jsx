@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
-import NavBar from "../components/Navbar";
+import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import provincias from "../utils/provincias";
 import api from "../utils/api";
@@ -123,7 +123,7 @@ const PasarelaPago = () => {
               <Col
                 lg={4}
                 md={5}
-                className="order-1 order-md-2 mb-4 resumen-carrito"
+                className="order-1 order-md-2 mb-4 resumen-carrito pt-5"
               >
                 <div
                   className="border d-flex flex-column"
@@ -206,17 +206,8 @@ const PasarelaPago = () => {
               </Col>
 
               {/* Formulario cliente */}
-              <Col lg={8} md={7} className="order-2 order-md-1">
+              <Col lg={8} md={7} className="order-2 order-md-1 py-5">
                 <h3 className="pb-3">Información del cliente</h3>
-
-                <div className="mb-3">
-                  <small>
-                    ¿Tiene una cuenta?{" "}
-                    <a className="text-dark" href="/login">
-                      Inicie sesión
-                    </a>
-                  </small>
-                </div>
 
                 <Form onSubmit={handleSubmit(onSubmit)} noValidate>
                   <Row className="g-3">

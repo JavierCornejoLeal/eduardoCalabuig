@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { PiShoppingCartThin } from "react-icons/pi";
 import Footer from "../components/Footer";
-import NavBar from "../components/Navbar";
+import NavBar from "../components/NavBar";
 import CategoriesMenu from "../components/CategoriesMenu";
 import SEO from "../components/SEO";
 import api from "../utils/api";
@@ -20,8 +20,8 @@ const Productos = () => {
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(opciones[0]);
   const [selectedCategory, setSelectedCategory] = useState("Todos");
-  const [showLoginModal, setShowLoginModal] = useState(false); // Estado para mostrar el modal
-  const [cart, setCart] = useState([]); // Estado para el carrito
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [cart, setCart] = useState([]);
 
   const API_BASE_URL = import.meta.env.VITE_LOCAL_API_URL.replace("/api", "");
 
@@ -75,56 +75,62 @@ const Productos = () => {
 
   // Verificar si el usuario está logueado
   const checkIfLoggedIn = () => {
-    return (
-      sessionStorage.getItem("auth_token") || sessionStorage.getItem("user")
-    );
+    return sessionStorage.getItem("auth_token");
   };
 
-const onAddToCart = async (producto) => {
-  console.log("Producto seleccionado para añadir al carrito:", producto);
+  // Mostrar modal de login
+  const handleShowModal = () => {
+    setShowLoginModal(true);
+  };
 
-  const user = sessionStorage.getItem("user");
+  // Cerrar modal de login
+  const handleCloseModal = () => {
+    setShowLoginModal(false);
+  };
 
-  if (user) {
-    const parsedUser = JSON.parse(user);
-    const carritoId = parsedUser.carrito_id;
+  const onAddToCart = async (producto) => {
+    console.log("Producto seleccionado para añadir al carrito:", producto);
 
-    if (!carritoId) {
-      console.error("No se encontró un carrito válido.");
+    // Si NO existe auth_token -> abrir modal
+    if (!checkIfLoggedIn()) {
+      handleShowModal();
       return;
     }
 
-    if (checkIfLoggedIn()) {
-      try {
-        // Crear o actualizar el producto en el carrito
-        console.log("Id del carrito:", carritoId);
-        
-        // Verificar si el producto ya está en el carrito
-        const response = await api.createData(`carritos/${carritoId}/productos`, {
-          producto_id: producto.id,
-          cantidad: 1, // Al agregarlo, inicializamos la cantidad en 1
-        });
+    // Si existe auth_token -> proceder a añadir al carrito
+    const user = sessionStorage.getItem("user");
+    if (user) {
+      const parsedUser = JSON.parse(user);
+      const carritoId = parsedUser.carrito_id;
 
+      if (!carritoId) {
+        console.error("No se encontró un carrito válido.");
+        return;
+      }
+
+      try {
+        console.log("Id del carrito:", carritoId);
+        const response = await api.createData(
+          `carritos/${carritoId}/productos`,
+          {
+            producto_id: producto.id,
+            cantidad: 1,
+          }
+        );
         console.log("Producto añadido al carrito:", response.data);
-        
-        // Si el producto ya existe en el carrito, se actualizaría la cantidad
         if (response.data) {
           console.log("Producto añadido o actualizado en el carrito");
         } else {
           console.error("Hubo un error al añadir el producto al carrito");
         }
-        
       } catch (error) {
         console.error("Error al agregar el producto al carrito", error);
       }
     } else {
-      console.log("Por favor, inicia sesión para agregar al carrito.");
+      // No hay usuario en sessionStorage: abrir modal
+      handleShowModal();
     }
-  } else {
-    console.log("No se encontró un usuario en sesión.");
-  }
-};
-
+  };
 
   if (loading) return <p>Cargando productos...</p>;
 
@@ -228,15 +234,55 @@ const onAddToCart = async (producto) => {
           </div>
         </section>
 
-        {/* Modal de Login */}
+        {/* Modal de Bootstrap para login */}
         {showLoginModal && (
-          <div className="modal">
-            <div className="modal-content">
-              <h2>¡Necesitas iniciar sesión!</h2>
-              <p>Por favor, inicia sesión para añadir productos al carrito.</p>
-              <button onClick={handleLoginModalClose}>Cerrar</button>
+          <>
+            {/* Backdrop */}
+            <div className="modal-backdrop fade show"></div>
+            <div
+              className="modal fade show"
+              tabIndex="-1"
+              role="dialog"
+              style={{ display: "block" }}
+            >
+              <div
+                className="modal-dialog modal-dialog-centered"
+                role="document"
+              >
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h5 className="modal-title">¡Necesitas iniciar sesión!</h5>
+                    <button
+                      type="button"
+                      className="btn-close"
+                      aria-label="Close"
+                      onClick={handleCloseModal}
+                    ></button>
+                  </div>
+                  <div className="modal-body">
+                    <p>
+                      Por favor, inicia sesión para añadir productos al carrito.
+                    </p>
+                  </div>
+                  <div className="modal-footer">
+                    <button
+                      type="button"
+                      className="botonCrema px-3"
+                      onClick={handleCloseModal}
+                    >
+                      Cerrar
+                    </button>
+                    <Link
+                      to="/login"
+                      className="botonMarron px-3 text-white text-decoration-none"
+                    >
+                      Inicio Sesión
+                    </Link>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
+          </>
         )}
 
         <section className="py-5 shadow-inner-section seccionNormasEnvio bg-light">
@@ -250,7 +296,44 @@ const onAddToCart = async (producto) => {
                 <div className="textoNorma pt-3">
                   <p className="fw-light">
                     Todos los pedidos en la España peninsular incluyen envío
-                    gratuito...
+                    gratuito y transporte especializado, para garantizar que tu
+                    escultura llegue siempre en perfecto estado.
+                  </p>
+                </div>
+              </div>
+              <div className="col-md-6 pb-5">
+                <div className="tituloNorma border-start border-dark">
+                  <h5 className="ps-3">Atención Personalizada</h5>
+                </div>
+                <div className="textoNorma pt-3">
+                  <p className="fw-light">
+                    Acompañamos al cliente en todo el proceso desde la elección
+                    de la obra hasta su montaje ofreciendo asesoría de estilo y
+                    soporte postventa.
+                  </p>
+                </div>
+              </div>
+              <div className="col-md-6 pb-5">
+                <div className="tituloNorma border-start border-dark">
+                  <h5 className="ps-3">Devolución sin coste</h5>
+                </div>
+                <div className="textoNorma pt-3">
+                  <p className="fw-light">
+                    Si tu escultura no encaja en tu espacio o no cumple tus
+                    expectativas, dispones de 30 días para devolverla o
+                    cambiarla sin gastos ni papeleos.
+                  </p>
+                </div>
+              </div>
+              <div className="col-md-6 pb-5">
+                <div className="tituloNorma border-start border-dark">
+                  <h5 className="ps-3">Pago 100% seguro y flexible</h5>
+                </div>
+                <div className="textoNorma pt-3">
+                  <p className="fw-light">
+                    Trabajamos con pasarelas de pago certificadas (tarjeta,
+                    PayPal, transferencia) y ofrecemos financiación en cómodos
+                    plazos, para que compres con total tranquilidad.
                   </p>
                 </div>
               </div>
