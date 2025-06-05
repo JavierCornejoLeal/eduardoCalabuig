@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { LazyLoadImage } from "react-lazy-load-image-component";  // Importar LazyLoadImage
 import NavBar from "../../components/NavBar";
 import Footer from "../../components/Footer";
 import Spinner from "../../components/Spinner";
 import SEO from "../../components/SEO";
 import api from "../../utils/api";
+
 import "../../assets/styles/products/producto.css";
 
 const ProductoDetallado = () => {
@@ -15,61 +15,92 @@ const ProductoDetallado = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [similares, setSimilares] = useState([]);
+
   const [openMedidas, setOpenMedidas] = useState(false);
   const [openEnvio, setOpenEnvio] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [categories, setCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState("Todos");
+
+  // Función para cargar los datos del producto
+  const fetchProductoData = async () => {
+    setLoading(true);
+    setError(null);
+    
+    try {
+      const resProducto = await api.getData(`productos/slug/${slug}`);
+      const prod = resProducto.data;
+      setProducto(prod);
+      
+      const resImagenes = await api.getData(`productos/${prod.id}/imagenes`);
+      setImagenes(resImagenes.data);
+      
+      const resTodos = await api.getData("productos");
+      const todos = resTodos.data;
+      const mismosCategoria = todos.filter(
+        (p) => p.categoria === prod.categoria && p.id !== prod.id
+      );
+      
+      // Seleccionamos 3 productos aleatorios de la misma categoría
+      const productosAleatorios = mismosCategoria.length > 3
+        ? mismosCategoria.sort(() => 0.5 - Math.random()).slice(0, 3)
+        : mismosCategoria;
+      
+      setSimilares(productosAleatorios);
+    } catch (err) {
+      setError("Error cargando el producto o sus datos relacionados");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Obtener las categorías
+  const fetchCategories = async () => {
+    try {
+      const res = await api.getData("productos");
+      const todos = res.data;
+      const únicas = Array.from(new Set(todos.map((p) => p.categoria).filter(Boolean)));
+      setCategories(["Todos", ...únicas]);
+    } catch (err) {
+      console.error("Error cargando categorías:", err);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      setError(null);
-
-      try {
-        const resProducto = await api.getData(`productos/slug/${slug}`);
-        const prod = resProducto.data;
-        setProducto(prod);
-
-        const resImagenes = await api.getData(`productos/${prod.id}/imagenes`);
-        setImagenes(resImagenes.data);
-
-        const resTodos = await api.getData("productos");
-        const todos = resTodos.data;
-        const mismosCategoria = todos.filter(
-          (p) => p.categoria === prod.categoria && p.id !== prod.id
-        );
-
-        const productosAleatorios = mismosCategoria.length > 3
-          ? mismosCategoria.sort(() => 0.5 - Math.random()).slice(0, 3)
-          : mismosCategoria;
-
-        setSimilares(productosAleatorios);
-      } catch (err) {
-        console.error(err);
-        setError("Error cargando el producto o sus datos relacionados");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
+    fetchProductoData();
+    fetchCategories();
   }, [slug]);
+
+  if (loading) return <Spinner />;
+  if (error) return <p>{error}</p>;
+  if (!producto) return <p>Producto no encontrado.</p>;
+
+  const medidasList = producto.medidas || [
+    `Alto: ${producto.alto || "N/D"} cm`,
+    `Ancho: ${producto.ancho || "N/D"} cm`,
+    `Fondo: ${producto.profundidad || "N/D"} cm`,
+    `Material: ${producto.material || "N/D"}`,
+  ];
+
+  const envioList = [
+    "Envío estándar: (3–5 días laborables)",
+    "Gastos de envío: gratuitos",
+    "Devolución gratuita en 30 días",
+    "Atención personalizada",
+    "Pago seguro y rápido",
+    "Seguimiento del pedido",
+  ];
 
   const checkIfLoggedIn = () => sessionStorage.getItem("auth_token");
 
   const handleShowModal = () => setShowLoginModal(true);
   const handleCloseModal = () => setShowLoginModal(false);
 
-  // Función para añadir al carrito
   const handleAddToCart = async () => {
-    // Si NO existe auth_token -> abrir modal
     if (!checkIfLoggedIn()) {
       handleShowModal();
       return;
     }
 
-    // Si existe auth_token -> proceder a añadir al carrito
     const user = sessionStorage.getItem("user");
     if (user) {
       const parsedUser = JSON.parse(user);
@@ -99,26 +130,6 @@ const ProductoDetallado = () => {
     }
   };
 
-  if (loading) return <Spinner />;
-  if (error) return <p>{error}</p>;
-  if (!producto) return <p>Producto no encontrado.</p>;
-
-  const medidasList = producto.medidas || [
-    `Alto: ${producto.alto || "N/D"} cm`,
-    `Ancho: ${producto.ancho || "N/D"} cm`,
-    `Fondo: ${producto.profundidad || "N/D"} cm`,
-    `Material: ${producto.material || "N/D"}`,
-  ];
-
-  const envioList = [
-    "Envío estándar: (3–5 días laborables)",
-    "Gastos de envío: gratuitos",
-    "Devolución gratuita en 30 días",
-    "Atención personalizada",
-    "Pago seguro y rápido",
-    "Seguimiento del pedido",
-  ];
-
   return (
     <>
       <SEO
@@ -126,18 +137,19 @@ const ProductoDetallado = () => {
         description={`Detalles del producto ${producto.nombre}. ${producto.descripcion || ""}`}
         endpoint={`productos/${producto.id}`}
       />
+
       <NavBar alwaysLight />
+
       <main>
         <section className="shadow-inner-section seccionProducto pt-5 pb-5">
           <div className="container pt-5">
             <div className="row gy-4 pt-5">
               <div className="col-6 col-lg-4 pt-5">
                 {imagenes[0] ? (
-                  <LazyLoadImage
+                  <img
                     src={`${import.meta.env.VITE_LOCAL_API_URL.replace("/api", "")}/storage/${imagenes[0].url}`}
                     alt={producto.nombre}
                     className="w-100 imagenProducto"
-                    effect="blur"  // Agregar un efecto de desenfoque mientras se carga
                   />
                 ) : (
                   <p>No hay imagen</p>
@@ -145,11 +157,10 @@ const ProductoDetallado = () => {
               </div>
               <div className="col-6 col-lg-4 pt-5">
                 {imagenes[1] ? (
-                  <LazyLoadImage
+                  <img
                     src={`${import.meta.env.VITE_LOCAL_API_URL.replace("/api", "")}/storage/${imagenes[1].url}`}
                     alt={producto.nombre}
                     className="w-100 imagenProducto"
-                    effect="blur"  // Agregar un efecto de desenfoque mientras se carga
                   />
                 ) : (
                   <p>No hay segunda imagen</p>
@@ -173,7 +184,6 @@ const ProductoDetallado = () => {
                   </button>
                 </div>
 
-                {/* Medidas y Características */}
                 <div className="acordeon-section border-bottom">
                   <div
                     className="medidasCaracteristicas d-flex justify-content-between align-items-center py-4"
@@ -187,14 +197,15 @@ const ProductoDetallado = () => {
                     <div className="acordeon-content ps-3 pe-3 pb-4">
                       <ul className="list-unstyled mb-0">
                         {medidasList.map((item, idx) => (
-                          <li key={idx} className="py-1">- {item}</li>
+                          <li key={idx} className="py-1">
+                            - {item}
+                          </li>
                         ))}
                       </ul>
                     </div>
                   )}
                 </div>
 
-                {/* Envío y Devoluciones */}
                 <div className="acordeon-section border-bottom">
                   <div
                     className="envioDevoluciones d-flex justify-content-between align-items-center py-4"
@@ -208,7 +219,9 @@ const ProductoDetallado = () => {
                     <div className="acordeon-content ps-3 pe-3 pb-4">
                       <ul className="list-unstyled mb-0">
                         {envioList.map((item, idx) => (
-                          <li key={idx} className="py-1">- {item}</li>
+                          <li key={idx} className="py-1">
+                            - {item}
+                          </li>
                         ))}
                       </ul>
                     </div>
@@ -217,7 +230,6 @@ const ProductoDetallado = () => {
               </div>
             </div>
 
-            {/* Productos Similares */}
             <div className="row py-5">
               <div className="col-12">
                 <div className="tituloSimilares">
@@ -229,11 +241,10 @@ const ProductoDetallado = () => {
                 <div key={productoSimilar.id} className="col-6 col-md-4">
                   <div className="imagenContainer">
                     <Link to={`/productos/${productoSimilar.slug || productoSimilar.id}`}>
-                      <LazyLoadImage
+                      <img
                         src={`${import.meta.env.VITE_LOCAL_API_URL.replace("/api", "")}/storage/${productoSimilar.imagen}`}
                         alt={productoSimilar.nombre}
                         className="w-100"
-                        effect="blur"
                       />
                     </Link>
                   </div>
@@ -254,10 +265,8 @@ const ProductoDetallado = () => {
         </section>
       </main>
 
-      {/* Modal de Bootstrap para login */}
       {showLoginModal && (
-        <>
-          <div className="modal-backdrop fade show"></div>
+        <div className="modal-backdrop fade show">
           <div className="modal fade show" tabIndex="-1" style={{ display: "block" }}>
             <div className="modal-dialog modal-dialog-centered" role="document">
               <div className="modal-content">
@@ -269,13 +278,17 @@ const ProductoDetallado = () => {
                   <p>Por favor, inicia sesión para añadir productos al carrito.</p>
                 </div>
                 <div className="modal-footer">
-                  <button type="button" className="botonCrema px-3" onClick={handleCloseModal}>Cerrar</button>
-                  <Link to="/login" className="botonMarron px-3 text-white text-decoration-none">Iniciar Sesión</Link>
+                  <button type="button" className="botonCrema px-3" onClick={handleCloseModal}>
+                    Cerrar
+                  </button>
+                  <Link to="/login" className="botonMarron px-3 text-white text-decoration-none">
+                    Iniciar Sesión
+                  </Link>
                 </div>
               </div>
             </div>
           </div>
-        </>
+        </div>
       )}
 
       <Footer />

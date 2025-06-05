@@ -19,7 +19,7 @@ const EstiloIbizenco = () => {
 
       <NavBar />
       <Header>
-        <p>Estilo ibizenco</p>
+        <p>Estilo ibicenco</p>
       </Header>
 
       <main>

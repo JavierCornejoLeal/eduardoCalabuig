@@ -262,7 +262,7 @@ const Contacto = () => {
                 <div className="modal-footer">
                   <button
                     type="button"
-                    className="btn btn-secondary"
+                    className="botonMarron px-3 text-white"
                     onClick={() => setShowModal(false)}
                   >
                     Cerrar

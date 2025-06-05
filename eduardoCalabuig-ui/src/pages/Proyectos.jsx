@@ -52,7 +52,7 @@ const Proyectos = () => {
                       alt="Exterior Ibizenco con decoraciones y naturaleza"
                     />
                     <div className="overlay-text text-center">
-                      Exterior Ibizenco
+                      Exterior Ibicenco
                     </div>
                   </Link>
                 </div>

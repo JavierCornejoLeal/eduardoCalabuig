@@ -22,7 +22,7 @@ const ExteriorIbizenco = () => {
       />
       <NavBar />
       <Header>
-        <p>Exterior Ibizenco</p>
+        <p>Exterior Ibicenco</p>
       </Header>
 
       <main>
