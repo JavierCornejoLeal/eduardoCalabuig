@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -6,10 +6,9 @@ import * as yup from "yup";
 import NavBar from "../components/Navbar";
 import Footer from "../components/Footer";
 import provincias from "../utils/provincias";
+import api from "../utils/api";
 
 import "../assets/styles/pasarelaPago.css";
-
-import LlamaEterna from "../assets/images/productos/llamaEterna.webp";
 
 import {
   Container,
@@ -18,7 +17,7 @@ import {
   Form,
   Button,
   Image,
-  Alert,
+  Spinner,
 } from "react-bootstrap";
 
 // Esquema de validación con Yup
@@ -61,10 +60,57 @@ const PasarelaPago = () => {
     resolver: yupResolver(schema),
   });
 
+  const [cartProducts, setCartProducts] = useState([]);
+  const [loadingCart, setLoadingCart] = useState(true);
+  const [subtotal, setSubtotal] = useState(0);
+
+  // Obtener URL base para imágenes (igual que en CartPanel)
+  const API_BASE_URL = import.meta.env.VITE_LOCAL_API_URL.replace("/api", "");
+
+  // Al cargar el componente, recuperamos el carrito_id y traemos productos
+  useEffect(() => {
+    const user = sessionStorage.getItem("user");
+    if (user) {
+      const parsedUser = JSON.parse(user);
+      const carritoId = parsedUser.carrito_id;
+      if (carritoId) {
+        api
+          .getData(`carritos/${carritoId}/productos`)
+          .then((response) => {
+            const productos = response.data;
+            setCartProducts(productos);
+
+            // Calcular subtotal del carrito
+            const total = productos.reduce(
+              (acc, p) => acc + p.pivot.cantidad * p.precio,
+              0
+            );
+            setSubtotal(total);
+
+            setLoadingCart(false);
+          })
+          .catch((error) => {
+            console.error("Error al obtener los productos del carrito:", error);
+            setLoadingCart(false);
+          });
+      } else {
+        setLoadingCart(false);
+      }
+    } else {
+      setLoadingCart(false);
+    }
+  }, []);
+
   const onSubmit = (data) => {
     console.log("Datos del formulario:", data);
     alert("Formulario válido y enviado (simulado).");
   };
+
+  // Calcular número total de unidades en el carrito
+  const totalCantidad = cartProducts.reduce(
+    (acc, p) => acc + p.pivot.cantidad,
+    0
+  );
 
   return (
     <>
@@ -81,7 +127,7 @@ const PasarelaPago = () => {
               >
                 <div
                   className="border d-flex flex-column"
-                  style={{ height: "60vh" }} // aumentado de 50vh a 60vh
+                  style={{ height: "60vh" }}
                 >
                   {/* Header fijo */}
                   <div className="resumen-header p-3 border-bottom">
@@ -93,53 +139,59 @@ const PasarelaPago = () => {
                   {/* Lista productos scrollable */}
                   <div
                     className="resumen-productos overflow-auto p-1 p-lg-3"
-                    style={{ height: "85%" }} // asignado para que ocupe más espacio
+                    style={{ height: "85%" }}
                   >
-                    {[...Array(4)].map((_, i) => (
-                      <div
-                        key={i}
-                        className="d-flex align-items-center mb-3"
-                        style={{ gap: "1rem", flexWrap: "nowrap" }}
-                      >
-                        <Image
-                          src={LlamaEterna}
-                          alt="Llama Eterna"
-                          style={{
-                            width: "80px",
-                            height: "80px",
-                            objectFit: "cover",
-                          }}
-                          className="me-3"
-                        />
-                        <div
-                          style={{
-                            flexGrow: 1,
-                            minWidth: 0,
-                          }}
-                        >
-                          <p className="mb-1 fw-semibold text-truncate">
-                            Llama Eterna
-                          </p>
-                          <small className="text-truncate d-block">
-                            1 x 279 €
-                          </small>
-                        </div>
-                        <div
-                          className="fw-semibold"
-                          style={{ whiteSpace: "nowrap" }}
-                        >
-                          279 €
-                        </div>
+                    {loadingCart ? (
+                      <div className="d-flex justify-content-center pt-4">
+                        <Spinner animation="border" variant="secondary" />
                       </div>
-                    ))}
+                    ) : cartProducts.length === 0 ? (
+                      <p className="text-center">Tu carrito está vacío</p>
+                    ) : (
+                      cartProducts.map((prod) => (
+                        <div
+                          key={prod.id}
+                          className="d-flex align-items-center mb-3"
+                          style={{ gap: "1rem", flexWrap: "nowrap" }}
+                        >
+                          <Image
+                            src={`${API_BASE_URL}/storage/${prod.imagen}`}
+                            alt={prod.nombre}
+                            style={{
+                              width: "80px",
+                              height: "80px",
+                              objectFit: "cover",
+                            }}
+                            className="me-3"
+                          />
+                          <div style={{ flexGrow: 1, minWidth: 0 }}>
+                            <p className="mb-1 fw-semibold text-truncate">
+                              {prod.nombre}
+                            </p>
+                            <small className="text-truncate d-block">
+                              {prod.pivot.cantidad} x {prod.precio} €
+                            </small>
+                          </div>
+                          <div
+                            className="fw-semibold"
+                            style={{ whiteSpace: "nowrap" }}
+                          >
+                            {(prod.pivot.cantidad * prod.precio).toFixed(2)} €
+                          </div>
+                        </div>
+                      ))
+                    )}
                   </div>
 
                   {/* Footer fijo */}
-                  <div className="resumen-footer p-3 border-top">
+                  <div className="resumen-footer p-3">
                     <hr />
                     <div className="d-flex justify-content-between fw-semibold mb-2">
-                      <span>Subtotal (1 Artículo)</span>
-                      <span>279 €</span>
+                      <span>
+                        Subtotal ({totalCantidad} Artículo
+                        {totalCantidad === 1 ? "" : "s"})
+                      </span>
+                      <span>{subtotal.toFixed(2)} €</span>
                     </div>
                     <div className="d-flex justify-content-between mb-2">
                       <span>Envío</span>
@@ -147,7 +199,7 @@ const PasarelaPago = () => {
                     </div>
                     <div className="d-flex justify-content-between fw-bold fs-5">
                       <span>Total del pedido</span>
-                      <span>279 €</span>
+                      <span>{subtotal.toFixed(2)} €</span>
                     </div>
                   </div>
                 </div>
@@ -250,7 +302,7 @@ const PasarelaPago = () => {
                         isInvalid={!!errors.provincia}
                         {...register("provincia")}
                       >
-                        <option value="">Seleccion provincia *</option>
+                        <option value="">Seleccionar provincia *</option>
                         {provincias.map(({ value, label }) => (
                           <option key={value} value={value}>
                             {label}

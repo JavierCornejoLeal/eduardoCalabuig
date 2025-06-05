@@ -44,7 +44,7 @@ class Carrito extends Model
     public function productos()
     {
         return $this->belongsToMany(Producto::class, 'carrito_productos', 'carrito_id', 'producto_id')
-            ->withPivot('cantidad');  // Relación con la tabla intermedia, incluye el campo 'cantidad'
+            ->withPivot('cantidad');  
     }
 }
 

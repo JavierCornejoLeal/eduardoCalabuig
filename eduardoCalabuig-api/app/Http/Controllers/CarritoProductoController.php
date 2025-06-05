@@ -18,42 +18,44 @@ class CarritoProductoController extends Controller
     public function index($carritoId)
     {
         try {
+            // Buscar el carrito por su ID
             $carrito = Carrito::find($carritoId);
             if (!$carrito) {
                 return response()->json(['message' => 'Carrito no encontrado'], 404);
             }
 
+            // Obtener los productos del carrito
             $productos = $carrito->productos;
 
-            return response()->json($productos->isEmpty() ? [] : $productos, 200);
+            if ($productos->isEmpty()) {
+                return response()->json(['message' => 'No hay productos en este carrito.'], 200);
+            }
+
+            return response()->json($productos);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Error al obtener los productos del carrito', 'error' => $e->getMessage()], 500);
         }
     }
 
-    /**
-     * Agregar un producto al carrito.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $carritoId
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request, $carritoId)
     {
         try {
             $request->validate([
-                'producto_id' => 'required|exists:productos,id',
-                'cantidad' => 'required|integer|min:1',
+                'producto_id' => 'nullable|exists:productos,id',
+                'cantidad' => 'nullable|integer|min:1',
             ]);
 
+            // Verificar si el producto ya está en el carrito
             $existingCarritoProducto = CarritoProducto::where('carrito_id', $carritoId)
                 ->where('producto_id', $request->producto_id)
                 ->first();
 
             if ($existingCarritoProducto) {
+                // Si el producto ya existe en el carrito, solo actualizamos la cantidad
                 $existingCarritoProducto->cantidad += $request->cantidad;
                 $existingCarritoProducto->save();
             } else {
+                // Si el producto no está en el carrito, lo agregamos
                 CarritoProducto::create([
                     'carrito_id' => $carritoId,
                     'producto_id' => $request->producto_id,
@@ -67,6 +69,8 @@ class CarritoProductoController extends Controller
         }
     }
 
+
+
     /**
      * Actualizar la cantidad de un producto en el carrito.
      *
@@ -77,27 +81,27 @@ class CarritoProductoController extends Controller
      */
     public function update(Request $request, $carritoId, $productoId)
     {
-        try {
-            $request->validate([
-                'cantidad' => 'required|integer|min:1',
-            ]);
+        // Validar los datos recibidos
+        $request->validate([
+            'cantidad' => 'nullable|integer|min:1',  // Permitimos null
+        ]);
 
-            $carritoProducto = CarritoProducto::where('carrito_id', $carritoId)
-                ->where('producto_id', $productoId)
-                ->first();
+        // Buscar el producto en el carrito
+        $carritoProducto = CarritoProducto::where('carrito_id', $carritoId)
+            ->where('producto_id', $productoId)
+            ->first();
 
-            if (!$carritoProducto) {
-                return response()->json(['message' => 'Producto no encontrado en el carrito'], 404);
-            }
-
-            $carritoProducto->cantidad = $request->cantidad;
-            $carritoProducto->save();
-
-            return response()->json(['message' => 'Cantidad actualizada'], 200);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Error al actualizar la cantidad', 'error' => $e->getMessage()], 500);
+        if (!$carritoProducto) {
+            return response()->json(['message' => 'Producto no encontrado en el carrito'], 404);
         }
+
+        // Actualizar la cantidad
+        $carritoProducto->cantidad = $request->cantidad;
+        $carritoProducto->save();
+
+        return response()->json(['message' => 'Cantidad actualizada'], 200);
     }
+
 
     /**
      * Eliminar un producto del carrito.
@@ -108,21 +112,18 @@ class CarritoProductoController extends Controller
      */
     public function destroy($carritoId, $productoId)
     {
-        try {
-            $carritoProducto = CarritoProducto::where('carrito_id', $carritoId)
-                ->where('producto_id', $productoId)
-                ->first();
+        // Buscar el producto en el carrito
+        $carritoProducto = CarritoProducto::where('carrito_id', $carritoId)
+            ->where('producto_id', $productoId)
+            ->first();
 
-            if (!$carritoProducto) {
-                return response()->json(['message' => 'Producto no encontrado en el carrito'], 404);
-            }
-
-            $carritoProducto->delete();
-
-            return response()->json(['message' => 'Producto eliminado del carrito'], 200);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Error al eliminar el producto', 'error' => $e->getMessage()], 500);
+        if (!$carritoProducto) {
+            return response()->json(['message' => 'Producto no encontrado en el carrito'], 404);
         }
+
+        // Eliminar el producto
+        $carritoProducto->delete();
+
+        return response()->json(['message' => 'Producto eliminado del carrito'], 200);
     }
 }
-

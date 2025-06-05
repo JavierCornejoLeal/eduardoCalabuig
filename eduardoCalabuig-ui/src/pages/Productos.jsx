@@ -80,63 +80,51 @@ const Productos = () => {
     );
   };
 
-  const onAddToCart = async (producto) => {
-    // Mostrar el producto que se pasa cuando se hace clic en "Añadir al carrito"
-    console.log("Producto seleccionado para añadir al carrito:", producto);
+const onAddToCart = async (producto) => {
+  console.log("Producto seleccionado para añadir al carrito:", producto);
 
-    // Obtener el usuario desde sessionStorage
-    const user = sessionStorage.getItem("user");
+  const user = sessionStorage.getItem("user");
 
-    // Verificar si el usuario existe
-    if (user) {
-      const parsedUser = JSON.parse(user); // Parseamos el JSON para acceder a los datos del usuario
-      const carritoId = parsedUser.carrito_id; // Accedemos al carrito_id del usuario
+  if (user) {
+    const parsedUser = JSON.parse(user);
+    const carritoId = parsedUser.carrito_id;
 
-      if (!carritoId) {
-        console.error("No se encontró un carrito válido.");
-        return;
-      }
+    if (!carritoId) {
+      console.error("No se encontró un carrito válido.");
+      return;
+    }
 
-      // Verificar si el usuario está logueado
-      if (checkIfLoggedIn()) {
+    if (checkIfLoggedIn()) {
+      try {
+        // Crear o actualizar el producto en el carrito
+        console.log("Id del carrito:", carritoId);
+        
         // Verificar si el producto ya está en el carrito
-        try {
-          // Buscamos si ya existe este producto en el carrito
-          const response = await api.getData(`carritos/${carritoId}/productos`);
-          console.log("Respuesta del carrito con productos:", response.data); // Mostrar los productos del carrito
+        const response = await api.createData(`carritos/${carritoId}/productos`, {
+          producto_id: producto.id,
+          cantidad: 1, // Al agregarlo, inicializamos la cantidad en 1
+        });
 
-          const existingProduct = response.data.find(
-            (item) => item.producto_id === producto.id
-          );
-
-          if (existingProduct) {
-            // Si el producto ya está en el carrito, actualizar la cantidad en carrito_productos
-            const newQuantity = existingProduct.cantidad + 1;
-            await api.updateData(
-              `carritos/${carritoId}/productos/${existingProduct.id}`,
-              {
-                cantidad: newQuantity,
-              }
-            );
-            console.log("Cantidad actualizada en el carrito");
-          } else {
-            // Si el producto no está en el carrito, agregarlo con cantidad = 1
-            await api.createData(`carritos/${carritoId}/productos`, {
-              producto_id: producto.id,
-              cantidad: 1,
-            });
-            console.log("Producto añadido al carrito");
-          }
-        } catch (error) {
-          console.error("Error al agregar el producto al carrito", error);
+        console.log("Producto añadido al carrito:", response.data);
+        
+        // Si el producto ya existe en el carrito, se actualizaría la cantidad
+        if (response.data) {
+          console.log("Producto añadido o actualizado en el carrito");
+        } else {
+          console.error("Hubo un error al añadir el producto al carrito");
         }
-      } else {
-        console.log("Por favor, inicia sesión para agregar al carrito.");
+        
+      } catch (error) {
+        console.error("Error al agregar el producto al carrito", error);
       }
     } else {
-      console.log("No se encontró un usuario en sesión.");
+      console.log("Por favor, inicia sesión para agregar al carrito.");
     }
-  };
+  } else {
+    console.log("No se encontró un usuario en sesión.");
+  }
+};
+
 
   if (loading) return <p>Cargando productos...</p>;
 

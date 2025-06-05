@@ -2,27 +2,140 @@ import React, { useState, useEffect } from "react";
 import { Button, Image } from "react-bootstrap";
 import { PiX } from "react-icons/pi";
 import { BsTrash3 } from "react-icons/bs";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 
 import "../assets/styles/cartPanel.css";
 import api from "../utils/api";
 
-const CartPanel = ({ onClose, incrementarCantidad, decrementarCantidad, eliminarProducto, totalPrice, navbarHeight }) => {
+const CartPanel = ({
+  onClose,
+  totalPrice,
+  navbarHeight,
+}) => {
   const navigate = useNavigate();
-  
+
   const [cartProducts, setCartProducts] = useState([]); // Estado para almacenar los productos del carrito
   const [loading, setLoading] = useState(true);
+
+const incrementarCantidad = async (productoId) => {
+  try {
+    const user = sessionStorage.getItem("user");
+
+    if (user) {
+      const parsedUser = JSON.parse(user);
+      const carritoId = parsedUser.carrito_id;
+
+      if (carritoId) {
+        // Buscar el producto en el carrito
+        const carritoProducto = cartProducts.find((p) => p.id === productoId);
+
+        if (carritoProducto) {
+          // Asegúrate de que 'cantidad' sea un número entero
+          const newQuantity = parseInt(carritoProducto.pivot.cantidad, 10) + 1;
+          console.log("Producto id:", productoId);
+          console.log("Cantidad actual:", newQuantity);
+
+          // Aquí usem l'Opció 1: passem l'endpoint sense l'ID i el ID per separat
+          const endpoint = `carritos/${carritoId}/productos`;
+
+          await api.updateData(
+            endpoint,       // endpoint base (sense incloure el productId)
+            productoId,     // a continuació, l'ID del producte
+            { cantidad: newQuantity } // cos de la petició
+          );
+
+          // Actualitzar l'estat local
+          setCartProducts((prevState) =>
+            prevState.map((prod) =>
+              prod.id === productoId
+                ? { ...prod, pivot: { ...prod.pivot, cantidad: newQuantity } }
+                : prod
+            )
+          );
+        }
+      }
+    }
+  } catch (error) {
+    console.error("Error al actualizar la cantidad:", error);
+  }
+};
+
+
+
+
+
+const decrementarCantidad = async (productoId) => {
+  try {
+    const user = sessionStorage.getItem("user");
+    if (!user) return;
+
+    const parsedUser = JSON.parse(user);
+    const carritoId = parsedUser.carrito_id;
+    if (!carritoId) return;
+
+    const carritoProducto = cartProducts.find(p => p.id === productoId);
+    if (!carritoProducto || carritoProducto.pivot.cantidad <= 1) return;
+
+    const newQuantity = carritoProducto.pivot.cantidad - 1;
+
+    // Aquí: separo endpoint y el id, y por último paso el JSON con la cantidad
+    await api.updateData(
+      `carritos/${carritoId}/productos`,  // endpoint sin el ID
+      productoId,                         // aquí va el ID del producto
+      { cantidad: newQuantity }           // este objeto va en el body
+    );
+
+    // Actualizo estado local
+    setCartProducts(prev =>
+      prev.map(prod =>
+        prod.id === productoId
+          ? { ...prod, pivot: { ...prod.pivot, cantidad: newQuantity } }
+          : prod
+      )
+    );
+  } catch (error) {
+    console.error("Error al disminuir la cantidad:", error);
+  }
+};
+
+
+const eliminarProducto = async (productoId) => {
+  try {
+    const user = sessionStorage.getItem("user");
+
+    if (user) {
+      const parsedUser = JSON.parse(user);
+      const carritoId = parsedUser.carrito_id;
+
+      if (carritoId) {
+        // endpoint base (sense passar l’ID aquí)
+        const endpoint = `carritos/${carritoId}/productos`;
+        
+        // Cridem deleteData amb l’endpoint i el productId separat
+        await api.deleteData(endpoint, productoId);
+
+        // Actualitzar l’estat local
+        setCartProducts((prevState) =>
+          prevState.filter((prod) => prod.id !== productoId)
+        );
+      }
+    }
+  } catch (error) {
+    console.error("Error al eliminar el producto:", error);
+  }
+};
 
   useEffect(() => {
     const user = sessionStorage.getItem("user");
 
     if (user) {
-      const parsedUser = JSON.parse(user);  // Parseamos el JSON para acceder a los datos del usuario
-      const carritoId = parsedUser.carrito_id;  // Accedemos al carrito_id del usuario
+      const parsedUser = JSON.parse(user); // Parseamos el JSON para acceder a los datos del usuario
+      const carritoId = parsedUser.carrito_id; // Accedemos al carrito_id del usuario
 
       if (carritoId) {
         // Obtener los productos del carrito (ahora también incluyendo la cantidad desde carrito_productos)
-        api.getData(`carritos/${carritoId}/productos`)
+        api
+          .getData(`carritos/${carritoId}/productos`)
           .then((response) => {
             setCartProducts(response.data);
             setLoading(false);
@@ -35,7 +148,7 @@ const CartPanel = ({ onClose, incrementarCantidad, decrementarCantidad, eliminar
     }
   }, []); // Solo se ejecuta una vez cuando se monta el componente
 
-  const API_BASE_URL = import.meta.env.VITE_LOCAL_API_URL; // Asumiendo que la variable de entorno está definida en .env
+  const API_BASE_URL = import.meta.env.VITE_LOCAL_API_URL.replace("/api", ""); 
 
   // Manejo del caso de carga
   if (loading) return <p>Cargando productos del carrito...</p>;
@@ -107,7 +220,7 @@ const CartPanel = ({ onClose, incrementarCantidad, decrementarCantidad, eliminar
               }}
             >
               <Image
-                src={`${API_BASE_URL}/storage/${prod.imagen}`} // Asegúrate de que la ruta es correcta
+                src={`${API_BASE_URL}/storage/${prod.imagen}`}
                 alt={prod.nombre}
                 style={{
                   width: "7em",
@@ -125,7 +238,7 @@ const CartPanel = ({ onClose, incrementarCantidad, decrementarCantidad, eliminar
                     color: "#555",
                   }}
                 >
-                  {prod.detalles}
+                  {prod.material}
                 </p>
 
                 <div
@@ -143,22 +256,23 @@ const CartPanel = ({ onClose, incrementarCantidad, decrementarCantidad, eliminar
                     variant="outline-white"
                     className="border-0 botonAgregar"
                     onClick={() =>
-                      decrementarCantidad && decrementarCantidad(prod.id)
+                      decrementarCantidad(prod.id)
                     }
-                    disabled={prod.cantidad <= 1}
+                    disabled={prod.pivot.cantidad <= 1}
                     aria-label={`Disminuir cantidad de ${prod.nombre}`}
                   >
                     −
                   </Button>
                   <span aria-live="polite" aria-atomic="true">
-                    {prod.cantidad} {/* Esta cantidad viene de carrito_productos */}
+                    {prod.pivot.cantidad}{" "}
+                    {/* Esta cantidad viene de carrito_productos */}
                   </span>
                   <Button
                     size="sm"
                     variant="outline-white"
                     className="border-0 botonAgregar"
                     onClick={() =>
-                      incrementarCantidad && incrementarCantidad(prod.id)
+                      incrementarCantidad(prod.id)
                     }
                     aria-label={`Incrementar cantidad de ${prod.nombre}`}
                   >
@@ -166,7 +280,6 @@ const CartPanel = ({ onClose, incrementarCantidad, decrementarCantidad, eliminar
                   </Button>
                 </div>
               </div>
-
               <div style={{ textAlign: "right", minWidth: "50px" }}>
                 <div className="pb-3">
                   {/* Mostrar el precio unitario */}
@@ -224,4 +337,3 @@ const CartPanel = ({ onClose, incrementarCantidad, decrementarCantidad, eliminar
 };
 
 export default CartPanel;
-
