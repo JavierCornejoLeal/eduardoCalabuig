@@ -1,62 +1,44 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Image } from "react-bootstrap";
 import { PiX } from "react-icons/pi";
-import { BsTruck, BsTrash3 } from "react-icons/bs";
+import { BsTrash3 } from "react-icons/bs";
 import { useNavigate } from "react-router-dom"; 
 
 import "../assets/styles/cartPanel.css";
+import api from "../utils/api";
 
-import Producto1 from "../assets/images/productos/llamaEterna.webp";
-import { Navigate } from "react-router-dom";
-
-const CartPanel = ({
-  onClose,
-  incrementarCantidad,
-  decrementarCantidad,
-  eliminarProducto,
-  totalPrice,
-  navbarHeight,
-}) => {
-
+const CartPanel = ({ onClose, incrementarCantidad, decrementarCantidad, eliminarProducto, totalPrice, navbarHeight }) => {
   const navigate = useNavigate();
-  // Productos estáticos hardcodeados
-  const cartProducts = [
-    {
-      id: 1,
-      nombre: "Mesa Norsica 616 (Roble)",
-      detalles: "Altura 85 cm, Ancho 72 cm, Fondo 78 cm",
-      cantidad: 1,
-      precioUnit: 370,
-      imagen: Producto1,
-    },
-    {
-      id: 2,
-      nombre: "Sillón Astor 210 (Terciopelo Ámbar)",
-      detalles: "Altura 85 cm, Ancho 72 cm, Fondo 78 cm",
-      cantidad: 2,
-      precioUnit: 280,
-      imagen:
-        "https://cdn.shopify.com/s/files/1/0270/7331/3819/products/sillon-astor-terciopelo-ambar_360x.jpg",
-    },
-    {
-      id: 3,
-      nombre: "Escultura Loop 032",
-      detalles: "Altura 26 cm, Ancho 18 cm, Fondo 10 cm",
-      cantidad: 1,
-      precioUnit: 95,
-      imagen:
-        "https://cdn.shopify.com/s/files/1/0270/7331/3819/products/escultura-loop_360x.jpg",
-    },
-    {
-      id: 4,
-      nombre: "Escultura Loop 032",
-      detalles: "Altura 26 cm, Ancho 18 cm, Fondo 10 cm",
-      cantidad: 1,
-      precioUnit: 95,
-      imagen:
-        "https://cdn.shopify.com/s/files/1/0270/7331/3819/products/escultura-loop_360x.jpg",
-    },
-  ];
+  
+  const [cartProducts, setCartProducts] = useState([]); // Estado para almacenar los productos del carrito
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const user = sessionStorage.getItem("user");
+
+    if (user) {
+      const parsedUser = JSON.parse(user);  // Parseamos el JSON para acceder a los datos del usuario
+      const carritoId = parsedUser.carrito_id;  // Accedemos al carrito_id del usuario
+
+      if (carritoId) {
+        // Obtener los productos del carrito (ahora también incluyendo la cantidad desde carrito_productos)
+        api.getData(`carritos/${carritoId}/productos`)
+          .then((response) => {
+            setCartProducts(response.data);
+            setLoading(false);
+          })
+          .catch((error) => {
+            console.error("Error al obtener los productos del carrito:", error);
+            setLoading(false);
+          });
+      }
+    }
+  }, []); // Solo se ejecuta una vez cuando se monta el componente
+
+  const API_BASE_URL = import.meta.env.VITE_LOCAL_API_URL; // Asumiendo que la variable de entorno está definida en .env
+
+  // Manejo del caso de carga
+  if (loading) return <p>Cargando productos del carrito...</p>;
 
   return (
     <div
@@ -103,7 +85,7 @@ const CartPanel = ({
         </Button>
       </div>
 
-      {/* ZONA CENTRAL (Scroll sólo aquí) */}
+      {/* ZONA CENTRAL (Scroll solo aquí) */}
       <div
         style={{
           flex: "1 1 auto",
@@ -125,7 +107,7 @@ const CartPanel = ({
               }}
             >
               <Image
-                src={prod.imagen}
+                src={`${API_BASE_URL}/storage/${prod.imagen}`} // Asegúrate de que la ruta es correcta
                 alt={prod.nombre}
                 style={{
                   width: "7em",
@@ -169,7 +151,7 @@ const CartPanel = ({
                     −
                   </Button>
                   <span aria-live="polite" aria-atomic="true">
-                    {prod.cantidad}
+                    {prod.cantidad} {/* Esta cantidad viene de carrito_productos */}
                   </span>
                   <Button
                     size="sm"
@@ -187,7 +169,8 @@ const CartPanel = ({
 
               <div style={{ textAlign: "right", minWidth: "50px" }}>
                 <div className="pb-3">
-                  {(prod.precioUnit * prod.cantidad).toFixed(2)} €
+                  {/* Mostrar el precio unitario */}
+                  {prod.precio} €
                 </div>
                 <Button
                   variant="link"
@@ -221,7 +204,7 @@ const CartPanel = ({
           <span className="fw-semibold">Coste Total</span>
           <span className="fw-semibold">
             {cartProducts
-              .reduce((acc, p) => acc + p.cantidad * p.precioUnit, 0)
+              .reduce((acc, p) => acc + p.cantidad * p.precio, 0)
               .toFixed(2)}{" "}
             €
           </span>
@@ -241,3 +224,4 @@ const CartPanel = ({
 };
 
 export default CartPanel;
+

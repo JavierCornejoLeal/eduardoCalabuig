@@ -75,29 +75,67 @@ const Productos = () => {
 
   // Verificar si el usuario está logueado
   const checkIfLoggedIn = () => {
-    return sessionStorage.getItem("auth_token") || sessionStorage.getItem("user");
+    return (
+      sessionStorage.getItem("auth_token") || sessionStorage.getItem("user")
+    );
   };
 
-  const onAddToCart = (producto) => {
-    if (checkIfLoggedIn()) {
-      // Si el usuario está logueado, agregar al carrito
-      setCart((prevCart) => [...prevCart, producto]);
-      // Aquí deberías llamar a la función correcta, es decir, 'createData' en lugar de 'postData'
-      api.createData("carrito_productos", { productoId: producto.id })
-        .then((response) => {
-          console.log("Producto añadido al carrito", response.data);
-        })
-        .catch((error) => {
-          console.error("Error añadiendo al carrito", error);
-        });
+  const onAddToCart = async (producto) => {
+    // Mostrar el producto que se pasa cuando se hace clic en "Añadir al carrito"
+    console.log("Producto seleccionado para añadir al carrito:", producto);
+
+    // Obtener el usuario desde sessionStorage
+    const user = sessionStorage.getItem("user");
+
+    // Verificar si el usuario existe
+    if (user) {
+      const parsedUser = JSON.parse(user); // Parseamos el JSON para acceder a los datos del usuario
+      const carritoId = parsedUser.carrito_id; // Accedemos al carrito_id del usuario
+
+      if (!carritoId) {
+        console.error("No se encontró un carrito válido.");
+        return;
+      }
+
+      // Verificar si el usuario está logueado
+      if (checkIfLoggedIn()) {
+        // Verificar si el producto ya está en el carrito
+        try {
+          // Buscamos si ya existe este producto en el carrito
+          const response = await api.getData(`carritos/${carritoId}/productos`);
+          console.log("Respuesta del carrito con productos:", response.data); // Mostrar los productos del carrito
+
+          const existingProduct = response.data.find(
+            (item) => item.producto_id === producto.id
+          );
+
+          if (existingProduct) {
+            // Si el producto ya está en el carrito, actualizar la cantidad en carrito_productos
+            const newQuantity = existingProduct.cantidad + 1;
+            await api.updateData(
+              `carritos/${carritoId}/productos/${existingProduct.id}`,
+              {
+                cantidad: newQuantity,
+              }
+            );
+            console.log("Cantidad actualizada en el carrito");
+          } else {
+            // Si el producto no está en el carrito, agregarlo con cantidad = 1
+            await api.createData(`carritos/${carritoId}/productos`, {
+              producto_id: producto.id,
+              cantidad: 1,
+            });
+            console.log("Producto añadido al carrito");
+          }
+        } catch (error) {
+          console.error("Error al agregar el producto al carrito", error);
+        }
+      } else {
+        console.log("Por favor, inicia sesión para agregar al carrito.");
+      }
     } else {
-      // Si no está logueado, mostrar el modal
-      setShowLoginModal(true);
+      console.log("No se encontró un usuario en sesión.");
     }
-  };
-
-  const handleLoginModalClose = () => {
-    setShowLoginModal(false);
   };
 
   if (loading) return <p>Cargando productos...</p>;
@@ -127,7 +165,9 @@ const Productos = () => {
                 {/* Texto “Productos en total” filtrados */}
                 <p className="pe-4 totalProductos pt-3">
                   Productos en total:{" "}
-                  <span className="fw-semibold">{productosFiltrados.length}</span>
+                  <span className="fw-semibold">
+                    {productosFiltrados.length}
+                  </span>
                 </p>
                 <select
                   className="filtroOrden"

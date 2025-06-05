@@ -30,7 +30,7 @@ public function register(Request $request)
         'apellidos' => $request->apellidos,
         'email' => $request->email,
         'password' => bcrypt($request->password),
-        'role_id' => '0ceadae7-3a51-43a4-8892-3fbd6e65789d',  // Asignar un role predeterminado
+        'role_id' => '572cf3d5-3a68-4710-b1be-c967c7e77da2',  // Asignar un role predeterminado
     ]);
 
     // Crear el carrito vacío (sin usuario asignado)
