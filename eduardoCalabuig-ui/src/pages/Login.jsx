@@ -23,10 +23,10 @@ const LogIn = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [recovering, setRecovering] = useState(false);
 
-  const navigate = useNavigate(); // Redirección a la home después de login exitoso
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
-    e.preventDefault(); // Evitar recarga de página
+    e.preventDefault();
 
     const userData = { email, password };
 
@@ -39,11 +39,8 @@ const LogIn = () => {
 
       // Si la respuesta es exitosa, guarda el token
       if (response.data.token) {
-        sessionStorage.setItem("auth_token", response.data.token); // Almacena el token en localStorage
-        sessionStorage.setItem("user", JSON.stringify(response.data.user)); // Almacena los datos del usuario
-        console.log("Login exitoso:", response.data);
-
-        // Redirige al usuario a la página de inicio
+        sessionStorage.setItem("auth_token", response.data.token);
+        sessionStorage.setItem("user", JSON.stringify(response.data.user));
         navigate("/");
       }    } catch (error) {
       // Manejo de errores

@@ -2,7 +2,7 @@ import React from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
-import "../assets/styles/carrousel.css"; // Ensure you have this CSS file for custom styles
+import "../assets/styles/carrousel.css";
 
 const responsive = {
   superLargeDesktop: { breakpoint: { max: 4000, min: 1440 }, items: 3 },

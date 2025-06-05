@@ -1,6 +1,6 @@
 import Footer from "../components/Footer";
 import Header from "../components/Header";
-import NavBar from "../components/Navbar";
+import NavBar from "../components/NavBar";
 import SEO from "../components/SEO";
 
 const AvisoLegal = () => {

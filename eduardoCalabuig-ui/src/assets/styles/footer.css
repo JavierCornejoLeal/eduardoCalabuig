@@ -12,12 +12,12 @@
 }
 
 .social-icon {
-  display: inline-block;               /* para que el transform afecte bien */
-  transition: transform 0.3s ease;      /* define la animación suave */
+  display: inline-block;
+  transition: transform 0.3s ease;
 }
 
 .social-icon:hover {
-  transform: scale(1.1);                /* escala al 120% */
+  transform: scale(1.1);
 }
 
 .imagenSobresale {

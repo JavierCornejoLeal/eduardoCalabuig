@@ -57,24 +57,17 @@ const NavBar = ({ carrito = [], alwaysLight = false }) => {
           api
             .getData(`carritos/${carritoId}/productos`)
             .then((response) => {
-              // Verifica dónde viene el array de productos en la respuesta:
-              // Por ejemplo, podría venir como response.data.productos o response.data.data
               let productosArray = [];
 
-              // Caso A: la API devuelve { productos: [...] }
               if (Array.isArray(response.data.productos)) {
                 productosArray = response.data.productos;
               }
-              // Caso B: la API devuelve paginación { data: [...] }
               else if (Array.isArray(response.data.data)) {
                 productosArray = response.data.data;
               }
-              // Caso C: la API devuelve directamente un array en response.data
               else if (Array.isArray(response.data)) {
                 productosArray = response.data;
               }
-              // Si no es ningún array, lo dejamos en [].
-
               const totalItems = productosArray.reduce(
                 (acc, item) => acc + (item.pivot?.cantidad || 0),
                 0
@@ -90,15 +83,13 @@ const NavBar = ({ carrito = [], alwaysLight = false }) => {
             });
         };
 
-        // Llamada inicial
         fetchCartItems();
 
-        // Actualizar cada 5 segundos (o el intervalo que prefieras)
         const interval = setInterval(fetchCartItems, 5000);
         return () => clearInterval(interval);
       }
     }
-  }, []); // Solo al montar
+  }, []);
 
   const isLight = alwaysLight || scrolled || expanded || showCartPanel;
 

@@ -4,13 +4,15 @@ import { PiX } from "react-icons/pi";
 import { BsTrash3 } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 
+import Spinner from "./Spinner";
+
 import "../assets/styles/cartPanel.css";
 import api from "../utils/api";
 
 const CartPanel = ({ onClose, totalPrice, navbarHeight }) => {
   const navigate = useNavigate();
 
-  const [cartProducts, setCartProducts] = useState([]); // Asegúrate de que empiece siempre como array
+  const [cartProducts, setCartProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const incrementarCantidad = async (productoId) => {
@@ -100,8 +102,6 @@ const CartPanel = ({ onClose, totalPrice, navbarHeight }) => {
         api
           .getData(`carritos/${carritoId}/productos`)
           .then((response) => {
-            // Aquí también verificamos que `response.data` sea un array
-            // o contenga un array en alguna propiedad
             let productosArray = [];
             if (Array.isArray(response.data.productos)) {
               productosArray = response.data.productos;
@@ -110,7 +110,6 @@ const CartPanel = ({ onClose, totalPrice, navbarHeight }) => {
             } else if (Array.isArray(response.data)) {
               productosArray = response.data;
             }
-            // Asignamos a estado (si no es array, queda en [])
             setCartProducts(productosArray);
             setLoading(false);
           })
@@ -135,7 +134,7 @@ const CartPanel = ({ onClose, totalPrice, navbarHeight }) => {
     ""
   );
 
-  if (loading) return <p>Cargando productos del carrito...</p>;
+  if (loading) return <Spinner />;
 
   return (
     <div

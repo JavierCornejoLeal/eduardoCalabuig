@@ -1,6 +1,4 @@
-/* ==============================
-   Sección Productos ─ Encabezado
-   ============================== */
+
 
 .encabezadoProductos {
   font-family: "Arial", sans-serif;
@@ -12,7 +10,6 @@
   white-space: nowrap;
 }
 
-/* Dropdown (select) */
 .filtroOrden {
   font-size: 0.9rem;
   padding: 0.6rem 0.75rem;
@@ -55,8 +52,6 @@
 .carrito-btn:hover {
   background-color: lightgray;
 }
-
-
 
 
 

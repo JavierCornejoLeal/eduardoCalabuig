@@ -28,7 +28,7 @@ const Home = () => {
   // Función que fuerza la descarga
   const handleDownloadCV = () => {
     const link = document.createElement("a");
-    link.href = CV; // Asegúrate de tener CV.pdf en public/
+    link.href = CV;
     link.setAttribute("download", "CV.pdf");
     document.body.appendChild(link);
     link.click();

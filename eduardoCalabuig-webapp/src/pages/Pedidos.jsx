@@ -1,16 +1,5 @@
-import React, { useEffect, useState } from "react";
 import NavBar from "../components/Navbar";
-import Tabla from "../components/tabla/Tabla";
-import Paginator from "../components/Paginator";
-import Filtros from "../components/Filtros";
 
-import api from "../utils/api";
-
-import { Modal, Button, Form, Row, Col } from "react-bootstrap";
-
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 
 const Pedidos = () => {
     return (

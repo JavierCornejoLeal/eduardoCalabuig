@@ -36,20 +36,13 @@ const LogIn = () => {
 
       // Aseguramos que venga token y usuario
       if (response.data.token && response.data.user) {
-        // 1) Guardar en sessionStorage
         sessionStorage.setItem("auth_token", response.data.token);
         sessionStorage.setItem("user", JSON.stringify(response.data.user));
 
         const userRolName = response.data.user.role_name; 
-        // O si tu backend devuelve { role: { name: "Admin" } }, sería:
-        // const userRolName = response.data.user.role.name;
-
-        // 2) Redirigir según rol
         if (userRolName === "Admin") {
           navigate("/productos"); 
         } else {
-          // Si no es Admin, lo mandamos a otra ruta (por ejemplo /clientes)
-          // O podrías mostrarle “sin permisos” 
           navigate("/clientes");
         }
       } else {

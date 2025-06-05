@@ -1,4 +1,3 @@
-// src/components/Mapa.jsx
 import React, { useEffect, useRef } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
 
@@ -21,18 +20,15 @@ function Mapa() {
   useEffect(() => {
     if (!mapaRef.current) return;
 
-    // 1) Configuramos el Loader incluyendo la librería 'marker'
     const loader = new Loader({
       apiKey: "AIzaSyCPN_ICzYJyIsW_7ZNX7P2Z1TcsodRSD0s",
       version: "weekly",
-      libraries: ["marker"], // <-- Muy importante para que exista google.maps.marker.AdvancedMarkerElement
+      libraries: ["marker"],
     });
 
-    // 2) Cargamos la librería
     loader
       .load()
       .then((google) => {
-        // 3) Una vez cargado todo, inicializamos el mapa
         const centerPos = {
           lat: 38.841977501166625,
           lng: 0.11241428137456375,
@@ -45,7 +41,6 @@ function Mapa() {
           mapId: "e8e516b8dca92c4bd4c811fc",
         });
 
-        // 4) Ahora sí existe google.maps.marker.AdvancedMarkerElement
         new google.maps.marker.AdvancedMarkerElement({
           position: centerPos,
           map: mapInstance,

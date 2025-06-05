@@ -12,10 +12,6 @@ import Cocina4 from "../../assets/images/projects/cocina/cocina4.webp";
 
 import "../../assets/styles/proyectos/exterior-ibizenco.css";
 
-{
-  /* Import Imágenes */
-}
-
 const Cocina = () => {
   return (
     <>

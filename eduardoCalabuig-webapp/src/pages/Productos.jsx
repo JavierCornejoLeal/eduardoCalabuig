@@ -3,6 +3,7 @@ import NavBar from "../components/Navbar";
 import Tabla from "../components/tabla/Tabla";
 import Paginator from "../components/Paginator";
 import Filtros from "../components/Filtros";
+import Spinner from "../components/Spinner";
 
 import api from "../utils/api";
 
@@ -81,7 +82,6 @@ const Productos = () => {
 
 // FILTROS
 
-// Añadimos estado filtros con los nuevos campos
 const [filtros, setFiltros] = useState({
   nombre: "",
   categoria: "Todas",
@@ -90,7 +90,6 @@ const [filtros, setFiltros] = useState({
   profundidad: "",
 });
 
-// Extraemos categorías para el filtro de categoría (más “Todas”)
 const categoriasUnicas = [
   "Todas",
   ...Array.from(new Set(productos.map((p) => p.categoria).filter(Boolean))),
@@ -133,7 +132,7 @@ const filtrosConfig = [
 // Función para manejar cambios en filtros
 const handleFiltroChange = (name, value) => {
   setFiltros((prev) => ({ ...prev, [name]: value }));
-  setCurrentPage(1); // resetea a página 1 al cambiar filtro
+  setCurrentPage(1);
 };
 
 // Aplicar filtros a productos
@@ -394,7 +393,7 @@ const productosFiltrados = productos.filter((producto) => {
     }
   };
 
-  if (loading) return <p>Cargando productos...</p>;
+  if (loading) return <Spinner />;
 
   return (
     <>

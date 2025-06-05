@@ -8,6 +8,8 @@ import SEO from "../components/SEO";
 import api from "../utils/api";
 import "../assets/styles/productos.css";
 
+import Spinner from "../components/Spinner";
+
 const opciones = [
   "Últimas novedades",
   "Precio: menor a mayor",
@@ -89,7 +91,6 @@ const Productos = () => {
   };
 
   const onAddToCart = async (producto) => {
-    console.log("Producto seleccionado para añadir al carrito:", producto);
 
     // Si NO existe auth_token -> abrir modal
     if (!checkIfLoggedIn()) {
@@ -109,7 +110,6 @@ const Productos = () => {
       }
 
       try {
-        console.log("Id del carrito:", carritoId);
         const response = await api.createData(
           `carritos/${carritoId}/productos`,
           {
@@ -117,9 +117,7 @@ const Productos = () => {
             cantidad: 1,
           }
         );
-        console.log("Producto añadido al carrito:", response.data);
         if (response.data) {
-          console.log("Producto añadido o actualizado en el carrito");
         } else {
           console.error("Hubo un error al añadir el producto al carrito");
         }
@@ -132,7 +130,7 @@ const Productos = () => {
     }
   };
 
-  if (loading) return <p>Cargando productos...</p>;
+  if (loading) return <Spinner />;
 
   return (
     <>

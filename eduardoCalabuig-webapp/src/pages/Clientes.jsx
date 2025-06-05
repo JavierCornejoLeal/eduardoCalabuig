@@ -3,6 +3,7 @@ import NavBar from "../components/Navbar";
 import Tabla from "../components/tabla/Tabla";
 import Paginator from "../components/Paginator";
 import Filtros from "../components/Filtros";
+import Spinner from "../components/Spinner";
 
 import api from "../utils/api";
 
@@ -14,7 +15,6 @@ import * as yup from "yup";
 
 import "../assets/styles/productos.css";
 
-// Columnas para la tabla de usuarios
 const columns = [
   { header: "Nombre", key: "name" },
   { header: "Apellidos", key: "apellidos" },
@@ -22,9 +22,6 @@ const columns = [
   { header: "Rol", key: "role_name" },
 ];
 
-// =======================================================
-// 1) Esquema de validación para CREAR usuario
-// =======================================================
 const usuarioAddSchema = yup.object().shape({
   name: yup
     .string()
@@ -49,13 +46,6 @@ const usuarioAddSchema = yup.object().shape({
     .oneOf([yup.ref("password")], "Las contraseñas no coinciden"),
 });
 
-// =======================================================
-// 2) Esquema de validación para EDITAR usuario
-//    (password es opcional, pero si se pone debe validarse)
-// =======================================================
-// =======================================================
-// Esquema de validación para EDITAR usuario (forma “funcional” de when)
-// =======================================================
 const usuarioEditSchema = yup.object().shape({
   name: yup
     .string()
@@ -74,7 +64,6 @@ const usuarioEditSchema = yup.object().shape({
   password: yup
     .string()
     .transform((value, originalValue) => {
-      // Si viene como "", convertir a null para que .nullable() funcione
       return originalValue === "" ? null : value;
     })
     .nullable()
@@ -84,13 +73,11 @@ const usuarioEditSchema = yup.object().shape({
     .string()
     .nullable()
     .when("password", (passwordValue, schema) => {
-      // Si “password” no está vacío, entonces confirmación es obligatoria
       if (passwordValue) {
         return schema
           .required("La confirmación es obligatoria")
           .oneOf([yup.ref("password")], "Las contraseñas no coinciden");
       }
-      // Si password está vacío (o null), permitimos que password_confirmation sea null
       return schema.nullable();
     }),
 });
@@ -104,9 +91,6 @@ const Usuarios = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
 
-  // =======================================================
-  // Estados para los filtros
-  // =======================================================
   const [filtros, setFiltros] = useState({
     name: "",
     apellidos: "",
@@ -114,10 +98,8 @@ const Usuarios = () => {
     role: "Todos",
   });
 
-  // Opciones de rol para el componente Filtros (+ "Todos")
   const roleOptions = ["Todos", ...roles.map((r) => r.name)];
 
-  // Configuración para el componente <Filtros>
   const filtrosConfig = [
     {
       label: "Nombre",
@@ -178,20 +160,13 @@ const Usuarios = () => {
     return true;
   });
 
-  // =======================================================
-  // Estados para mostrar/ocultar modales
-  // =======================================================
   const [showAddModal, setShowAddModal] = useState(false);
   const [showViewModal, setShowViewModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  // Usuario seleccionado para ver/editar/eliminar
   const [currentUsuario, setCurrentUsuario] = useState(null);
 
-  // =======================================================
-  // React Hook Form para "Agregar usuario"
-  // =======================================================
   const {
     register: registerAdd,
     handleSubmit: handleSubmitAdd,
@@ -209,9 +184,6 @@ const Usuarios = () => {
     },
   });
 
-  // =======================================================
-  // React Hook Form para "Editar usuario"
-  // =======================================================
   const {
     register: registerEdit,
     handleSubmit: handleSubmitEdit,
@@ -229,23 +201,17 @@ const Usuarios = () => {
     },
   });
 
-  // =======================================================
-  // Al montar el componente: cargar roles y usuarios
-  // =======================================================
   useEffect(() => {
     const fetchRolesYUsuarios = async () => {
       setLoading(true);
       try {
-        // 1) Traer roles
         const rolesRes = await api.getData("roles");
         const rolesData = rolesRes.data;
         setRoles(rolesData);
 
-        // 2) Traer usuarios
         const usuariosRes = await api.getData("usuarios");
         const usuariosData = usuariosRes.data;
 
-        // 3) Inyectar role_name en cada usuario
         const usuariosConRoleName = usuariosData.map((u) => {
           const rolEncontrado = rolesData.find((r) => r.id === u.role_id);
           return {
@@ -277,9 +243,6 @@ const Usuarios = () => {
     startIndex + itemsPerPage
   );
 
-  // =======================================================
-  // FUNCIONES para abrir modales
-  // =======================================================
   const handleView = (usuario) => {
     setCurrentUsuario(usuario);
     setShowViewModal(true);
@@ -287,7 +250,7 @@ const Usuarios = () => {
 
   const handleEdit = (usuario) => {
     setCurrentUsuario(usuario);
-    // Prellenar formulario de edición con datos del usuario
+
     resetEditForm({
       name: usuario.name || "",
       apellidos: usuario.apellidos || "",
@@ -304,9 +267,6 @@ const Usuarios = () => {
     setShowDeleteModal(true);
   };
 
-  // =======================================================
-  // FUNCIONES para cerrar modales
-  // =======================================================
   const closeAddModal = () => {
     setShowAddModal(false);
     resetAddForm();
@@ -325,18 +285,12 @@ const Usuarios = () => {
     setCurrentUsuario(null);
   };
 
-  // =======================================================
-  // ENVÍO: Crear usuario
-  // =======================================================
   const onSubmitAdd = async (data) => {
     try {
-      // data = { name, apellidos, email, password, password_confirmation, role_id }
+
       const newUserRes = await api.createData("usuarios", data);
       const createdUser = newUserRes.data.user; 
-      // Laravel está devolviendo { user, carrito }
-      // Por lo tanto createdUser = newUserRes.data.user
 
-      // Inyectar role_name en el nuevo usuario
       const rolCreado = roles.find((r) => r.id === createdUser.role_id);
       setUsuarios((prev) => [
         ...prev,
@@ -349,17 +303,12 @@ const Usuarios = () => {
       closeAddModal();
     } catch (error) {
       console.error("Error creando usuario:", error);
-      // Aquí podrías mostrar un toast o un mensaje extra si el backend devolviera errores
     }
   };
 
-  // =======================================================
-  // ENVÍO: Editar usuario
-  // =======================================================
   const onSubmitEdit = async (data) => {
     try {
-      // data puede incluir { name, apellidos, email, password?, password_confirmation?, role_id }
-      // Si password viene vacío, el backend no lo cambiará (según tu controlador)
+
       const updatedRes = await api.updateData(
         "usuarios",
         currentUsuario.id,
@@ -368,7 +317,6 @@ const Usuarios = () => {
       const updatedUser = updatedRes.data;
       const rolEditado = roles.find((r) => r.id === updatedUser.role_id);
 
-      // Actualizar el estado local de usuarios
       setUsuarios((prev) =>
         prev.map((u) =>
           u.id === updatedUser.id
@@ -383,13 +331,9 @@ const Usuarios = () => {
       closeEditModal();
     } catch (error) {
       console.error("Error actualizando usuario:", error);
-      // Igualmente, podrías mostrar errores devueltos por el backend
     }
   };
 
-  // =======================================================
-  // ENVÍO: Eliminar usuario
-  // =======================================================
 const handleConfirmDelete = async () => {
   try {
     await api.deleteData("usuarios", currentUsuario.id);
@@ -400,9 +344,7 @@ const handleConfirmDelete = async () => {
   }
 };
 
-
-  // Si aún está cargando roles/usuarios, mostramos un “Cargando…”
-  if (loading) return <p>Cargando usuarios...</p>;
+  if (loading) return <Spinner />;
 
   return (
     <>
@@ -410,7 +352,6 @@ const handleConfirmDelete = async () => {
       <main className="pt-5">
         <section className="py-5 shadow-inner-section">
           <div className="container-fluid pt-5 px-5">
-            {/* ======================================================= */}
             {/* BARRA DE FILTROS */}
             <div className="row border-bottom mx-5 pb-3 mb-5">
               <Filtros
@@ -420,7 +361,6 @@ const handleConfirmDelete = async () => {
               />
             </div>
 
-            {/* ======================================================= */}
             {/* ENCABEZADO (paginador + total + botón de añadir) */}
             <div className="row px-5 mb-3">
               <div className="col-6 d-flex align-items-center">
@@ -460,7 +400,6 @@ const handleConfirmDelete = async () => {
               </div>
             </div>
 
-            {/* ======================================================= */}
             {/* TABLA DE USUARIOS + PAGINACIÓN */}
             <div className="row py-2 px-5">
               <div className="col-12">
@@ -481,9 +420,6 @@ const handleConfirmDelete = async () => {
             </div>
           </div>
 
-          {/* ======================================================= */}
-          {/* MODAL: AÑADIR USUARIO */}
-          {/* ======================================================= */}
           <Modal show={showAddModal} onHide={closeAddModal} size="md" centered>
             <Modal.Header closeButton>
               <Modal.Title>Añadir usuario</Modal.Title>
@@ -607,9 +543,6 @@ const handleConfirmDelete = async () => {
             </Form>
           </Modal>
 
-          {/* ======================================================= */}
-          {/* MODAL: VISUALIZAR USUARIO */}
-          {/* ======================================================= */}
           <Modal
             show={showViewModal}
             onHide={closeViewModal}
@@ -647,9 +580,6 @@ const handleConfirmDelete = async () => {
             </Modal.Footer>
           </Modal>
 
-          {/* ======================================================= */}
-          {/* MODAL: EDITAR USUARIO */}
-          {/* ======================================================= */}
           <Modal
             show={showEditModal}
             onHide={closeEditModal}
@@ -775,9 +705,6 @@ const handleConfirmDelete = async () => {
             </Form>
           </Modal>
 
-          {/* ======================================================= */}
-          {/* MODAL: ELIMINAR USUARIO */}
-          {/* ======================================================= */}
           <Modal
             show={showDeleteModal}
             onHide={closeDeleteModal}

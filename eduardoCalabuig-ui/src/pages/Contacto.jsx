@@ -37,8 +37,8 @@ const Contacto = () => {
     // Extrae valores del formulario
     const { nombre, apellidos, email, telefono, mensaje } = form.current;
     const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-    const templateContactId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID; // plantilla del diseñador
-    const templateReplyId = import.meta.env.VITE_EMAILJS_TEMPLATE_REPLY_ID; // plantilla autorespuesta
+    const templateContactId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const templateReplyId = import.meta.env.VITE_EMAILJS_TEMPLATE_REPLY_ID;
     const userId = import.meta.env.VITE_EMAILJS_USER_ID;
 
     // Prepara parámetros comunes
@@ -52,18 +52,12 @@ const Contacto = () => {
     };
 
     try {
-      // 1) Envío al diseñador
       await emailjs.send(serviceId, templateContactId, templateParams, userId);
-
-      // 2) Autorespuesta al cliente
       await emailjs.send(serviceId, templateReplyId, templateParams, userId);
-
-      // Mostrar modal en lugar de alert
       setShowModal(true);
       form.current.reset();
     } catch (error) {
       console.error("EmailJS Error:", error);
-      // Mostrar modal de error
       setShowModal(true);
     }
   };

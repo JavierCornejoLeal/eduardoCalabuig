@@ -10,37 +10,30 @@ class Carrito extends Model
 {
     use HasFactory;
 
-    // Nombre de la tabla en la base de datos
     protected $table = 'carritos';  
     
-    // Campos que se pueden asignar en masa
     protected $fillable = ['usuario_id', 'fechaCreacion'];  
 
-    // Configuración para la clave primaria UUID
     protected $primaryKey = 'id';  
-    public $incrementing = false;  // Desactivar el autoincremento (usamos UUID)
-    protected $keyType = 'string';  // La clave primaria es un string (UUID)
+    public $incrementing = false;
+    protected $keyType = 'string';
 
-    // Generación automática del UUID cuando se crea un nuevo carrito
     protected static function boot()
     {
         parent::boot();
 
-        // Asignar un UUID a 'id' si no está presente
         static::creating(function ($carrito) {
             if (!$carrito->id) {
-                $carrito->id = (string) Str::uuid();  // Generar el UUID
+                $carrito->id = (string) Str::uuid();
             }
         });
     }
 
-    // Relación con el modelo User (un carrito pertenece a un usuario)
     public function user()
     {
         return $this->belongsTo(User::class, 'usuario_id'); 
     }
 
-    // Relación con los productos (un carrito puede tener muchos productos)
     public function productos()
     {
         return $this->belongsToMany(Producto::class, 'carrito_productos', 'carrito_id', 'producto_id')

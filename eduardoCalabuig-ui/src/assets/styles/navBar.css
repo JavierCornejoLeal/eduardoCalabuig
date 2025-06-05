@@ -26,7 +26,7 @@
   position: absolute;
   top: -6px;
   right: -10px;
-  background-color: black; /* rojo bootstrap */
+  background-color: black;
   color: white;
   font-size: 12px;
   padding: 4px 6px;
@@ -37,7 +37,7 @@
 }
 
 .cart-badge-horizontal {
-  background-color: black; /* rojo bootstrap */
+  background-color: black;
   color: white;
   font-size: 12px;
   padding: 4px 9px;

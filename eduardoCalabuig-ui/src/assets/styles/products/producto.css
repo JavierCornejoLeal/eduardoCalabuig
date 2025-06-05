@@ -2,7 +2,6 @@
   height: 35em;
 }
 
-/* Botón “Añadir al carrito” */
 .btnAgregar {
   width: 100%;
   background-color: #51443d;
@@ -17,7 +16,7 @@
 
 .btnAgregar:hover,
 .btnAgregar:focus {
-  background-color: #463a34; /* Un marrón un poco más claro al hover */
+  background-color: #463a34;
 }
 
 @media (max-width: 992px) {

@@ -8,8 +8,8 @@ use Illuminate\Support\Str;
 
 class Producto extends Model
 {
-    protected $keyType = 'string';  // El id es string (UUID)
-    public $incrementing = false;   // No autoincrementa
+    protected $keyType = 'string';
+    public $incrementing = false;
 
     protected $fillable = [
         'nombre',
@@ -25,7 +25,6 @@ class Producto extends Model
         'imagen',
     ];
 
-    // Generar UUID automáticamente al crear
     protected static function boot()
     {
         parent::boot();
@@ -37,7 +36,6 @@ class Producto extends Model
         });
     }
 
-    // Relación uno a muchos: Un producto tiene muchas imágenes
     public function imagenes()
     {
         return $this->hasMany(Imagen::class, 'producto_id', 'id');

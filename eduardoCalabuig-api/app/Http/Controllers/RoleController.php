@@ -9,69 +9,43 @@ use Illuminate\Support\Str;
 
 class RoleController extends Controller
 {
-    /**
-     * Mostrar todos los roles.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-        $roles = Role::all();  // Obtener todos los roles
-        return response()->json($roles);  // Devolver los roles en formato JSON
+        $roles = Role::all();
+        return response()->json($roles);
     }
 
-    /**
-     * Mostrar un rol específico.
-     *
-     * @param  string  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        $role = Role::find($id);  // Buscar el rol por su UUID
+        $role = Role::find($id);
         if (!$role) {
-            return response()->json(['message' => 'Rol no encontrado'], 404);  // Si no se encuentra, devolver un error
+            return response()->json(['message' => 'Rol no encontrado'], 404);
         }
-        return response()->json($role);  // Devolver el rol encontrado
+        return response()->json($role);
     }
 
-    /**
-     * Crear un nuevo rol.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        // Validar los datos de entrada
         $request->validate([
             'name' => 'required|string|max:255|unique:roles,name',
         ]);
 
-        // Crear un nuevo rol
         $role = Role::create([
-            'id' => Str::uuid(),  // Asignar un UUID al rol
+            'id' => Str::uuid(),
             'name' => $request->name,
         ]);
 
-        return response()->json($role, 201);  // Devolver el rol creado
+        return response()->json($role, 201);
     }
 
-    /**
-     * Actualizar un rol existente.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        $role = Role::find($id);  // Buscar el rol por su UUID
+        $role = Role::find($id);
         if (!$role) {
-            return response()->json(['message' => 'Rol no encontrado'], 404);  // Si no se encuentra, devolver un error
+            return response()->json(['message' => 'Rol no encontrado'], 404);
         }
 
-        // Validar los datos de entrada
         $request->validate([
             'name' => 'required|string|max:255|unique:roles,name,' . $id,
         ]);
@@ -81,50 +55,36 @@ class RoleController extends Controller
             'name' => $request->name ?? $role->name,
         ]);
 
-        return response()->json($role);  // Devolver el rol actualizado
+        return response()->json($role);
     }
 
-    /**
-     * Eliminar un rol.
-     *
-     * @param  string  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        $role = Role::find($id);  // Buscar el rol por su UUID
+        $role = Role::find($id);
         if (!$role) {
-            return response()->json(['message' => 'Rol no encontrado'], 404);  // Si no se encuentra, devolver un error
+            return response()->json(['message' => 'Rol no encontrado'], 404);
         }
 
-        $role->delete();  // Eliminar el rol
+        $role->delete();
 
-        return response()->json(['message' => 'Rol eliminado'], 200);  // Devolver mensaje de éxito
+        return response()->json(['message' => 'Rol eliminado'], 200);
     }
 
-    /**
-     * Asignar un rol a un usuario.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $userId
-     * @return \Illuminate\Http\Response
-     */
     public function assignRoleToUser(Request $request, $userId)
     {
-        // Validar el input
         $request->validate([
             'role_id' => 'required|exists:roles,id',
         ]);
 
-        $user = User::find($userId);  // Buscar al usuario por su UUID
+        $user = User::find($userId);
         if (!$user) {
-            return response()->json(['message' => 'Usuario no encontrado'], 404);  // Si no se encuentra, devolver un error
+            return response()->json(['message' => 'Usuario no encontrado'], 404);
         }
 
         // Asignar el rol al usuario
         $user->role_id = $request->role_id;
-        $user->save();  // Guardar el usuario con el nuevo rol
+        $user->save();
 
-        return response()->json(['message' => 'Rol asignado al usuario correctamente'], 200);  // Devolver mensaje de éxito
+        return response()->json(['message' => 'Rol asignado al usuario correctamente'], 200);
     }
 }

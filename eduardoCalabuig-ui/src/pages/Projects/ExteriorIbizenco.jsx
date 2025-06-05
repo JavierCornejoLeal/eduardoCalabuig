@@ -12,10 +12,6 @@ import Exterior4 from "../../assets/images/projects/exterior-ibizenco/exterior4.
 
 import "../../assets/styles/proyectos/exterior-ibizenco.css";
 
-{
-  /* Import Imágenes */
-}
-
 const ExteriorIbizenco = () => {
   return (
     <>

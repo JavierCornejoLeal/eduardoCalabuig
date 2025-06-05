@@ -38,15 +38,11 @@ class User extends Authenticatable implements JWTSubject
         ];
     }
 
-    /**
-     * Relación uno a muchos inversa con el modelo 'Role'.
-     */
     public function role()
     {
         return $this->belongsTo(Role::class, 'role_id');
     }
 
-    // Relación con el carrito
     public function carrito()
     {
         return $this->belongsTo(Carrito::class, 'carrito_id');

@@ -4,8 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Support\Str; // para UUID
-use App\Models\Producto;   // Importa el modelo Producto
+use Illuminate\Support\Str;
+use App\Models\Producto;
 
 class Imagen extends Model
 {
@@ -22,7 +22,6 @@ class Imagen extends Model
         'url',
     ];
 
-    // Asignar UUID automáticamente al crear (opcional pero recomendable)
     protected static function boot()
     {
         parent::boot();
@@ -34,7 +33,6 @@ class Imagen extends Model
         });
     }
 
-    // Relación a Producto
     public function producto()
     {
         return $this->belongsTo(Producto::class, 'producto_id', 'id');

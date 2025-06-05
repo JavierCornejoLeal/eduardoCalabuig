@@ -13,9 +13,7 @@ use Illuminate\Support\Facades\Storage;
 
 class ImagenesController extends Controller
 {
-    /**
-     * Subir una nueva imagen para un producto.
-     */
+
     public function store(Request $request)
     {
         $request->validate([
@@ -23,10 +21,8 @@ class ImagenesController extends Controller
             'imagen' => 'required|image|max:2048',
         ]);
 
-        // Guardar la imagen en disco en carpeta "productos"
         $path = $request->file('imagen')->store('productos', 'public');
 
-        // Crear registro en la BD
         $imagen = Imagen::create([
             'id' => (string) Str::uuid(),
             'producto_id' => $request->producto_id,
@@ -39,9 +35,6 @@ class ImagenesController extends Controller
         ], 201);
     }
 
-    /**
-     * Obtener imágenes de un producto.
-     */
     public function index($productoId)
     {
         $imagenes = Imagen::where('producto_id', $productoId)->get();
@@ -49,17 +42,12 @@ class ImagenesController extends Controller
         return response()->json($imagenes);
     }
 
-    /**
-     * Eliminar una imagen.
-     */
     public function destroy($id)
     {
         $imagen = Imagen::findOrFail($id);
 
-        // Borrar archivo físico
         Storage::disk('public')->delete($imagen->url);
 
-        // Borrar registro BD
         $imagen->delete();
 
         return response()->json(['message' => 'Imagen eliminada correctamente']);

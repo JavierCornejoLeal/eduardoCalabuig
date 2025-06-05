@@ -4,17 +4,17 @@
 textarea.form-control {
   border-radius: 0 !important;
   box-shadow: none !important;
-  height: 48px; /* un poco más alto */
+  height: 48px;
   font-size: 1.1rem;
-  width: 100%; /* asegúrate que ocupe todo el ancho */
+  width: 100%;
   transition: border-color 0.3s ease;
 }
 
 .form-control:focus,
 .form-select:focus,
 textarea.form-control:focus {
-  border-color: #000 !important; /* borde negro */
-  box-shadow: none !important; /* sin sombra */
+  border-color: #000 !important;
+  box-shadow: none !important;
   outline: none;
 }
 
@@ -28,14 +28,14 @@ textarea.form-control {
 .resumen-carrito > div {
   display: flex;
   flex-direction: column;
-  height: 50vh; /* máximo 50% altura ventana */
+  height: 50vh;
 }
 
 /* Header y footer fijos */
 .resumen-header,
 .resumen-footer {
   flex-shrink: 0;
-  background-color: white; /* Para que no transparente */
+  background-color: white;
   z-index: 10;
 }
 
@@ -43,6 +43,6 @@ textarea.form-control {
 .resumen-productos {
   overflow-y: auto;
   flex-grow: 1;
-  padding-right: 1rem; /* para evitar que scroll tape contenido */
+  padding-right: 1rem;
 }
 

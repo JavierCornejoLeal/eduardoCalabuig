@@ -77,7 +77,6 @@ class ProductoController extends Controller
         return response()->json($producto);
     }
 
-    // Actualizar un producto
     public function update(Request $request, $id)
     {
         $producto = Producto::find($id);
@@ -100,7 +99,6 @@ class ProductoController extends Controller
             'slug' => 'nullable|string|max:255|unique:productos,slug,' . $id,
         ]);
 
-        // Actualizar slug si cambia el nombre o si no se envía slug
         if (isset($validated['nombre']) && $validated['nombre'] !== $producto->nombre) {
             $baseSlug = Str::slug($validated['nombre']);
             $slug = $baseSlug;

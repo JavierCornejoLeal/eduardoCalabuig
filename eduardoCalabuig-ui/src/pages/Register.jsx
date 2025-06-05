@@ -72,7 +72,7 @@ const schema = yup.object().shape({
     .oneOf([yup.ref("password"), null], "Las contraseñas no coinciden")
     .required("Confirma la contraseña"),
   terms: yup.bool().oneOf([true], "Debes aceptar los términos y condiciones"),
-  acceptEmail: yup.bool(), // opcional
+  acceptEmail: yup.bool(),
 });
 
 const Register = () => {
@@ -94,41 +94,29 @@ const Register = () => {
       apellidos: data.surname,
       email: data.email,
       password: data.password,
-      password_confirmation: data.confirmPassword, // Cambiado a password_confirmation
+      password_confirmation: data.confirmPassword,
     };
 
     try {
       // Realizar la petición a la API
       const response = await api.createData("register", userData);
-      console.log("Usuario creado exitosamente:", response.data);
 
-      // Suponiendo que la respuesta tiene un token de autenticación
       const token = response.data.token;
 
       if (token) {
         // Guardar el token en localStorage o sessionStorage
-        sessionStorage.setItem("auth_token", token); // O usa sessionStorage.setItem
-        console.log("Token guardado en localStorage");
+        sessionStorage.setItem("auth_token", token);
 
         // Redirigir al login después de un registro exitoso
         navigate("/login");
-
-        // Mostrar alerta de éxito
-        alert("¡Usuario registrado exitosamente!");
-      } else {
-        alert("No se pudo obtener el token. Intenta nuevamente.");
-      }
+      } 
     } catch (error) {
       if (error.response) {
         // Error de respuesta del servidor (e.g., el correo ya está registrado)
         console.error("Error al crear el usuario:", error.response.data);
-        alert(
-          `Hubo un error al registrar el usuario: ${error.response.data.message}`
-        );
       } else {
         // Error de red o de conexión
         console.error("Error de red:", error);
-        alert("Hubo un error de red. Por favor, intenta nuevamente.");
       }
     }
   };

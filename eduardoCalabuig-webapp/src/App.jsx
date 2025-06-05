@@ -1,4 +1,3 @@
-// src/App.jsx
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -15,10 +14,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Ruta pública: Login */}
         <Route path="/login" element={<Login />} />
-
-        {/* Rutas protegidas: solo Admin (se envuelven en PrivateRoute) */}
         <Route
           path="/productos"
           element={
@@ -51,8 +47,6 @@ function App() {
             </PrivateRoute>
           }
         />
-
-        {/* Ruta comodín: muestra Error404 si la URL no coincide */}
         <Route path="*" element={<Error404 />} />
       </Routes>
     </BrowserRouter>

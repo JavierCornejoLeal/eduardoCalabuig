@@ -103,7 +103,6 @@ const PasarelaPago = () => {
 
   const onSubmit = (data) => {
     console.log("Datos del formulario:", data);
-    alert("Formulario válido y enviado (simulado).");
   };
 
   // Calcular número total de unidades en el carrito

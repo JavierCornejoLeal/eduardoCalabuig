@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Image } from "react-bootstrap";
-import { FaRegEdit, FaRegEye, FaPlusCircle } from "react-icons/fa"; // Añadido FaPlusCircle
+import { FaRegEdit, FaRegEye, FaPlusCircle } from "react-icons/fa";
 import { FaTrash } from "react-icons/fa6";
 
 import "../../assets/styles/tabla/tabla.css";
