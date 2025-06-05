@@ -50,7 +50,7 @@ const NavBar = ({ alwaysLight = false }) => {
       }}
     >
       <Container fluid className="px-md-5 mx-md-5">
-        <Navbar.Brand href="/">
+        <Navbar.Brand href="/productos">
           <img src={isLight ? logoNegro : logoMarron} alt="Eduardo Calabuig" />
         </Navbar.Brand>
 

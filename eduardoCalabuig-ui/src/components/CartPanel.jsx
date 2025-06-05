@@ -7,150 +7,134 @@ import { useNavigate } from "react-router-dom";
 import "../assets/styles/cartPanel.css";
 import api from "../utils/api";
 
-const CartPanel = ({
-  onClose,
-  totalPrice,
-  navbarHeight,
-}) => {
+const CartPanel = ({ onClose, totalPrice, navbarHeight }) => {
   const navigate = useNavigate();
 
-  const [cartProducts, setCartProducts] = useState([]); // Estado para almacenar los productos del carrito
+  const [cartProducts, setCartProducts] = useState([]); // Asegúrate de que empiece siempre como array
   const [loading, setLoading] = useState(true);
 
-const incrementarCantidad = async (productoId) => {
-  try {
-    const user = sessionStorage.getItem("user");
-
-    if (user) {
+  const incrementarCantidad = async (productoId) => {
+    try {
+      const user = sessionStorage.getItem("user");
+      if (!user) return;
       const parsedUser = JSON.parse(user);
       const carritoId = parsedUser.carrito_id;
+      if (!carritoId) return;
 
-      if (carritoId) {
-        // Buscar el producto en el carrito
-        const carritoProducto = cartProducts.find((p) => p.id === productoId);
+      const carritoProducto = cartProducts.find((p) => p.id === productoId);
+      if (carritoProducto) {
+        const newQuantity = parseInt(carritoProducto.pivot.cantidad, 10) + 1;
+        await api.updateData(
+          `carritos/${carritoId}/productos`,
+          productoId,
+          { cantidad: newQuantity }
+        );
 
-        if (carritoProducto) {
-          // Asegúrate de que 'cantidad' sea un número entero
-          const newQuantity = parseInt(carritoProducto.pivot.cantidad, 10) + 1;
-          console.log("Producto id:", productoId);
-          console.log("Cantidad actual:", newQuantity);
-
-          // Aquí usem l'Opció 1: passem l'endpoint sense l'ID i el ID per separat
-          const endpoint = `carritos/${carritoId}/productos`;
-
-          await api.updateData(
-            endpoint,       // endpoint base (sense incloure el productId)
-            productoId,     // a continuació, l'ID del producte
-            { cantidad: newQuantity } // cos de la petició
-          );
-
-          // Actualitzar l'estat local
-          setCartProducts((prevState) =>
-            prevState.map((prod) =>
-              prod.id === productoId
-                ? { ...prod, pivot: { ...prod.pivot, cantidad: newQuantity } }
-                : prod
-            )
-          );
-        }
-      }
-    }
-  } catch (error) {
-    console.error("Error al actualizar la cantidad:", error);
-  }
-};
-
-
-
-
-
-const decrementarCantidad = async (productoId) => {
-  try {
-    const user = sessionStorage.getItem("user");
-    if (!user) return;
-
-    const parsedUser = JSON.parse(user);
-    const carritoId = parsedUser.carrito_id;
-    if (!carritoId) return;
-
-    const carritoProducto = cartProducts.find(p => p.id === productoId);
-    if (!carritoProducto || carritoProducto.pivot.cantidad <= 1) return;
-
-    const newQuantity = carritoProducto.pivot.cantidad - 1;
-
-    // Aquí: separo endpoint y el id, y por último paso el JSON con la cantidad
-    await api.updateData(
-      `carritos/${carritoId}/productos`,  // endpoint sin el ID
-      productoId,                         // aquí va el ID del producto
-      { cantidad: newQuantity }           // este objeto va en el body
-    );
-
-    // Actualizo estado local
-    setCartProducts(prev =>
-      prev.map(prod =>
-        prod.id === productoId
-          ? { ...prod, pivot: { ...prod.pivot, cantidad: newQuantity } }
-          : prod
-      )
-    );
-  } catch (error) {
-    console.error("Error al disminuir la cantidad:", error);
-  }
-};
-
-
-const eliminarProducto = async (productoId) => {
-  try {
-    const user = sessionStorage.getItem("user");
-
-    if (user) {
-      const parsedUser = JSON.parse(user);
-      const carritoId = parsedUser.carrito_id;
-
-      if (carritoId) {
-        // endpoint base (sense passar l’ID aquí)
-        const endpoint = `carritos/${carritoId}/productos`;
-        
-        // Cridem deleteData amb l’endpoint i el productId separat
-        await api.deleteData(endpoint, productoId);
-
-        // Actualitzar l’estat local
-        setCartProducts((prevState) =>
-          prevState.filter((prod) => prod.id !== productoId)
+        setCartProducts((prev) =>
+          prev.map((prod) =>
+            prod.id === productoId
+              ? { ...prod, pivot: { ...prod.pivot, cantidad: newQuantity } }
+              : prod
+          )
         );
       }
+    } catch (error) {
+      console.error("Error al actualizar la cantidad:", error);
     }
-  } catch (error) {
-    console.error("Error al eliminar el producto:", error);
-  }
-};
+  };
+
+  const decrementarCantidad = async (productoId) => {
+    try {
+      const user = sessionStorage.getItem("user");
+      if (!user) return;
+      const parsedUser = JSON.parse(user);
+      const carritoId = parsedUser.carrito_id;
+      if (!carritoId) return;
+
+      const carritoProducto = cartProducts.find((p) => p.id === productoId);
+      if (!carritoProducto || carritoProducto.pivot.cantidad <= 1) return;
+
+      const newQuantity = carritoProducto.pivot.cantidad - 1;
+      await api.updateData(
+        `carritos/${carritoId}/productos`,
+        productoId,
+        { cantidad: newQuantity }
+      );
+
+      setCartProducts((prev) =>
+        prev.map((prod) =>
+          prod.id === productoId
+            ? { ...prod, pivot: { ...prod.pivot, cantidad: newQuantity } }
+            : prod
+        )
+      );
+    } catch (error) {
+      console.error("Error al disminuir la cantidad:", error);
+    }
+  };
+
+  const eliminarProducto = async (productoId) => {
+    try {
+      const user = sessionStorage.getItem("user");
+      if (!user) return;
+      const parsedUser = JSON.parse(user);
+      const carritoId = parsedUser.carrito_id;
+      if (!carritoId) return;
+
+      await api.deleteData(`carritos/${carritoId}/productos`, productoId);
+
+      setCartProducts((prev) =>
+        prev.filter((prod) => prod.id !== productoId)
+      );
+    } catch (error) {
+      console.error("Error al eliminar el producto:", error);
+    }
+  };
 
   useEffect(() => {
     const user = sessionStorage.getItem("user");
-
     if (user) {
-      const parsedUser = JSON.parse(user); // Parseamos el JSON para acceder a los datos del usuario
-      const carritoId = parsedUser.carrito_id; // Accedemos al carrito_id del usuario
-
+      const parsedUser = JSON.parse(user);
+      const carritoId = parsedUser.carrito_id;
       if (carritoId) {
-        // Obtener los productos del carrito (ahora también incluyendo la cantidad desde carrito_productos)
         api
           .getData(`carritos/${carritoId}/productos`)
           .then((response) => {
-            setCartProducts(response.data);
+            // Aquí también verificamos que `response.data` sea un array
+            // o contenga un array en alguna propiedad
+            let productosArray = [];
+            if (Array.isArray(response.data.productos)) {
+              productosArray = response.data.productos;
+            } else if (Array.isArray(response.data.data)) {
+              productosArray = response.data.data;
+            } else if (Array.isArray(response.data)) {
+              productosArray = response.data;
+            }
+            // Asignamos a estado (si no es array, queda en [])
+            setCartProducts(productosArray);
             setLoading(false);
           })
           .catch((error) => {
-            console.error("Error al obtener los productos del carrito:", error);
+            console.error(
+              "Error al obtener los productos del carrito:",
+              error
+            );
+            setCartProducts([]);
             setLoading(false);
           });
+      } else {
+        setLoading(false);
       }
+    } else {
+      setLoading(false);
     }
-  }, []); // Solo se ejecuta una vez cuando se monta el componente
+  }, []);
 
-  const API_BASE_URL = import.meta.env.VITE_LOCAL_API_URL.replace("/api", ""); 
+  const API_BASE_URL = import.meta.env.VITE_LOCAL_API_URL.replace(
+    "/api",
+    ""
+  );
 
-  // Manejo del caso de carga
   if (loading) return <p>Cargando productos del carrito...</p>;
 
   return (
@@ -198,17 +182,18 @@ const eliminarProducto = async (productoId) => {
         </Button>
       </div>
 
-      {/* ZONA CENTRAL (Scroll solo aquí) */}
+      {/* ZONA CENTRAL (Scroll) */}
       <div
         style={{
           flex: "1 1 auto",
           overflowY: "auto",
-          paddingRight: "10px", // para que el scroll no choque con contenido
+          paddingRight: "10px",
         }}
       >
-        {cartProducts.length === 0 ? (
+        {Array.isArray(cartProducts) && cartProducts.length === 0 ? (
           <p>Tu carrito está vacío</p>
         ) : (
+          Array.isArray(cartProducts) &&
           cartProducts.map((prod) => (
             <div
               key={prod.id}
@@ -255,25 +240,20 @@ const eliminarProducto = async (productoId) => {
                     size="sm"
                     variant="outline-white"
                     className="border-0 botonAgregar"
-                    onClick={() =>
-                      decrementarCantidad(prod.id)
-                    }
+                    onClick={() => decrementarCantidad(prod.id)}
                     disabled={prod.pivot.cantidad <= 1}
                     aria-label={`Disminuir cantidad de ${prod.nombre}`}
                   >
                     −
                   </Button>
                   <span aria-live="polite" aria-atomic="true">
-                    {prod.pivot.cantidad}{" "}
-                    {/* Esta cantidad viene de carrito_productos */}
+                    {prod.pivot.cantidad}
                   </span>
                   <Button
                     size="sm"
                     variant="outline-white"
                     className="border-0 botonAgregar"
-                    onClick={() =>
-                      incrementarCantidad(prod.id)
-                    }
+                    onClick={() => incrementarCantidad(prod.id)}
                     aria-label={`Incrementar cantidad de ${prod.nombre}`}
                   >
                     +
@@ -282,13 +262,12 @@ const eliminarProducto = async (productoId) => {
               </div>
               <div style={{ textAlign: "right", minWidth: "50px" }}>
                 <div className="pb-3">
-                  {/* Mostrar el precio unitario */}
                   {prod.precio} €
                 </div>
                 <Button
                   variant="link"
                   size="sm"
-                  onClick={() => eliminarProducto && eliminarProducto(prod.id)}
+                  onClick={() => eliminarProducto(prod.id)}
                   style={{ color: "#a67c52", marginTop: "5px" }}
                   aria-label={`Eliminar ${prod.nombre} del carrito`}
                 >
@@ -316,9 +295,14 @@ const eliminarProducto = async (productoId) => {
         >
           <span className="fw-semibold">Coste Total</span>
           <span className="fw-semibold">
-            {cartProducts
-              .reduce((acc, p) => acc + p.pivot.cantidad * p.precio, 0)
-              .toFixed(2)}{" "}
+            {Array.isArray(cartProducts)
+              ? cartProducts
+                  .reduce(
+                    (acc, p) => acc + p.pivot.cantidad * p.precio,
+                    0
+                  )
+                  .toFixed(2)
+              : "0.00"}{" "}
             €
           </span>
         </div>
@@ -327,6 +311,7 @@ const eliminarProducto = async (productoId) => {
           <Button
             className="w-100 mb-2 botonMarron"
             onClick={() => navigate("/pago")}
+            disabled={!Array.isArray(cartProducts) || cartProducts.length === 0}
           >
             Pasar por caja
           </Button>

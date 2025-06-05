@@ -5,7 +5,7 @@ import { HiBars3BottomRight } from "react-icons/hi2";
 import { useLocation, useNavigate } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
 
-import api from "../utils/api"; // Importa tu módulo API
+import api from "../utils/api";
 import { IoIosLogOut } from "react-icons/io";
 
 import "../assets/styles/Navbar.css";
@@ -19,8 +19,8 @@ const NavBar = ({ carrito = [], alwaysLight = false }) => {
   const [expanded, setExpanded] = useState(false);
   const [showCartPanel, setShowCartPanel] = useState(false);
   const [navbarHeight, setNavbarHeight] = useState(window.innerHeight * 0.08);
-  const [userName, setUserName] = useState(null); // Estado para almacenar el nombre del usuario
-  const [totalCartItems, setTotalCartItems] = useState(0); // Estado para almacenar el número total de productos en el carrito
+  const [userName, setUserName] = useState(null);
+  const [totalCartItems, setTotalCartItems] = useState(0);
 
   const location = useLocation();
   const currentPath = location.pathname + location.hash;
@@ -45,42 +45,60 @@ const NavBar = ({ carrito = [], alwaysLight = false }) => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-useEffect(() => {
-  const user = sessionStorage.getItem("user");
-  if (user) {
-    const parsedUser = JSON.parse(user);
-    setUserName(parsedUser.name); // Asignamos el nombre del usuario al estado
+  useEffect(() => {
+    const user = sessionStorage.getItem("user");
+    if (user) {
+      const parsedUser = JSON.parse(user);
+      setUserName(parsedUser.name);
 
-    const carritoId = parsedUser.carrito_id;
-    if (carritoId) {
-      const fetchCartItems = () => {
-        api
-          .getData(`carritos/${carritoId}/productos`)
-          .then((response) => {
-            const productos = response.data;
-            const totalItems = productos.reduce(
-              (acc, item) => acc + item.pivot.cantidad,
-              0
-            );
-            setTotalCartItems(totalItems); // Actualizamos el total de productos en el carrito
-          })
-          .catch((error) => {
-            console.error("Error al obtener los productos del carrito:", error);
-          });
-      };
+      const carritoId = parsedUser.carrito_id;
+      if (carritoId) {
+        const fetchCartItems = () => {
+          api
+            .getData(`carritos/${carritoId}/productos`)
+            .then((response) => {
+              // Verifica dónde viene el array de productos en la respuesta:
+              // Por ejemplo, podría venir como response.data.productos o response.data.data
+              let productosArray = [];
 
-      // Llamar inmediatamente para obtener los productos al cargar el componente
-      fetchCartItems();
+              // Caso A: la API devuelve { productos: [...] }
+              if (Array.isArray(response.data.productos)) {
+                productosArray = response.data.productos;
+              }
+              // Caso B: la API devuelve paginación { data: [...] }
+              else if (Array.isArray(response.data.data)) {
+                productosArray = response.data.data;
+              }
+              // Caso C: la API devuelve directamente un array en response.data
+              else if (Array.isArray(response.data)) {
+                productosArray = response.data;
+              }
+              // Si no es ningún array, lo dejamos en [].
 
-      // Realizar la consulta cada 5 segundos
-      const interval = setInterval(fetchCartItems, 1000);
+              const totalItems = productosArray.reduce(
+                (acc, item) => acc + (item.pivot?.cantidad || 0),
+                0
+              );
+              setTotalCartItems(totalItems);
+            })
+            .catch((error) => {
+              console.error(
+                "Error al obtener los productos del carrito:",
+                error
+              );
+              setTotalCartItems(0);
+            });
+        };
 
-      // Limpiar el intervalo cuando el componente se desmonte
-      return () => clearInterval(interval);
+        // Llamada inicial
+        fetchCartItems();
+
+        // Actualizar cada 5 segundos (o el intervalo que prefieras)
+        const interval = setInterval(fetchCartItems, 5000);
+        return () => clearInterval(interval);
+      }
     }
-  }
-}, []); // Solo se ejecuta una vez cuando se monta el componente
-
+  }, []); // Solo al montar
 
   const isLight = alwaysLight || scrolled || expanded || showCartPanel;
 
@@ -203,7 +221,7 @@ useEffect(() => {
                     className={expanded ? "text-link" : ""}
                     style={{ color: isLight ? "black" : "white" }}
                   >
-                    {expanded ? userName.toUpperCase() : userName.toUpperCase()}
+                    {userName.toUpperCase()}
                   </Nav.Link>
                   <Nav.Link
                     href="/"
@@ -231,7 +249,7 @@ useEffect(() => {
       {showCartPanel && (
         <CartPanel
           onClose={() => setShowCartPanel(false)}
-          totalPrice={totalCartItems} // Aquí se pasa el total de los productos del carrito
+          totalPrice={totalCartItems}
           navbarHeight={navbarHeight}
         />
       )}

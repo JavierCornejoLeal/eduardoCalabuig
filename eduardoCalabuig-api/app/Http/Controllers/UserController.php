@@ -93,7 +93,7 @@ class UserController extends Controller
             'apellidos' => $request->apellidos,
             'email' => $request->email,
             'password' => bcrypt($request->password),  // Encriptar la contraseña,
-            'role_id' => '572cf3d5-3a68-4710-b1be-c967c7e77da2',
+            'role_id' => $request->role_id,
         ]);
 
         // Crear un carrito vacío para el usuario
@@ -120,18 +120,30 @@ class UserController extends Controller
      * @param  string  $id
      * @return \Illuminate\Http\Response
      */
-
-    public function destroy($id)
-    {
-        $user = User::find($id);  // Buscar al usuario por su UUID
-        if (!$user) {
-            return response()->json(['message' => 'Usuario no encontrado'], 404);  // Si no se encuentra, devolvemos un error
-        }
-
-        $user->delete();  // Eliminar al usuario
-
-        return response()->json(['message' => 'Usuario eliminado'], 200);  // Devolver mensaje de éxito
+public function destroy($id)
+{
+    $user = User::find($id);
+    if (!$user) {
+        return response()->json(['message' => 'Usuario no encontrado'], 404);
     }
+
+    // 1) Si el usuario tiene carrito, obtenemos su ID
+    $carritoId = $user->carrito_id;
+    if ($carritoId) {
+        // 2) Borrar manualmente todos los ítems del carrito
+        \App\Models\CarritoProducto::where('carrito_id', $carritoId)->delete();
+        
+        // 3) Luego borramos el carrito en sí
+        \App\Models\Carrito::where('id', $carritoId)->delete();
+    }
+
+    // 4) Finalmente eliminamos al usuario
+    $user->delete();
+
+    return response()->json(['message' => 'Usuario eliminado'], 200);
+}
+
+
 
     /**
      * Asignar un rol a un usuario.
