@@ -73,4 +73,8 @@
     font-size: 2rem !important;
     width: 100%;
   }
+
+  .form-check-label {
+    font-size: 0.65rem !important;
+  }
 }

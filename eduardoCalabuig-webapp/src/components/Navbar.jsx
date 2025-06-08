@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import { HashLink } from "react-router-hash-link";
-import { Navbar, Nav, Container } from "react-bootstrap";
+import { Navbar, Nav, Container, Button } from "react-bootstrap";
 import { PiShoppingCartThin, PiUserLight, PiX } from "react-icons/pi";
 import { HiBars3BottomRight } from "react-icons/hi2";
+import { IoIosLogOut } from "react-icons/io";
 
 import "../assets/styles/Navbar.css";
 import logoMarron from "../assets/images/logo/logo.webp";
@@ -31,6 +32,12 @@ const NavBar = ({ alwaysLight = false }) => {
   ];
 
   const currentPath = window.location.pathname.toLowerCase();
+
+  const handleLogout = () => {
+    sessionStorage.removeItem("auth_token");
+    sessionStorage.removeItem("user");
+    window.location.href = "/login";
+  };
 
   return (
     <Navbar
@@ -109,6 +116,13 @@ const NavBar = ({ alwaysLight = false }) => {
             })}
           </Nav>
         </Navbar.Collapse>
+
+        {/* Botón de cerrar sesión */}
+        <Nav className="ml-auto text-white">
+          <Button variant="link" onClick={handleLogout} className="text-decoration-none text-white">
+            <IoIosLogOut size={25} />
+          </Button>
+        </Nav>
       </Container>
     </Navbar>
   );

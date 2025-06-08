@@ -204,7 +204,7 @@ const CartPanel = ({ onClose, totalPrice, navbarHeight }) => {
               }}
             >
               <Image
-                src={`${API_BASE_URL}/storage/${prod.imagen}`}
+                src={`https://api.alu02.daw.iesevalorpego.es/storage/${prod.imagen}`}
                 alt={prod.nombre}
                 style={{
                   width: "7em",

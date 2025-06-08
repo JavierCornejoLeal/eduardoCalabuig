@@ -52,7 +52,15 @@ function Mapa() {
       });
   }, []);
 
-  return <div ref={mapaRef} style={{ width: "100%", height: "450px" }} />;
+  return (
+    <div
+      ref={mapaRef}
+      style={{
+        width: "100%",
+        height: "450px",
+      }}
+    />
+  );
 }
 
 export default Mapa;

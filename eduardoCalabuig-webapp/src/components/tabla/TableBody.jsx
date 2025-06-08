@@ -6,7 +6,6 @@ import { FaTrash } from "react-icons/fa6";
 import "../../assets/styles/tabla/tabla.css";
 
 const TableBody = ({ columns, data, onEdit, onView, onDelete, onAddImage }) => {
-  const API_BASE_URL = import.meta.env.VITE_LOCAL_API_URL.replace("/api", "");
   return (
     <tbody>
       {data.map((row, idx) => (
@@ -31,7 +30,7 @@ const TableBody = ({ columns, data, onEdit, onView, onDelete, onAddImage }) => {
             >
               {col.type === "image" ? (
                 <Image
-                  src={`${API_BASE_URL}/storage/${row.imagen}`}
+                  src={`https://api.alu02.daw.iesevalorpego.es/storage/${row.imagen}`}
                   alt={row.nombre}
                   fluid
                   style={{ width: "8em", height: "8em", objectFit: "contain" }}

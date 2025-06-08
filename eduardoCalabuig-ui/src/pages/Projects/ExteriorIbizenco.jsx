@@ -87,19 +87,19 @@ const ExteriorIbizenco = () => {
               </div>
             </div>
 
-            <div className="row py-4">
-              <div className="col-6">
+            <div className="row py-md-4">
+              <div className="col-12 col-md-6 pb-3 pb-md-0">
                 <img className="w-100 imagenProyecto" src={Exterior} alt="Exterior estilo ibizenco con decoraciones y naturaleza" />
               </div>
-              <div className="col-6">
+              <div className="col-12 col-md-6 pb-3 pb-md-0">
                 <img className="w-100 imagenProyecto" src={Exterior2} alt="Exterior estilo ibizenco con suelo de barro" />
               </div>
             </div>
-            <div className="row pb-5">
-              <div className="col-6">
+            <div className="row pb-3 pb-md-5">
+              <div className="col-12 col-md-6 pb-3 pb-md-0">
                 <img className="w-100 imagenProyecto" src={Exterior3} alt="Exterior estilo ibizenco con amaca estilo ibicenca" />
               </div>
-              <div className="col-6">
+              <div className="col-12 col-md-6">
                 <img className="w-100 imagenProyecto" src={Exterior4} alt="Exterior minimalista funcional" />
               </div>
             </div>

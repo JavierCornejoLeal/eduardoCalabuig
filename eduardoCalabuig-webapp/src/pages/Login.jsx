@@ -1,4 +1,3 @@
-// src/pages/Login.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
@@ -30,7 +29,7 @@ const LogIn = () => {
 
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/loginApp",
+        "https://api.alu02.daw.iesevalorpego.es/api/loginApp",
         userData
       );
 

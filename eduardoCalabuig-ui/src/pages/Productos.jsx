@@ -185,7 +185,7 @@ const Productos = () => {
                   <div className="imagenContainer position-relative">
                     <Link to={`/productos/${producto.slug || producto.id}`}>
                       <img
-                        src={`${API_BASE_URL}/storage/${producto.imagen}`}
+                        src={`https://api.alu02.daw.iesevalorpego.es/storage/${producto.imagen}`}
                         alt={producto.nombre}
                         className="w-100"
                       />

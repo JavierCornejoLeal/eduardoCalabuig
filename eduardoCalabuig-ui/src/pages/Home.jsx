@@ -64,7 +64,7 @@ const Home = () => {
               <div className="d-sm-none d-lg-block col-md-0 col-lg-1"></div>
 
               <div className="col-sm-12 col-lg-5 d-flex flex-column justify-content-center">
-                <h1 className="pt-sm-5 pt-lg-0 pb-4">Eduardo Calabuig</h1>
+                <h1 className="pt-5 pt-lg-0 pb-md-4">Eduardo Calabuig</h1>
                 <p className="py-4 lh-lg">
                   Creo que cada espacio tiene el potencial de ser
                   extraordinario, de inspirar y perdurar en el tiempo. Mi
@@ -105,55 +105,67 @@ const Home = () => {
           </div>
         </section>
 
-        <section className="py-5 shadow-inner-section">
-          <div className="container">
-            <div className="row py-5">
-              <div className="col-12 d-flex align-items-center justify-content-center">
-                <h1>Noticias</h1>
-              </div>
-            </div>
-            <div className="row pb-5">
-              <div className="col-4">
-                <a href="/noticias">
-                  {" "}
-                  <img src={Noticia2} alt="Color de la temporada en interiorismo" style={{ width: "100%" }} />
-                </a>
-                <a className="text-dark text-decoration-none" href="">
-                  <p className="text-center pt-3 pb-0 m-0">
-                    El color de la temporada en interiorismo
-                  </p>
-                </a>
-              </div>
-              <div className="col-4">
-                <a href="/noticias">
-                  {" "}
-                  <img src={Noticia} alt="Uso de las puertas correderas en el diseño de interiores" style={{ width: "100%" }} />
-                </a>
-                <a className="text-dark text-decoration-none" href="">
-                  <p className="text-center pt-3 pb-0 m-0">
-                    Puertas correderas: funcionalidad y estilo en tu hogar
-                  </p>
-                </a>
-              </div>
-              <div className="col-4">
-                <a href="/noticias">
-                  {" "}
-                  <img src={Noticia3} alt="El uso de la toba natural en el diseño de interiores" style={{ width: "100%" }} />
-                </a>
-                <a className="text-dark text-decoration-none" href="">
-                  <p className="text-center pt-3 pb-0 m-0">
-                    El uso de la toba natural
-                  </p>
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
+<section className="py-5 shadow-inner-section">
+  <div className="container">
+    <div className="row py-5">
+      <div className="col-12 d-flex align-items-center justify-content-center">
+        <h1>Noticias</h1>
+      </div>
+    </div>
+    <div className="row pb-5">
+      <div className="col-12 col-md-4 pb-3 pb-md-0"> {/* col-12 para móviles, col-md-4 para pantallas medianas */}
+        <a href="/noticias">
+          <img
+            src={Noticia2}
+            alt="Color de la temporada en interiorismo"
+            style={{ width: "100%" }}
+          />
+        </a>
+        <a className="text-dark text-decoration-none d-none d-sm-block" href=""> {/* Ocultar en pantallas pequeñas */}
+          <p className="text-center pt-3 pb-0 m-0">
+            El color de la temporada en interiorismo
+          </p>
+        </a>
+      </div>
+      <div className="col-12 col-md-4 pb-3 pb-md-0"> {/* col-12 para móviles, col-md-4 para pantallas medianas */}
+        <a href="/noticias">
+          <img
+            src={Noticia}
+            alt="Uso de las puertas correderas en el diseño de interiores"
+            style={{ width: "100%" }}
+          />
+        </a>
+        <a className="text-dark text-decoration-none d-none d-sm-block" href=""> {/* Ocultar en pantallas pequeñas */}
+          <p className="text-center pt-3 pb-0 m-0 pb-3 pb-md-0">
+            Puertas correderas: funcionalidad y estilo en tu hogar
+          </p>
+        </a>
+      </div>
+      <div className="col-12 col-md-4"> {/* col-12 para móviles, col-md-4 para pantallas medianas */}
+        <a href="/noticias">
+          <img
+            src={Noticia3}
+            alt="El uso de la toba natural en el diseño de interiores"
+            style={{ width: "100%" }}
+          />
+        </a>
+        <a className="text-dark text-decoration-none d-none d-sm-block" href=""> {/* Ocultar en pantallas pequeñas */}
+          <p className="text-center pt-3 pb-0 m-0">
+            El uso de la toba natural
+          </p>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
 
         <section className="py-5 shadow-inner-section">
           <div className="container">
             <div className="row py-5">
+              <div className="col-12">
               <Mapa></Mapa>
+              </div>
             </div>
           </div>
         </section>

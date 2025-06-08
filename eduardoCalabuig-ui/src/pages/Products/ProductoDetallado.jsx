@@ -144,10 +144,10 @@ const ProductoDetallado = () => {
         <section className="shadow-inner-section seccionProducto pt-5 pb-5">
           <div className="container pt-5">
             <div className="row gy-4 pt-5">
-              <div className="col-6 col-lg-4 pt-5">
+              <div className="col-12 col-md-6 col-lg-4 pt-5">
                 {imagenes[0] ? (
                   <img
-                    src={`${import.meta.env.VITE_LOCAL_API_URL.replace("/api", "")}/storage/${imagenes[0].url}`}
+                    src={`https://api.alu02.daw.iesevalorpego.es/storage/${imagenes[0].url}`}
                     alt={producto.nombre}
                     className="w-100 imagenProducto"
                   />
@@ -155,10 +155,10 @@ const ProductoDetallado = () => {
                   <p>No hay imagen</p>
                 )}
               </div>
-              <div className="col-6 col-lg-4 pt-5">
+              <div className="col-12 col-md-6 col-lg-4 pt-0 pt-md-5">
                 {imagenes[1] ? (
                   <img
-                    src={`${import.meta.env.VITE_LOCAL_API_URL.replace("/api", "")}/storage/${imagenes[1].url}`}
+                    src={`https://api.alu02.daw.iesevalorpego.es/storage/${imagenes[1].url}`}
                     alt={producto.nombre}
                     className="w-100 imagenProducto"
                   />
@@ -167,8 +167,8 @@ const ProductoDetallado = () => {
                 )}
               </div>
 
-              <div className="col-12 col-lg-4 ps-4 pt-5">
-                <div className="textoProducto pt-4 pb-5">
+              <div className="col-12 col-lg-4 ps-4 pt-md-5">
+                <div className="textoProducto pt-2 pt-md-4 pb-5">
                   <h4>{producto.nombre}</h4>
                   <p className="py-2">{producto.material || "Material no disponible"}</p>
                   <h5>{producto.precio ? `${producto.precio} €` : "Precio no disponible"}</h5>
@@ -242,7 +242,7 @@ const ProductoDetallado = () => {
                   <div className="imagenContainer">
                     <Link to={`/productos/${productoSimilar.slug || productoSimilar.id}`}>
                       <img
-                        src={`${import.meta.env.VITE_LOCAL_API_URL.replace("/api", "")}/storage/${productoSimilar.imagen}`}
+                        src={`https://api.alu02.daw.iesevalorpego.es/storage/${productoSimilar.imagen}`}
                         alt={productoSimilar.nombre}
                         className="w-100"
                       />

@@ -77,3 +77,11 @@
     display: none !important;
   }
 }
+
+/* en tu CSS global (o en tu .scss si trabajas con SASS) */
+@media (min-width: 768px) {
+  .parrafoTexto {
+    line-height: 2em !important;
+  }
+}
+

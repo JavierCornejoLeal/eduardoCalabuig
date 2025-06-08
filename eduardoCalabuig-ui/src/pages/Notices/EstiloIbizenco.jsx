@@ -5,6 +5,8 @@ import Header from "../../components/Header";
 import NavBar from "../../components/NavBar";
 import SEO from "../../components/SEO";
 
+import "../../assets/styles/noticias.css";
+
 import Noticia1 from "../../assets/images/noticias/noticia6.webp";
 import Noticia2 from "../../assets/images/noticias/estiloIbizenco/noticia11.webp";
 
@@ -27,18 +29,18 @@ const EstiloIbizenco = () => {
           <div className="container">
             <div className="row py-5">
               <div className="col-12">
-                <h2 className="fw-semibold pb-2 mb-0">
+                <h2 className="fw-semibold pb-0 pb-md-2 mb-0">
                   El Estilo Ibicenco: Naturaleza y Relax en el Diseño de
                   Interiores
                 </h2>
               </div>
             </div>
-            <div className="row pt-4">
-              <div className="col-6">
+            <div className="row pt-md-4">
+              <div className="col-12 col-md-6">
                 <img src={Noticia1} className="w-100 imagenProyecto" alt="Estilo ibizenco" />
               </div>
-              <div className="col-6  d-flex justify-content-center align-items-center">
-                <p className="lh-lg ps-4">
+              <div className="col-12 col-md-6  d-flex justify-content-center align-items-center">
+                <p className="parrafoTexto ps-0 ps-md-4 pt-4 pt-md-0">
                   El estilo ibicenco se caracteriza por su uso de materiales
                   naturales, colores neutros y una conexión única con la
                   naturaleza, lo que lo convierte en una opción ideal para crear
@@ -59,7 +61,7 @@ const EstiloIbizenco = () => {
                 </p>
               </div>
             </div>
-            <div className="row pt-5">
+            <div className="row pt-3 pt-md-5">
               <div className="col-12">
                 <p className="">
                   Una de las características más destacadas de este estilo es la

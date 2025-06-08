@@ -90,19 +90,19 @@ const Cocina = () => {
               </div>
             </div>
 
-            <div className="row py-4">
-              <div className="col-6">
+            <div className="row py-md-4">
+              <div className="col-12 col-md-6 pb-3 pb-md-0">
                 <img className="w-100 imagenProyecto" src={Cocina1} alt="Cocina moderna contemporanea vista alta" />
               </div>
-              <div className="col-6">
+              <div className="col-12 col-md-6 pb-3 pb-md-0">
                 <img className="w-100 imagenProyecto" src={Cocina2} alt="Cocina moderna contemporanea vista baja" />
               </div>
             </div>
-            <div className="row pb-5">
-              <div className="col-6">
+            <div className="row pb-3 pb-md-5">
+              <div className="col-12 col-md-6 pb-3 pb-md-0">
                 <img className="w-100 imagenProyecto" src={Cocina3} alt="Cocina moderna con taburetes" />
               </div>
-              <div className="col-6">
+              <div className="col-12 col-md-6">
                 <img className="w-100 imagenProyecto" src={Cocina4} alt="Cocina moderna con taburetes y diferentes decoraciones" />
               </div>
             </div>

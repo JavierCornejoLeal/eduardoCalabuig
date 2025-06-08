@@ -57,7 +57,7 @@
   .imagenSobresale {
     position: absolute;
     top: 7em;
-    left: 15%;
+    left: 2%;
     transform: translateX(-50%) rotate(-25deg);
     width: 34em;
     opacity: 25%;

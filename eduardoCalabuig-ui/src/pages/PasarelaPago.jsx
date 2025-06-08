@@ -154,7 +154,7 @@ const PasarelaPago = () => {
                           style={{ gap: "1rem", flexWrap: "nowrap" }}
                         >
                           <Image
-                            src={`${API_BASE_URL}/storage/${prod.imagen}`}
+                            src={`https://api.alu02.daw.iesevalorpego.es/storage/${prod.imagen}`}
                             alt={prod.nombre}
                             style={{
                               width: "80px",
@@ -371,7 +371,7 @@ const PasarelaPago = () => {
                       </Form.Control.Feedback>
                     </Col>
                     <Col xs={4}>
-                      <Form.Label>CVV/CVC *</Form.Label>
+                      <Form.Label className="pb-4 pb-md-0">CVV/CVC *</Form.Label>
                       <Form.Control
                         type="text"
                         placeholder="CVC"

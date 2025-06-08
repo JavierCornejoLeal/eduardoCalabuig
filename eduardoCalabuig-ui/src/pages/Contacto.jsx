@@ -208,7 +208,7 @@ const Contacto = () => {
                   required
                 />
                 <label
-                  className="form-check-label ps-2"
+                  className="form-check-label ms-2"
                   htmlFor="acepto"
                   style={{ fontSize: "0.9rem" }}
                 >

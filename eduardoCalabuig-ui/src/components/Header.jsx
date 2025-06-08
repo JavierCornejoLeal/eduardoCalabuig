@@ -1,6 +1,8 @@
 import React from "react";
 import backgroundImage from "../assets/images/header/exxterior-reducida.webp"; 
 
+import "../assets/styles/header.css";
+
 const Header = ({ children }) => {
   return (
     <header
@@ -18,7 +20,7 @@ const Header = ({ children }) => {
         textShadow: "0 0 10px rgba(0,0,0,0.7)",
       }}
     >
-      <div style={{ zIndex: 2, fontSize: "3rem", fontWeight: "bolder", textAlign: "center", padding: "0 20px" }}>
+      <div className="textoContainer" style={{ zIndex: 2, fontSize: "3rem", fontWeight: "bolder", textAlign: "center", padding: "0 20px" }}>
         {children}
       </div>
       <div
