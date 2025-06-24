@@ -1,0 +1,33 @@
+.pagination .page-item .page-link {
+  border-radius: 0 !important;
+  border: none;
+  color: black;
+}
+
+.page-item.disabled .page-link {
+  background-color: transparent !important;
+  color: black !important;
+  cursor: default;
+  pointer-events: none;
+  box-shadow: none !important;
+}
+
+
+
+.page-item.disabled {
+    background-color: white !important;
+}
+
+/* Estilo para el botón activo */
+.pagination .page-item.active .page-link {
+  background-color: #51443d !important;
+  border-color: #51443d !important;
+  color: white !important;
+  pointer-events: none;
+  box-shadow: none !important;
+}
+
+.pagination .page-item .page-link:hover {
+  background-color: #d9d4cd !important;
+  color: black !important;
+}

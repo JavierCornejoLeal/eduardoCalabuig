@@ -1,0 +1,48 @@
+.containerSeccion {
+  padding-bottom: 10em !important;
+}
+
+.shadow-inner-section {
+  position: relative;
+  box-shadow: inset 0 10px 8px -8px rgba(0, 0, 0, 0.15),
+    inset 0 -10px 8px -8px rgba(0, 0, 0, 0.15);
+  overflow: visible;
+}
+
+.imagenError {
+  position: absolute;
+  bottom: -20%;
+  right: 26%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+@media (max-width: 1400px) and (min-width: 993px) {
+  .imagenError {
+    position: absolute;
+    bottom: -20%;
+    right: 8em;
+    z-index: 1;
+    pointer-events: none;
+  }
+}
+
+@media (max-width: 992px) {
+  .imagenError {
+    position: absolute;
+    bottom: -20%;
+    right: 5em;
+    z-index: 1;
+    pointer-events: none;
+  }
+}
+
+@media (max-width: 576px) {
+  .imagenError {
+    position: absolute !important;
+    bottom: -30% !important;
+    right: 3em !important;
+    z-index: 1 !important;
+    pointer-events: none !important;
+  }
+}

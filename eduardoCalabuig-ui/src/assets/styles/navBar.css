@@ -1,0 +1,72 @@
+.navbar-hover-white:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  color: white !important;
+}
+
+.navbar-hover-black:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  color: black !important;
+}
+
+.navbar-toggler {
+  border: none !important;
+  background-color: transparent !important;
+}
+
+/* Quitar outline y sombra al hacer foco o clic */
+.navbar-toggler:focus,
+.navbar-toggler:active {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  background-color: black;
+  color: white;
+  font-size: 12px;
+  padding: 4px 6px;
+  border-radius: 12px;
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+}
+
+.cart-badge-horizontal {
+  background-color: black;
+  color: white;
+  font-size: 12px;
+  padding: 4px 9px;
+  border-radius: 12px;
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+}
+
+.navbar-hover-white.active {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  font-weight: 600;
+}
+
+.navbar-hover-black.active {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  font-weight: 600;
+}
+
+@media (max-width: 991px) {
+  .navbar-nav .text-link {
+    flex: 1;
+    text-align: center;
+  }
+
+  .navbar-nav .text-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+}

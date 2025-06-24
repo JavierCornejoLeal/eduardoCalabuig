@@ -1,0 +1,65 @@
+select {
+  border-radius: 0 !important;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: none;
+  box-shadow: none !important;
+}
+
+select:focus {
+  border-color: #aaa;
+  outline: none;
+  box-shadow: none !important;
+}
+
+.botonMarron {
+  background-color: #51443d !important;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 0.6em 0em !important;
+  font-weight: 100 !important;
+}
+
+.botonMarron:hover {
+  background-color: #463a34 !important;
+}
+
+.botonCrema {
+  background-color: #f1f0ec !important;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 0.6em 0em !important;
+  font-weight: 100 !important;
+}
+
+.botonCrema:hover {
+  background-color: #e0e0d7 !important;
+}
+
+.botonRojo {
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 0.6em 0em !important;
+}
+
+.inputModal.form-control {
+  border-radius: 0 !important;
+  padding: 0.5em 1em;
+}
+
+/* Estilo para inputs con error */
+.form-control.is-invalid {
+  border-color: #dc3545 !important;
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+}
+
+/* Mensajes de error */
+.invalid-feedback {
+  display: block;
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}

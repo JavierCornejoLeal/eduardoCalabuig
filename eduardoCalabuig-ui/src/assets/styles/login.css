@@ -1,0 +1,174 @@
+.imagenLogin {
+  object-fit: cover;
+  height: 44em;
+  width: 100%;
+}
+
+.textLogin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  color: white;
+  text-align: center;
+  font-size: 2.5em;
+  font-weight: 600;
+  line-height: 1.2;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+  width: 100%;
+}
+
+.containerLogin {
+  padding-top: 4em;
+}
+
+.containerFormLogin {
+  background-color: #f1f0ec;
+}
+
+.containerFormLogin {
+  background-color: #f1f0ec;
+  min-height: 44em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0 2rem;
+}
+
+.login-form {
+  width: 100%;
+}
+
+.login-input {
+  display: block;
+  width: 100%;
+  height: 3.25rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid #ccc;
+  border-radius: 0;
+  font-size: 1rem;
+  background-color: #fff;
+  transition: border-color 0.2s ease-in-out;
+}
+
+.login-input:focus {
+  outline: none;
+  border: 1px solid #51443d;
+  border-radius: 0;
+}
+
+
+.login-button {
+  width: 100%;
+  height: 3.5rem;
+  margin-bottom: 1rem;
+  background-color: #51443d;
+  color: #fff;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.login-button:hover {
+  background-color: #463a34;
+}
+
+.login-footer {
+  font-size: 0.9rem;
+  color: #555;
+  margin-top: 0.5rem;
+  text-align: center;
+}
+
+.login-footer a {
+  color: #4f3c32;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.login-footer a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.login-forgot-password {
+  color: #4f3c32 !important;
+  text-decoration: none !important;
+}
+
+.login-forgot-password:hover {
+  text-decoration: underline !important;
+  text-underline-offset: 3px !important;
+}
+
+.input-error {
+  border-color: #dc3545 !important;
+}
+
+.error-message {
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+
+/* Contenedor relativo para el icono */
+.password-wrapper {
+  position: relative;
+}
+
+/* Extra padding a la derecha para que no choque con el icono */
+.password-input {
+  padding-right: 2.5rem;
+}
+
+/* Icono posicionado en la derecha dentro del input */
+.password-toggle-icon {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #51443d;
+}
+
+.password-toggle-icon:hover {
+  color: #463a34;
+}
+
+/* Impide que contenidos animados sobresalgan de su columna */
+.columnClip {
+  position: relative;
+  overflow: hidden;
+}
+
+.form-check-input {
+  accent-color: #51443d !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.form-check-input:checked {
+  background-color: #51443d !important;
+  border-color: #51443d !important;
+}
+
+.form-check-input:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: #000 !important;
+}
+
+.form-check-label {
+  font-size: 0.8em;
+}
+
+.linkTerms:hover {
+  text-decoration: underline !important;
+  text-underline-offset: 3px;
+}
+

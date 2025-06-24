@@ -1,0 +1,68 @@
+
+
+.encabezadoProductos {
+  font-family: "Arial", sans-serif;
+}
+
+.totalProductos {
+  font-size: 0.9rem;
+  color: #555555;
+  white-space: nowrap;
+}
+
+.filtroOrden {
+  font-size: 0.9rem;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #cccccc;
+  background-color: #ffffff;
+  color: #333333;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg width='8' height='5' viewBox='0 0 8 5' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0l4 5 4-5z' fill='%23444444'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.65rem center;
+  background-size: 8px 5px;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.filtroOrden:focus {
+  border-color: #777777;
+  background-color: #fafafa;
+}
+
+
+.filtroOrden:focus {
+  outline: none;
+  border-color: #888888;
+}
+
+.filtroOrden:hover {
+  border-color: #999999;
+}
+
+.carrito-btn {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  padding: 6px 8px;
+  border-radius: 50%;
+}
+
+.carrito-btn:hover {
+  background-color: lightgray;
+}
+
+
+
+@media (max-width: 992px) {
+  .textContainer p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .textContainer p {
+    font-size: 0.9rem;
+  }
+}

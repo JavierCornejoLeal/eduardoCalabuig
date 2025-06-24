@@ -1,0 +1,87 @@
+.imagenProyecto {
+  display: block;
+  width: 100%;
+  height: 30em;
+  transition: transform 1s cubic-bezier(0.25, 0.8, 0.25, 1), filter 1s ease;
+}
+
+.image-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.image-container:hover .imagenProyecto {
+  filter: grayscale(100%);
+  transform: scale(1.08);
+}
+
+/* El texto superpuesto, oculto por defecto */
+.image-container .overlay-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translateY(20px) scale(0.8);
+  color: #fff;
+  padding: 0.5rem 1rem;
+  font-size: 3rem;
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 0.4s ease 0.2s, transform 0.4s ease 0.2s;
+  pointer-events: none;
+}
+
+.image-container:hover .overlay-text {
+  opacity: 1;
+  transform: translate(-50%, -50%) translateY(0) scale(1);
+}
+
+.text-container p {
+  line-height: 1.5rem; 
+  display: -webkit-box !important;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden !important;
+  max-height: calc(1.5rem * 4);
+}
+
+
+@media (max-width: 992px) {
+  .imagenProyecto {
+    width: 100%;
+    height: 30em;
+  }
+
+  /* El texto superpuesto, oculto por defecto */
+  .image-container .overlay-text {
+    font-size: 2rem;
+    width: 100%;
+  }
+
+  .text-container p {
+    display: none !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .imagenProyecto {
+    width: 100%;
+    height: 30em;
+  }
+
+  .image-container .overlay-text {
+    font-size: 1.5rem;
+    width: 100%;
+  }
+
+  .text-container {
+    display: none !important;
+  }
+}
+
+/* en tu CSS global (o en tu .scss si trabajas con SASS) */
+@media (min-width: 768px) {
+  .parrafoTexto {
+    line-height: 2em !important;
+  }
+}
+

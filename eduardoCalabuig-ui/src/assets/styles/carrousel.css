@@ -1,0 +1,33 @@
+.react-multi-carousel-dot-list {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 0;
+  margin-top: 1rem;
+}
+
+.react-multi-carousel-dot button {
+  width: 30px;
+  height: 4px;       
+  background-color: #ccc;
+  border: none;
+  border-radius: 2px;
+  padding: 0;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.react-multi-carousel-dot--active button {
+  background-color: #51443D;
+}
+
+/* Elimina fondo y sombra del botón de flecha */
+.react-multiple-carousel__arrow {
+  background: transparent !important;
+}
+
+
+
+
+
+

@@ -1,0 +1,68 @@
+.fondoFooter {
+  background-color: #f1f0ec !important;
+}
+
+.linkFooter {
+    z-index: 1000;
+}
+
+.linkFooter:hover {
+  text-decoration: underline !important;
+  text-underline-offset: 4px;
+}
+
+.social-icon {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.social-icon:hover {
+  transform: scale(1.1);
+}
+
+.imagenSobresale {
+  position: absolute;
+  top: 1em;
+  left: 3%;
+  transform: translateX(-50%) rotate(-15deg);
+  width: 20.9em;
+  opacity: 25%;
+  margin: 0;
+  padding: 0;
+  z-index: 1;
+}
+
+.custom-border-bottom {
+  border-bottom: 1px solid black !important;
+  max-width: 80%;
+  margin: 0 auto;
+}
+
+
+@media (max-width: 992px) {
+  .imagenSobresale {
+    position: absolute;
+    top: 3.45em;
+    left: 3%;
+    transform: translateX(-50%) rotate(-25deg);
+    width: 37em;
+    opacity: 25%;
+    margin: 0;
+    padding: 0;
+    z-index: 1;
+  }
+}
+
+@media (max-width: 576px) {
+  .imagenSobresale {
+    position: absolute;
+    top: 7em;
+    left: 2%;
+    transform: translateX(-50%) rotate(-25deg);
+    width: 34em;
+    opacity: 25%;
+    margin: 0;
+    padding: 0;
+    z-index: 1;
+  }
+}

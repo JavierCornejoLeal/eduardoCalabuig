@@ -1,0 +1,32 @@
+.imagenProducto {
+  height: 35em;
+}
+
+.btnAgregar {
+  width: 100%;
+  background-color: #51443d;
+  border: none;
+  border-radius: none !important;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.75rem;
+  transition: background-color 0.2s ease;
+}
+
+.btnAgregar:hover,
+.btnAgregar:focus {
+  background-color: #463a34;
+}
+
+@media (max-width: 992px) {
+  .imagenProducto {
+    height: 30em;
+  }
+}
+
+@media (max-width: 576px) {
+  .imagenProducto {
+    height: 25em !important;
+  }
+}

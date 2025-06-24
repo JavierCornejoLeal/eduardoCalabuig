@@ -1,0 +1,48 @@
+/* Estilo para inputs y selects */
+.form-control,
+.form-select,
+textarea.form-control {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  height: 48px;
+  font-size: 1.1rem;
+  width: 100%;
+  transition: border-color 0.3s ease;
+}
+
+.form-control:focus,
+.form-select:focus,
+textarea.form-control:focus {
+  border-color: #000 !important;
+  box-shadow: none !important;
+  outline: none;
+}
+
+/* Para que el textarea tenga un poco más de altura */
+textarea.form-control {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* Contenedor del resumen carrito */
+.resumen-carrito > div {
+  display: flex;
+  flex-direction: column;
+  height: 50vh;
+}
+
+/* Header y footer fijos */
+.resumen-header,
+.resumen-footer {
+  flex-shrink: 0;
+  background-color: white;
+  z-index: 10;
+}
+
+/* Contenido de productos scrollable */
+.resumen-productos {
+  overflow-y: auto;
+  flex-grow: 1;
+  padding-right: 1rem;
+}
+
