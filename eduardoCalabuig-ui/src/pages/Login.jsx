@@ -4,7 +4,7 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import { motion } from "framer-motion";
 import axios from "axios";
 
-import NavBar from "../components/NavBar";
+import NavBar from "../components/Navbar";
 import SEO from "../components/SEO";
 
 import Hero from "../assets/images/projects/exterior2.webp";

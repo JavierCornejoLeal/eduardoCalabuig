@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
-import NavBar from "../components/NavBar";
+import NavBar from "../components/Navbar";
 import Footer from "../components/Footer";
 import provincias from "../utils/provincias";
 import api from "../utils/api";

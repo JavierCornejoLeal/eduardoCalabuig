@@ -5,7 +5,7 @@ import { Button, Carousel } from "react-bootstrap";
 import "../assets/styles/home.css";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
-import NavBar from "../components/NavBar";
+import NavBar from "../components/Navbar";
 import ProyectosCarousel from "../components/Carrousel";
 import Mapa from "../components/Map";
 import SEO from "../components/SEO";
